@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>RecordStore</title>
+</head>
+
+<body>
+<header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+<div class="container my-3">
+    <div class="row">
+        <div th:each="record : ${records}" class="col-12 col-md-4 col-lg-3">
+            <div class="">
+                <img th:src="@{'images/'+${record.img}}" width="200" alt=""/>
+            </div>
+            <div class="">
+                <div th:text="${record.artist}"></div>
+                <div th:text="${record.title}"></div>
+                <div th:text="${record.label}"></div>
+                <div th:text="${record.code}"></div>
+                <div th:text="${record.format}"></div>
+                <div th:text="${record.releaseDate}"></div>
+                <div th:text="${record.price}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>

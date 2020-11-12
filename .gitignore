@@ -1,0 +1,9 @@
+*.idea
+
+target/
+
+src/main/resources/static/images/
+
+!edit.svg
+
+!trash.svg

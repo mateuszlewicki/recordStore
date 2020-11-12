@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>RecordStore</title>
+</head>
+
+<body>
+
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Records Store</a>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <form th:action="@{update}" th:object="${record}" method="post">
+                    <div class="form-group">
+                       <input type="hidden" th:field="*{id}" th:value="${record.id}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="hidden" for="artist">Artist</label>
+                        <input class="form-control is-valid" th:errorclass="is-invalid" type="text" id="artist" th:field="*{artist}" placeholder="Artist" maxlength="100" th:value="${record.artist}" />
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('artist')}" th:errors="*{artist}"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="hidden" for="title">Title</label>
+                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="title" th:field="*{title}" placeholder="Title" maxlength="100" th:value="${record.title}"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="hidden" for="code">Code</label>
+                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="code" th:field="*{code}" placeholder="Code" maxlength="100" th:value="${record.code}"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="hidden" for="label">Label</label>
+                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="label" th:field="*{label}" placeholder="Label" maxlength="100" th:value="${record.label}"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('label')}" th:errors="*{label}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="hidden" for="releaseDate">Release Date</label>
+                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="releaseDate" th:field="*{releaseDate}" placeholder="YYYY-MM-DD" maxlength="100" th:value="${record.releaseDate}"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="hidden" for="genre">Genre</label>
+                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="genre" th:field="*{genre}" placeholder="Genre" maxlength="100" th:value="${record.genre}"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="hidden" for="format">Format</label>
+                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="format" th:field="*{format}" placeholder="Format" maxlength="100" th:value="${record.format}"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('format')}" th:errors="*{format}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="hidden" for="price">Price</label>
+                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="price" th:field="*{price}" placeholder="Price" maxlength="100" th:value="${record.price}"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="hidden" for="img">Image</label>
+                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="img" th:field="*{img}" placeholder="Image" maxlength="100" th:value="${record.img}"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="hidden" for="quantity">Quantity</label>
+                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="quantity" th:field="*{quantity}" placeholder="Quantity" maxlength="100" th:value="${record.quantity}"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></p>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

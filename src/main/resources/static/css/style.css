@@ -1,0 +1,23 @@
+footer{
+    position: fixed;
+    bottom: 0;
+    width:100%;
+    z-index: 5;
+}
+.btn-search-icon img {
+    width: 22px;
+}
+#search {
+    border: 0;
+    font-size: 18px;
+    height: 34px;
+}
+.btn-search-icon{
+    background-color: #fff;
+    border-radius: 0 5px 5px 0;
+    border: 0;
+    margin: 0;
+    height: 34px;
+    cursor: default;
+    transition: .6s;
+}
