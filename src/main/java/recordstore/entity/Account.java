@@ -1,59 +1,73 @@
 package recordstore.entity;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Set;
 
 @Entity
-@Table(name = "accounts", schema = "records")
+@Table(name = "accounts", schema = "recordstore")
 public class Account implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @Column(name = "user_name")
-    private String userName;
+    @NotBlank(message = "Field is mandatory")
+    private String username;
 
     @Column(name = "password")
+    @NotBlank(message = "Field is mandatory")
     private String password;
 
-    @Column(name = "user_role")
-    private String userRole;
+    @Transient
+    private String passwordConfirm;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 
     public Account() {
     }
 
-    public Account(String userName, String password, String userRole) {
-        this.userName = userName;
-        this.password = password;
-        this.userRole = userRole;
+    public long getId() {
+        return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getUserRole() {
-        return userRole;
+    public String getPasswordConfirm() {
+        return passwordConfirm;
     }
 
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(userRole));
+        return getRoles();
     }
 
     @Override
@@ -63,7 +77,7 @@ public class Account implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override
@@ -85,5 +99,4 @@ public class Account implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

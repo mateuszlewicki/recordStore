@@ -19,22 +19,32 @@ create table releases(
                          primary key (id));
 
 create table accounts(
+                         id bigint auto_increment,
                          user_name varchar(30) not null,
                          password varchar(100) not null,
                          user_role varchar(20) not null,
-                         primary key(user_name));
+                         primary key(id));
+
+create table roles(
+                      id bigint,
+                      name varchar(20) not null,
+                      primary key(id));
+
+
+INSERT INTO roles(id, name)
+VALUES (1, 'ROLE_USER'), (2, 'ROLE_ADMIN');
 
 insert into releases (artist, title, label, release_date, genre, code, format, price, img, quantity)
-values("Gantz", "Enso/Siyam", "Innamind Recordings", "2013-02-01", "dubstep", "IMRV003", "10\"", 50.0, "gantz.jpg", 1);
+values('Gantz', 'Enso/Siyam', 'Innamind Recordings', '2013-02-01', 'dubstep', 'IMRV003', '10"', 50.0, 'gantz.jpg', 1);
 
 insert into releases (artist, title, label, release_date, genre, code, format, price, img, quantity)
-values("Tes La Rok", "Up In The VIP", "Dub Police", "2008-09-01", "dubstep", "DP021", "12\"", 10.0, "teslarok.jpg", 1);
+values('Tes La Rok', 'Up In The VIP', 'Dub Police', '2008-09-01', 'dubstep', 'DP021', '12"', 10.0, 'teslarok.jpg', 1);
 
 insert into releases (artist, title, label, release_date, genre, code, format, price, img, quantity)
 values("Sully", "Vacancy/Digitalis", "Uncertain Hour", "2018-10-12", "jungle", "UH-01", "12\"", 12.0, "sully_vacancy.jpg", 1);
 
 insert into releases (artist, title, label, release_date, genre, code, format, price, img, quantity)
-values("Sully", "Soundboy Don't Push Your Luck /368ft High And Rising", "Foxy Jangle", "2018-03-27", "jungle", "Foxy2", "12\"", 20.0, "sully_foxy.jpg", 1);
+values('Sully', 'Soundboy Dont Push Your Luck /368ft High And Rising', 'Foxy Jangle', '2018-03-27', 'jungle', 'Foxy2', '12"', 20.0, 'sully_foxy.jpg', 1);
 
 insert into releases (artist, title, label, release_date, genre, code, format, price, img, quantity)
 values("Dimension", "UK/InBleach", "More Than Alot Records", "2017-02-15", "drumandbass", "MTA096", "12\"", 130.0, "dimension.jpg", 1);
@@ -58,7 +68,10 @@ insert into releases (artist, title, label, release_date, genre, code, format, p
 values("Bonobo", "Black Sands LP", "Ninja Tune", "2010-03-29", "downtempo", "ZEN140", "2x12\"", 15.0, "bonobo.jpg", 1);
 
 insert into releases (artist, title, label, release_date, genre, code, format, price, img, quantity)
-values("Sully", "Blue EP", "Keysound Recordings", "2014-06-13", "jungle", "LDN046", "2x12\"", 20.0, "sully.jpg", 1);
+values("Sully", "Blue EP", "Keysound Recordings", "2014-06-13", "jungle", "LDN046", "2x12\"", 20.0, 'sully.jpg', 1);
+
+
+
 
 
 
