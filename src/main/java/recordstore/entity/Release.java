@@ -6,7 +6,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "releases", schema = "recordstore")
-public class Record {
+public class Release {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,10 +48,10 @@ public class Record {
     @Column(name = "quantity")
     private int quantity;
 
-    public Record(){
+    public Release(){
     }
 
-    public Record(String artist, String title, String label, Date releaseDate, String genre, String code, String format, double price, String img, int quantity) {
+    public Release(String artist, String title, String label, Date releaseDate, String genre, String code, String format, double price, String img, int quantity) {
         this.artist = artist;
         this.title = title;
         this.label = label;
@@ -157,9 +157,9 @@ public class Record {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Record record = (Record) o;
+        Release release = (Release) o;
 
-        return getId() == record.getId();
+        return getId() == release.getId();
 
     }
 
@@ -170,7 +170,7 @@ public class Record {
 
     @Override
     public String toString() {
-        return "Record{" +
+        return "Release{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", artist='" + artist + '\'' +

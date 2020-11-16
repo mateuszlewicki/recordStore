@@ -3,36 +3,36 @@ package recordstore.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import recordstore.service.RecordService;
-import recordstore.entity.Record;
+import recordstore.entity.Release;
+import recordstore.service.ReleaseService;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/")
-public class RecordController {
+public class ReleaseController {
 
-    private final RecordService service;
+    private final ReleaseService service;
 
-    private List<Record> records;
+    private List<Release> releases;
 
-    public RecordController(RecordService service) {
+    public ReleaseController(ReleaseService service) {
         this.service = service;
     }
 
     @GetMapping
-    public String getRecords(Model model){
-        records = service.getAllRecords();
+    public String getAllRecords(Model model){
+        releases = service.getAllReleases();
         getAllGenres(model);
-        model.addAttribute("records", records);
+        model.addAttribute("releases", releases);
         return "index";
     }
 
     @GetMapping("{genre}")
     public String getRecordsByGenre(@PathVariable("genre") String genre, Model model){
-        records = service.getAllRecordsByGenre(genre);
+        releases = service.getAllReleasesByGenre(genre);
         getAllGenres(model);
-        model.addAttribute("records", records);
+        model.addAttribute("releases", releases);
         return "index";
     }
 
@@ -46,8 +46,8 @@ public class RecordController {
     public String searchArtist(@RequestParam("search") String searchString, Model model){
         getAllGenres(model);
         if(searchString != null){
-            Object searchResult = service.getAllRecordsByArtist(searchString);
-            model.addAttribute("records", searchResult);
+            Object searchResult = service.getAllReleasesByArtist(searchString);
+            model.addAttribute("releases", searchResult);
         }
         return "index";
     }

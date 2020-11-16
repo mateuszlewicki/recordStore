@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import recordstore.service.AccountDetailsServiceImpl;
 
 @Controller
-@RequestMapping("admin/accounts")
+@RequestMapping("admin/accounts/")
 public class AdminAccountController {
 
     private final AccountDetailsServiceImpl accountDetailsService;
@@ -16,14 +16,14 @@ public class AdminAccountController {
     }
 
     @GetMapping
-    public String getUsers(Model model) {
-        model.addAttribute("accounts", accountDetailsService.allUsers());
+    public String getAllUsers(Model model) {
+        model.addAttribute("accounts", accountDetailsService.getAllUsers());
         return "admin/accounts/index";
     }
 
-    @PostMapping("delete/{id}")
-    public String deleteUser(@RequestParam long id) {
-        accountDetailsService.deleteUser(id);
-        return "redirect:/admin/accounts";
-    }
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable long id){
+    accountDetailsService.deleteUser(id);
+    return "redirect:/admin/accounts/";
+}
 }

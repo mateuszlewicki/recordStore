@@ -1,6 +1,5 @@
 package recordstore.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,7 +11,6 @@ import recordstore.repository.AccountRepository;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountDetailsServiceImpl implements UserDetailsService {
@@ -35,12 +33,7 @@ public class AccountDetailsServiceImpl implements UserDetailsService {
         return account;
     }
 
-    public Account findUserById(long id) {
-        Optional<Account> userFromDb = accountRepository.findById(id);
-        return userFromDb.orElse(new Account());
-    }
-
-    public List<Account> allUsers() {
+    public List<Account> getAllUsers() {
         return accountRepository.findAll();
     }
 
@@ -50,17 +43,15 @@ public class AccountDetailsServiceImpl implements UserDetailsService {
         if (userFromDb != null) {
             return false;
         }
-        account.setRoles(Collections.singleton(new Role(1l, "ROLE_USER")));
+        account.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
         accountRepository.save(account);
         return true;
     }
 
-    public boolean deleteUser(long id) {
+    public void deleteUser(long id) {
         if (accountRepository.findById(id).isPresent()) {
             accountRepository.deleteById(id);
-            return true;
         }
-        return false;
     }
 }

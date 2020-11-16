@@ -21,23 +21,23 @@ public class RegistrationController {
     }
 
     @GetMapping("/registration")
-    public String addUser(Model model) {
+    public String showSignUpForm(Model model) {
         model.addAttribute("userForm", new Account());
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("userForm") @Valid Account userForm,
+    public String addUser(@ModelAttribute("user") @Valid Account user,
                           BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        if (!userForm.getPassword().equals(userForm.getPasswordConfirm())) {
+        if (!user.getPassword().equals(user.getPasswordConfirm())) {
             model.addAttribute("passwordError", "Password not match");
             return "registration";
         }
-        if (!accountService.saveUser(userForm)) {
+        if (!accountService.saveUser(user)) {
             model.addAttribute("usernameError", "User with the same name already exists");
             return "registration";
         }

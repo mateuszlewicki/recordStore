@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>RecordStore</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Records Store</a>
+
+    <form class="form-inline my-2 my-lg-0 mr-2">
+        <a href="/admin/releases/add/" class="btn btn-default my-2 my-sm-0" role="button">Add new release</a>
+    </form>
+    <form class="form-inline my-2 my-lg-0">
+        <a href="/logout" class="btn btn-default my-2 my-sm-0" role="button">Log out</a>
+    </form>
+
+</nav>
+
+<table class="table table-striped">
+    <tr>
+        <th></th>
+        <th>Artist</th>
+        <th>Title</th>
+        <th>Label</th>
+        <th>Year</th>
+        <th>Code</th>
+        <th>Format</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <tr th:each="release : ${releases}">
+        <td><img th:src="@{'/images/'+${release.img}}" width="200" alt=""/></td>
+        <td th:text="${release.artist}"></td>
+        <td th:text="${release.title}"></td>
+        <td th:text="${release.label}"></td>
+        <td th:text="${release.releaseDate}"></td>
+        <td th:text="${release.code}"></td>
+        <td th:text="${release.format}"></td>
+        <td th:text="${release.price}"></td>
+        <td th:text="${release.quantity}"></td>
+        <td style="text-align: center"><a th:href="@{'edit/{id}'(id=${release.id})}"><img th:src="@{/images/edit.svg}" alt="logo" width="30"/></a></td>
+        <td><a th:href="@{'/admin/releases/delete/' + ${release.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -22,20 +22,12 @@
 <table class="table table-striped">
     <tr>
         <th>UserName</th>
-        <th>Password</th>
         <th>Delete</th>
-
     </tr>
     <tr th:each="account : ${accounts}">
-
         <td th:text="${account.username}"></td>
-        <td th:text="${account.password}"></td>
-        <td >
-            <form th:action="@{'/admin/accounts/delete/' + ${account.id}}" method="post">
-                <input type="hidden" name="id" th:value="${account.id}" />
-                <input type="submit" value="Delete" class="btn btn-danger" />
-            </form>
-        </td>
+        <td><a th:href="@{'/admin/accounts/delete/' + ${account.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
+    </tr>
     </tr>
 </table>
 </body>

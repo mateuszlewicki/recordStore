@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -11,18 +11,18 @@
 <header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 <div class="container my-3">
     <div class="row">
-        <div th:each="record : ${records}" class="col-12 col-md-4 col-lg-3">
+        <div th:each="release : ${releases}" class="col-12 col-md-4 col-lg-3">
             <div class="">
-                <img th:src="@{'images/'+${record.img}}" width="200" alt=""/>
+                <img th:src="@{'images/'+${release.img}}" width="200" alt=""/>
             </div>
             <div class="">
-                <div th:text="${record.artist}"></div>
-                <div th:text="${record.title}"></div>
-                <div th:text="${record.label}"></div>
-                <div th:text="${record.code}"></div>
-                <div th:text="${record.format}"></div>
-                <div th:text="${record.releaseDate}"></div>
-                <div th:text="${record.price}"></div>
+                <div th:text="${release.artist}"></div>
+                <div th:text="${release.title}"></div>
+                <div th:text="${release.label}"></div>
+                <div th:text="${release.code}"></div>
+                <div th:text="${release.format}"></div>
+                <div th:text="${release.releaseDate}"></div>
+                <div th:text="${release.price}"></div>
             </div>
         </div>
     </div>
