@@ -13,25 +13,6 @@
         <div class="row">
             <div class="col-12 col-md-6 col-lg-4">
 
-<!--                <form th:action="@{/registration}" th:object="${userForm}" method="post">-->
-<!--                    <div class="form-group">-->
-<!--                        <label class="d-none" for="username">Username</label>-->
-<!--                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="username" th:name="username" th:field="*{username}" placeholder="Username" th:value="${userForm.username}" required/>-->
-<!--                        <p class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <label class="d-none">Password</label>-->
-<!--                        <input type="password" class="form-control is-valid" th:errorclass="is-invalid"  th:name="password" placeholder="Password" th:value="${userForm.password}" required/>-->
-<!--                        <p class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <label class="d-none" >Confirm your password</label>-->
-<!--                        <input type="password" class="form-control is-valid" th:errorclass="is-invalid"  th:name="passwordConfirm" placeholder="Confirm your password" th:value="${userForm.passwordConfirm}" required/>-->
-<!--                        <p class="invalid-feedback" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></p>-->
-<!--                    </div>-->
-<!--                    <button type="submit" class="btn btn-primary ml-auto">Submit</button>-->
-<!--                </form>-->
-
                 <form th:action="@{/registration}" th:object="${userForm}" method="post">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Username" th:name="username" required/>

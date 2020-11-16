@@ -14,10 +14,10 @@
     <a class="navbar-brand" href="/">Records Store</a>
 
     <form class="form-inline my-2 my-lg-0 mr-2">
-        <a href="/admin/add/" class="btn btn-success my-2 my-sm-0" role="button">Add new record</a>
+        <a href="/admin/add/" class="btn btn-default my-2 my-sm-0" role="button">Add new record</a>
     </form>
     <form class="form-inline my-2 my-lg-0">
-        <a href="/logout" class="btn btn-primary my-2 my-sm-0" role="button">Log out</a>
+        <a href="/logout" class="btn btn-default my-2 my-sm-0" role="button">Log out</a>
     </form>
 
 </nav>
@@ -47,7 +47,12 @@
         <td th:text="${record.price}"></td>
         <td th:text="${record.quantity}"></td>
         <td style="text-align: center"><a th:href="@{'{id}'(id=${record.id})}"><img th:src="@{/images/edit.svg}" alt="logo" width="30"/></a></td>
-        <td style="text-align: center"><a th:href="@{'delete/{id}'(id=${record.id})}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
+        <td>
+            <form th:action="@{'/admin/delete/' + ${record.id}}" method="post">
+                <input type="hidden" name="id" th:value="${record.id}" />
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            </form>
+        </td>
     </tr>
 </table>
 </body>

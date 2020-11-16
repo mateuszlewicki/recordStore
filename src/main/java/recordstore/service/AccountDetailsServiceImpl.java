@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import recordstore.entity.Account;
 import recordstore.entity.Role;
 import recordstore.repository.AccountRepository;
-import recordstore.repository.RoleRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -20,17 +17,9 @@ import java.util.Optional;
 @Service
 public class AccountDetailsServiceImpl implements UserDetailsService {
 
-    @PersistenceContext
-    private EntityManager em;
+    private final AccountRepository accountRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public AccountDetailsServiceImpl(AccountRepository accountRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.accountRepository = accountRepository;
@@ -67,17 +56,11 @@ public class AccountDetailsServiceImpl implements UserDetailsService {
         return true;
     }
 
-    public boolean deletUser(long id) {
+    public boolean deleteUser(long id) {
         if (accountRepository.findById(id).isPresent()) {
             accountRepository.deleteById(id);
             return true;
         }
         return false;
     }
-
-//    public List<Account> usergtList(long idMin) {
-//        return em.createQuery("SELECT u FROM Accounts u WHERE u.id > :paramId", Account.class)
-//                .setParameter("paramId", idMin).getResultList();
-//    }
-
 }

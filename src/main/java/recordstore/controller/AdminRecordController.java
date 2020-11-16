@@ -56,8 +56,8 @@ public class AdminRecordController {
         return new ModelAndView("redirect:/admin/");
     }
 
-    @GetMapping("delete/{id}")
-    public String delete(@PathVariable long id){
+    @PostMapping("delete/{id}")
+    public String delete(@RequestParam long id){
         service.deleteRecord(id);
         return "redirect:/admin/";
     }
