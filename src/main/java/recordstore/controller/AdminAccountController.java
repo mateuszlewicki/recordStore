@@ -25,5 +25,5 @@ public class AdminAccountController {
     public String delete(@PathVariable long id){
     accountDetailsService.deleteUser(id);
     return "redirect:/admin/accounts/";
-}
+    }
 }

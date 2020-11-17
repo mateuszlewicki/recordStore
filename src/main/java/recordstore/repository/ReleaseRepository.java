@@ -16,5 +16,3 @@ public interface ReleaseRepository extends JpaRepository<Release, Long> {
     @Query(value = "select distinct genre from releases", nativeQuery = true)
     List<String> findAllGenres();
 }
-
-
