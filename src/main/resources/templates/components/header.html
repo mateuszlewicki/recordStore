@@ -1,4 +1,5 @@
-<header th:fragment="header" xmlns:th="http://www.springframework.org/schema/security">
+<header th:fragment="header" xmlns:th="http://www.springframework.org/schema/security"
+        xmlns:sec="http://www.w3.org/1999/xhtml">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Records Store</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,13 +31,15 @@
                 </li>
             </ul>
 
-            <form class="form-inline my-2 my-lg-0 mr-2">
-                <a href="/login" class="btn btn-default my-2 my-sm-0" role="button">Login</a>
-            </form>
-            <form class="form-inline my-2 my-lg-0">
-                <a href="/registration" class="btn btn-default my-2 my-sm-0" role="button">Registration</a>
-            </form>
-        </div>
+            <div sec:authorize="isAuthenticated()">
+                <span sec:authentication="name">Username</span>
+                <a th:href="@{/logout}">Logout</a>
+            </div>
 
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/login}">Login</a>
+                <a th:href="@{/registration}">Sign in</a>
+            </div>
+        </div>
     </nav>
 </header>

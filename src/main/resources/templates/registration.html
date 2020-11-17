@@ -13,6 +13,11 @@
         <div class="row">
             <div class="col-12 col-md-6 col-lg-4">
 
+                <form action="/signin/facebook" method="POST">
+                    <input type="hidden" name="scope" value="public_profile"/>
+                    <input type="submit" class="btn btn-primary" value="Login using Facebook"/>
+                </form>
+
                 <h3>Sign in</h3>
 
                 <form th:action="@{/registration}" th:object="${user}" method="post">
