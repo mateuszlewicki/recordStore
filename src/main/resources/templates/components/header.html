@@ -1,45 +1,50 @@
 <header th:fragment="header" xmlns:th="http://www.springframework.org/schema/security"
         xmlns:sec="http://www.w3.org/1999/xhtml">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Records Store</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar d-flex justify-content-between top-navbar" aria-label="Tools menu">
+        <div class="container">
+            <a class="navbar-brand" href="/">Records Store</a>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-            <form class="get form-inline form-inline" action="/search">
+            <div class="d-flex align-items-center nav-right">
+                <button class="btn btn-search-open btn-link mr-3" id="search"><i class="fas fa-search"></i></button>
+                <a class="btn btn-link mr-3" href="/login"><i class="far fa-user"></i></a>
+                <a class="btn btn-link" href="/"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+        <div class="search_box">
+            <form class="get container p-0 mb-0" action="/search">
                 <fieldset>
                     <div class="input-group">
-                        <input name="search" id="search" placeholder="Search" value="" class="form-control" type="text">
-                        <button type="submit" class="btn btn-search-icon">
-                            <img src="https://www.baeldung.com/wp-content/plugins/baeldung-menu//img/search.svg">
+                        <input name="search" id="search" placeholder="Search" type="text">
+                        <button class="btn btn-search-icon" aria-label="Search" type="submit">
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
                 </fieldset>
             </form>
-            <ul class="navbar-nav mr-auto ml-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Genres
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li class="dropdown-item" th:each="genre : ${genres}">
-                            <a class="" th:href="@{'/{genre}'(genre=${genre})}" th:text="${genre}"></a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-            <div sec:authorize="isAuthenticated()">
-                <span sec:authentication="name">Username</span>
-                <a th:href="@{/logout}">Logout</a>
-            </div>
-
-            <div sec:authorize="isAnonymous()">
-                <a th:href="@{/login}">Login</a>
-                <a th:href="@{/registration}">Sign in</a>
-            </div>
         </div>
     </nav>
 </header>
+
+
+<!--            <ul class="navbar-nav mr-auto ml-4">-->
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                        Genres-->
+<!--                    </a>-->
+<!--                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                        <li class="dropdown-item" th:each="genre : ${genres}">-->
+<!--                            <a class="" th:href="@{'/{genre}'(genre=${genre})}" th:text="${genre}"></a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+<!--            </ul>-->
+
+<!--<div sec:authorize="isAuthenticated()">-->
+<!--    <span sec:authentication="name">Username</span>-->
+<!--    <a th:href="@{/logout}">Logout</a>-->
+<!--</div>-->
+
+<!--<div sec:authorize="isAnonymous()">-->
+<!--    <a th:href="@{/login}">Login</a>-->
+<!--    <a th:href="@{/registration}">Sign in</a>-->
+<!--</div>-->

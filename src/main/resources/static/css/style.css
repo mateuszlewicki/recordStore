@@ -1,23 +1,85 @@
+:root {
+    --main-text-color: #888;
+    --main-bg-color: #1d1e21;
+    --white-color: #fff;
+    --contrast-bg-color: #eee;
+    --contrast-text-color: #555;
+}
+body{
+    background: var(--main-bg-color);
+    color: var(--main-text-color);
+    font-size: 1rem;
+}
 footer{
     position: fixed;
     bottom: 0;
     width:100%;
     z-index: 5;
 }
-.btn-search-icon img {
-    width: 22px;
+.navbar{
+    position: relative;
 }
-#search {
-    border: 0;
-    font-size: 18px;
-    height: 34px;
+.top-navbar a, .top-navbar button{
+    color: var(--main-text-color);
 }
-.btn-search-icon{
-    background-color: #fff;
-    border-radius: 0 5px 5px 0;
-    border: 0;
+.top-navbar a:hover, .top-navbar button:hover{
+    color: var(--white-color);
+}
+.btn-search-open{
+    color: var(--main-text-color);
+}
+.search_box {
+    position: absolute;
+    top:100%;
+    left: 0;
+    width: 100%;
+    background: var(--contrast-bg-color);
+    padding: 0 1%;
     margin: 0;
-    height: 34px;
-    cursor: default;
-    transition: .6s;
+    height: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition:  all 0.1s ease-in-out;
+    -ms-transition:  all 0.1s ease-in-out;
+    -o-transition:  all0.1s ease-in-out;
+    transition:  all 0.1s ease-in-out;
+}
+.search_box.active{
+    height: auto;
+    padding: 1%;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition:  all 0.1s ease-in-out;
+    -ms-transition:  all 0.1s ease-in-out;
+    -o-transition:  all 0.1s ease-in-out;
+    transition:  all 0.1s ease-in-out;
+    z-index: 1000;
+}
+.search_box input {
+    width: 90%;
+    font-size: 1em;
+    margin-right: 1%;
+    padding:1%;
+    border: none;
+    background: var(--contrast-bg-color);
+    color: #000;
+}
+.search_box .btn-search-icon {
+    clear: both;
+    width:7%;
+    height: auto;
+    padding: 1%;
+    margin-right: 1%;
+    float: right;
+    border: medium none;
+    color: #FFF;
+    cursor: pointer;
+    background: var(--main-bg-color);
+    border-radius: 0;
+    opacity: 1;
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -ms-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
 }
