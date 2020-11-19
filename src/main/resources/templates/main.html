@@ -6,7 +6,8 @@
 
 <header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 <div class="container my-3">
-    <a th:href="@{/releases}">Releases</a>
+    <p><a th:href="@{/releases}">Releases</a></p>
+    <p><a th:href="@{/labels}">Labels</a></p>
 </div>
 
 <th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
