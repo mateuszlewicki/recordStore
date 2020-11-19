@@ -1,22 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <title>Registration</title>
-</head>
+<head th:replace="/components/head"></head>
 
 <body>
+<header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-6 col-lg-4">
-
-                <form action="/signin/facebook" method="POST">
-                    <input type="hidden" name="scope" value="public_profile"/>
-                    <input type="submit" class="btn btn-primary" value="Login using Facebook"/>
-                </form>
 
                 <h3>Sign in</h3>
 

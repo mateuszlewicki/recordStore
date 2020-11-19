@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="/components/head"></head>
+
+<body>
+
+<header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+
+            <div sec:authorize="isAuthenticated()">
+                <p sec:authentication="name">Username</p>
+                <a th:href="@{/logout}">Logout</a>
+            </div>
+
+            <div sec:authorize="isAnonymous()">
+
+                <h3>Login</h3>
+
+                <form action="/signin/facebook" method="POST">
+                    <input type="hidden" name="scope" value="public_profile"/>
+                    <input type="submit" class="btn btn-primary" value="Login using Facebook"/>
+                </form>
+
+                <form th:action="@{/login}" method="POST" >
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="username"/>
+                    </div>
+
+                    <div class="form-group">
+                        <input class="form-control" type="password" name="password"/>
+                    </div>
+                    <input class="btn btn-primary ml-auto" type="submit" value="Login" />
+
+                    <p>Click <a th:href="@{/registration}">here</a> to register</p>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -9,7 +9,7 @@ import recordstore.service.ReleaseService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/releases")
 public class ReleaseController {
 
     private final ReleaseService service;
@@ -23,32 +23,23 @@ public class ReleaseController {
     @GetMapping
     public String getAllRecords(Model model){
         releases = service.getAllReleases();
-        getAllGenres(model);
+        //getAllGenres(model);
         model.addAttribute("releases", releases);
-        return "index";
+        return "releases";
     }
 
     @GetMapping("{genre}")
     public String getRecordsByGenre(@PathVariable("genre") String genre, Model model){
         releases = service.getAllReleasesByGenre(genre);
-        getAllGenres(model);
+        //getAllGenres(model);
         model.addAttribute("releases", releases);
-        return "index";
+        return "releases";
     }
 
-    private void getAllGenres(Model model){
-        List<String> genres;
-        genres = service.getAllGenres();
-        model.addAttribute("genres", genres);
-    }
+//    private void getAllGenres(Model model){
+//        List<String> genres;
+//        genres = service.getAllGenres();
+//        model.addAttribute("genres", genres);
+//    }
 
-    @RequestMapping(value = "search")
-    public String searchArtist(@RequestParam("search") String searchString, Model model){
-        getAllGenres(model);
-        if(searchString != null){
-            Object searchResult = service.getAllReleasesByArtist(searchString);
-            model.addAttribute("releases", searchResult);
-        }
-        return "index";
-    }
 }
