@@ -1,9 +1,19 @@
 :root {
     --main-text-color: #888;
-    --main-bg-color: #1d1e21;
+    --main-bg-color: #fff;
+    --navbar-bg-color: #1d1e21;
+    --btn-bg-color: #1d1e21;
     --white-color: #fff;
+    --white-bg-color: #fff;
     --contrast-bg-color: #eee;
     --contrast-text-color: #555;
+}
+input#search{
+    border-bottom: 1px solid var(--navbar-bg-color);
+}
+input#search:focus{
+    border-bottom: 1px solid var(--navbar-bg-color);
+    outline: none;
 }
 body{
     background: var(--main-bg-color);
@@ -18,6 +28,10 @@ footer{
 }
 .navbar{
     position: relative;
+    background: var(--navbar-bg-color);
+    padding-top: 0rem;
+    padding-bottom: 0;
+
 }
 .top-navbar a, .top-navbar button{
     color: var(--main-text-color);
@@ -28,12 +42,17 @@ footer{
 .btn-search-open{
     color: var(--main-text-color);
 }
+.btn-search-open .fa-search, .btn-search-open.active .fa-times{
+    display: block;
+}
+.btn-search-open.active .fa-search, .btn-search-open .fa-times{
+    display: none;
+}
 .search_box {
-    position: absolute;
     top:100%;
     left: 0;
     width: 100%;
-    background: var(--contrast-bg-color);
+    background: var(--white-bg-color);
     padding: 0 1%;
     margin: 0;
     height: 0;
@@ -56,17 +75,22 @@ footer{
     z-index: 1000;
 }
 .search_box input {
-    width: 90%;
+    width: 100%;
     font-size: 1em;
     margin-right: 1%;
     padding:1%;
     border: none;
-    background: var(--contrast-bg-color);
+    background: var(--white-bg-color);
     color: #000;
+    position: relative;
 }
 .search_box .btn-search-icon {
     clear: both;
     width:7%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
     height: auto;
     padding: 1%;
     margin-right: 1%;
@@ -74,8 +98,8 @@ footer{
     border: medium none;
     color: #FFF;
     cursor: pointer;
-    background: var(--main-bg-color);
-    border-radius: 0;
+    background: var(--btn-bg-color);
+    border-radius: 30px;
     opacity: 1;
     -webkit-transition: all 0.1s ease;
     -moz-transition: all 0.1s ease;

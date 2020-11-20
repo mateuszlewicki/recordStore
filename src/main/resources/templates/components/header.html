@@ -1,11 +1,14 @@
 <header th:fragment="header" xmlns:th="http://www.springframework.org/schema/security"
         xmlns:sec="http://www.w3.org/1999/xhtml">
-    <nav class="navbar d-flex justify-content-between top-navbar" aria-label="Tools menu">
-        <div class="container">
+    <nav class="navbar d-flex justify-content-between top-navbar px-0" aria-label="Tools menu">
+        <div class="container py-3">
             <a class="navbar-brand" href="/">Records Store</a>
 
             <div class="d-flex align-items-center nav-right">
-                <button class="btn btn-search-open btn-link mr-3" id="search"><i class="fas fa-search"></i></button>
+                <button class="btn btn-search-open mr-3" id="search-btn">
+                    <i class="fas fa-search"></i>
+                    <i class="fas fa-times"></i>
+                </button>
                 <a class="btn btn-link mr-3" th:href="@{/login}"><i class="far fa-user"></i></a>
                 <a class="btn btn-link" href="/"><i class="fas fa-shopping-cart"></i></a>
             </div>
