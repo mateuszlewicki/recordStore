@@ -31,11 +31,6 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public List<String> getAllGenres() {
-        return repository.findAllGenres();
-    }
-
-    @Override
     public List<Release> getAllReleasesByGenre(String genre) {
         return repository.findAllByGenre(genre);
     }

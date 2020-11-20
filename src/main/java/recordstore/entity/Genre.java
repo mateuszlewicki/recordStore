@@ -1,6 +1,7 @@
 package recordstore.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "genres", schema = "recordstore")
@@ -11,8 +12,29 @@ public class Genre {
     private long id;
 
     @Column(name = "title")
+    @NotBlank(message = "Field is mandatory")
     private String title;
 
-    @Column(name = "description")
-    private String description;
+    public Genre() {
+    }
+
+    public Genre(String title) {
+        this.title = title;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

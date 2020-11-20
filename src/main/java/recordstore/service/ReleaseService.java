@@ -10,7 +10,6 @@ public interface ReleaseService {
     void saveRelease(Release release);
     void deleteRelease(long id);
 
-    List<String> getAllGenres();
     List<Release> getAllReleasesByGenre(String genre);
     List<Release> getAllReleases();
     List<Release> getAllReleasesByArtist(String artist);
