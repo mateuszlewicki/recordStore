@@ -1,13 +1,4 @@
-:root {
-    --main-text-color: #888;
-    --main-bg-color: #fff;
-    --navbar-bg-color: #1d1e21;
-    --btn-bg-color: #1d1e21;
-    --white-color: #fff;
-    --white-bg-color: #fff;
-    --contrast-bg-color: #eee;
-    --contrast-text-color: #555;
-}
+@import "vars.css";
 input#search{
     border-bottom: 1px solid var(--navbar-bg-color);
 }
@@ -26,7 +17,7 @@ footer{
     width:100%;
     z-index: 5;
 }
-.navbar{
+.top-navbar{
     position: relative;
     background: var(--navbar-bg-color);
     padding-top: 0rem;

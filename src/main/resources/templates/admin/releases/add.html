@@ -1,72 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <title>RecordStore</title>
-</head>
+<head th:replace="/admin/components/head"></head>
 
 <body>
 
-<div>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Records Store</a>
-    </nav>
+<header th:replace="/admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 
+<div>
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-6 col-lg-4">
 
                 <h3>Add new release</h3>
 
-                <form th:action="@{/admin/releases/add}" method="post">
+                <form th:action="@{/admin/releases/add}" method="post" th:object="${newRelease}">
+
                     <div class="form-group">
                         <label for="artist">Artist</label>
-                        <input type="text" class="form-control" id="artist" th:name="artist" placeholder="Artist" maxlength="100"/>
+                        <select class="form-control selectpicker" th:field="*{artists}">
+                            <option value="">Choose artist</option>
+                            <option th:each="artist : ${artists}" th:value="${artist.id}" th:text="${artist.name}"/>
+                        </select>
                     </div>
+
                     <div class="form-group">
-                        <label for="artist">Title</label>
+                        <label for="title">Title</label>
                         <input type="text" class="form-control" id="title" th:name="title" placeholder="Title" maxlength="100"/>
                     </div>
+
                     <div class="form-group">
                         <label for="label">Label</label>
-                        <input type="text" class="form-control" id="label" th:name="label" placeholder="Label" maxlength="100"/>
+                        <select class="form-control selectpicker" th:field="*{label}">
+                            <option value="">Choose label</option>
+                            <option th:each="label : ${labels}" th:value="${label.id}" th:text="${label.title}"/>
+                        </select>
                     </div>
+
                     <div class="form-group">
                         <label class="hidden" for="releaseDate">Release Date</label>
                         <input type="text" class="form-control" id="releaseDate" th:name="releaseDate" placeholder="YYYY-MM-DD" maxlength="100"/>
                     </div>
+
                     <div class="form-group">
                         <label for="genre">Genre</label>
-                        <input type="text" class="form-control" id="genre" th:name="genre" placeholder="Genre" maxlength="100"/>
+                        <select class="form-control selectpicker" th:field="*{genres}">
+                            <option value="">Choose genre</option>
+                            <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.title}"/>
+                        </select>
                     </div>
+
                     <div class="form-group">
                         <label for="code">Code</label>
                         <input type="text" class="form-control" id="code" th:name="code" placeholder="Code" maxlength="100"/>
                     </div>
+
                     <div class="form-group">
                         <label for="format">Format</label>
                         <input type="text" class="form-control" id="format" th:name="format" placeholder="Format" maxlength="100"/>
                     </div>
+
                     <div class="form-group">
                         <label for="price">Price</label>
                         <input type="text" class="form-control" id="price" th:name="price" placeholder="Price" maxlength="100"/>
                     </div>
+
                     <div class="form-group">
                         <label for="img">Image</label>
                         <input type="text" class="form-control" id="img" th:name="img" placeholder="Image" maxlength="100"/>
                     </div>
+
                     <div class="form-group">
                         <label for="quantity">Quantity</label>
                         <input type="text" class="form-control" id="quantity" th:name="quantity" placeholder="Quantity" maxlength="100"/>
                     </div>
+
                     <button type="submit" class="btn btn-primary ml-auto">Submit</button>
+
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>

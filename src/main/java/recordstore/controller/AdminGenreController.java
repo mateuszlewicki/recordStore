@@ -41,7 +41,7 @@ public class AdminGenreController {
             return "admin/genres/add";
         }
         service.saveGenre(genre);
-        return "redirect:/admin/genres";
+        return "redirect:/admin/genres/";
     }
 
     @GetMapping("/edit/{id}")
@@ -57,12 +57,12 @@ public class AdminGenreController {
             return "admin/genres/edit";
         }
         service.saveGenre(genre);
-        return "redirect:/admin/genres";
+        return "redirect:/admin/genres/";
     }
 
     @GetMapping("delete/{id}")
     public String delete(@PathVariable long id){
         service.deleteGenre(id);
-        return "redirect:/admin/genres";
+        return "redirect:/admin/genres/";
     }
 }

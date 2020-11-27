@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/admin/components/head"></head>
+
+<body>
+<header th:replace="/admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <h3>Edit artist</h3>
+
+                <form th:action="@{/admin/artists/update/}" th:object="${artist}" method="post">
+                    <div class="form-group">
+                        <input type="hidden" th:field="*{id}" th:value="${artist.id}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input class="form-control is-valid" th:errorclass="is-invalid" type="text" id="name" th:field="*{name}" placeholder="Name" maxlength="100" th:value="${artist.name}" />
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input class="form-control" type="text" id="country" th:field="*{country}" placeholder="Country" maxlength="100" th:value="${artist.country}" />
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input class="form-control" type="text" id="description" th:field="*{description}" placeholder="Description" maxlength="100" th:value="${artist.description}" />
+                    </div>
+                    <div class="form-group">
+                        <label for="img">Image</label>
+                        <input class="form-control" type="text" id="img" th:field="*{img}" placeholder="Image" maxlength="100" th:value="${artist.img}" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

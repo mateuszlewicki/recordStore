@@ -8,3 +8,9 @@ $( "#search-btn" ).click(function(e) {
     e.preventDefault();
     closeSearch();
 });
+//
+// $(document).ready(function () {
+//     $('#search').autocomplete({
+//         source: '/search',
+//     });
+// });

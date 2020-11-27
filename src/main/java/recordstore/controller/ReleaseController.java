@@ -1,5 +1,6 @@
 package recordstore.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +29,14 @@ public class ReleaseController {
         return "releases";
     }
 
-    @GetMapping("{genre}")
-    public String getRecordsByGenre(@PathVariable("genre") String genre, Model model){
-        releases = service.getAllReleasesByGenre(genre);
-        //getAllGenres(model);
-        model.addAttribute("releases", releases);
-        return "releases";
-    }
+//    old methods
+//    @GetMapping("{genre}")
+//    public String getRecordsByGenre(@PathVariable("genre") String genre, Model model){
+//        releases = service.getAllReleasesByGenre(genre);
+//        //getAllGenres(model);
+//        model.addAttribute("releases", releases);
+//        return "releases";
+//    }
 
 //    private void getAllGenres(Model model){
 //        List<String> genres;

@@ -1,0 +1,16 @@
+@import "vars.css";
+.top-navbar{
+    position: relative;
+    background: var(--navbar-bg-color);
+}
+.top-navbar a, .top-navbar button{
+    color: var(--main-text-color);
+}
+.top-navbar a:hover, .top-navbar button:hover {
+    color: var(--white-color);
+}
+.aside-nav{
+    min-height: 100vh;
+    align-items: start;
+    padding-left: 30px;
+}

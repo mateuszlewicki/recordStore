@@ -20,7 +20,7 @@ public class LabelController {
     }
 
     @GetMapping
-    public String getAllRecords(Model model){
+    public String getAllLabels(Model model){
         List<LabelProjection> labels = service.findAllLabels();
         model.addAttribute("labels", labels);
         return "labels";

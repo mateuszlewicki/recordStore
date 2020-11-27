@@ -1,38 +1,34 @@
 package recordstore.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "releases", schema = "recordstore")
 public class Release {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Column(name = "code")
     private String code;
 
-    @Column(name = "artist")
-    @NotBlank(message = "Field is mandatory")
-    private String artist;
-
     @Column(name = "title")
     @NotBlank(message = "Field is mandatory")
     private String title;
 
-    @Column(name = "label")
-    @NotBlank(message = "Field is mandatory")
-    private String label;
-
     @Column(name = "release_date")
     private Date releaseDate;
-
-    @Column(name = "genre")
-    @NotBlank(message = "Field is mandatory")
-    private String genre;
 
     @Column(name = "format")
     @NotBlank(message = "Field is mandatory")
@@ -48,140 +44,45 @@ public class Release {
     @Column(name = "quantity")
     private int quantity;
 
-    public Release(){
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "releases_artists",
+            joinColumns = @JoinColumn(name = "release_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id"))
+    private Set<Artist> artists = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "releases_genres",
+            joinColumns = @JoinColumn(name = "release_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private Set<Genre> genres = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Label label;
+
+    public void addArtist(Artist artist){
+        this.artists.add(artist);
+        artist.getReleases().add(this);
+    }
+    public void removeArtist(Artist artist){
+        this.artists.remove(artist);
+        artist.getReleases().remove(this);
     }
 
-    public Release(String artist, String title, String label, Date releaseDate, String genre, String code, String format, double price, String img, int quantity) {
-        this.artist = artist;
-        this.title = title;
-        this.label = label;
-        this.releaseDate = releaseDate;
-        this.genre = genre;
-        this.code = code;
-        this.format = format;
-        this.price = price;
-        this.img = img;
-        this.quantity = quantity;
+    public void addGenre(Genre genre){
+        this.genres.add(genre);
+        genre.getReleases().add(this);
+    }
+    public void removeGenre(Genre genre){
+        this.genres.remove(genre);
+        genre.getReleases().remove(this);
     }
 
-    public long getId() {
-        return id;
+    public void addLabel(Label label){
+        this.setLabel(label);
+        label.getReleases().add(this);
     }
-
-    public void setId(long id) {
-       this.id = id;
-    }
-
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Release release = (Release) o;
-
-        return getId() == release.getId();
-
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (getId() ^ (getId() >>> 32));
-    }
-
-    @Override
-    public String toString() {
-        return "Release{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", artist='" + artist + '\'' +
-                ", title='" + title + '\'' +
-                ", label='" + label + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", genre='" + genre + '\'' +
-                ", format='" + format + '\'' +
-                ", price=" + price +
-                ", img='" + img + '\'' +
-                ", quantity=" + quantity +
-                '}';
+    public void removeLabel(Genre genre){
+        this.setLabel(null);
+        label.getReleases().remove(this);
     }
 }

@@ -6,4 +6,6 @@ import recordstore.entity.Genre;
 
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
+
+    Genre findByTitle(String title);
 }

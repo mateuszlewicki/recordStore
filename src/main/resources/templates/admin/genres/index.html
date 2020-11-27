@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <title>RecordStore</title>
-</head>
+<head th:replace="/admin/components/head"></head>
 
 <body>
+<header th:replace="/admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-2 pl-0">
+            <div th:replace="/admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
+        </div>
+        <div class="col-12 col-md-10">
+            <main>
+                <form class="form-inline">
+                    <a href="/admin/genres/add/" class="btn btn-primary" role="button">Add new release</a>
+                </form>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/admin">DashBoard</a>
-
-    <form class="form-inline my-2 my-lg-0">
-        <a href="/logout" class="btn btn-default my-2 my-sm-0" role="button">Log out</a>
-    </form>
-</nav>
-
-<form class="form-inline my-2 my-lg-0 mr-2">
-    <a href="/admin/genres/add/" class="btn btn-primary" role="button">Add new release</a>
-</form>
-
-<table class="table table-striped">
-    <tr>
-        <th>Genre</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-    <tr th:each="genre : ${genres}">
-        <td th:text="${genre.title}"></td>
-        <td><a th:href="@{'edit/{id}'(id=${genre.id})}"><img th:src="@{/images/edit.svg}" alt="logo" width="30"/></a></td>
-        <td><a th:href="@{'/admin/genres/delete/' + ${genre.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
-    </tr>
-    </tr>
-</table>
+                <table class="table">
+                    <tr>
+                        <th>Genre</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tr th:each="genre : ${genres}">
+                        <td th:text="${genre.title}"></td>
+                        <td><a th:href="@{'edit/{id}'(id=${genre.id})}"><img th:src="@{/images/edit.svg}" alt="logo" width="30"/></a></td>
+                        <td><a th:href="@{'/admin/genres/delete/' + ${genre.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
+                    </tr>
+                </table>
+            </main>
+        </div>
+    </div>
+</div>
 </body>
 </html>

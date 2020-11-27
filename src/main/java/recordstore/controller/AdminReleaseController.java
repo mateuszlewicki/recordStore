@@ -4,10 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import recordstore.entity.Artist;
+import recordstore.entity.Genre;
+import recordstore.entity.Label;
 import recordstore.entity.Release;
+import recordstore.projections.ArtistProjection;
+import recordstore.projections.LabelProjection;
+import recordstore.service.ArtistService;
+import recordstore.service.GenreService;
+import recordstore.service.LabelService;
 import recordstore.service.ReleaseService;
 
+import javax.sound.midi.Soundbank;
 import javax.validation.Valid;
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Controller
@@ -15,9 +25,18 @@ import java.util.List;
 public class AdminReleaseController {
 
     private final ReleaseService service;
+    private final ArtistService artistService;
+    private final LabelService labelService;
+    private final GenreService genreService;
 
-    public AdminReleaseController(ReleaseService service) {
+    public AdminReleaseController(ReleaseService service,
+                                  ArtistService artistService,
+                                  LabelService labelService,
+                                  GenreService genreService) {
         this.service = service;
+        this.artistService = artistService;
+        this.labelService = labelService;
+        this.genreService = genreService;
     }
 
     @GetMapping
@@ -28,12 +47,17 @@ public class AdminReleaseController {
     }
 
     @GetMapping("/add")
-    public String showAddForm(){
+    public String showAddForm(Model model){
+        model.addAttribute("newRelease" , new Release());
+        model.addAttribute("genres", genreService.getAllGenres());
+        model.addAttribute("artists", artistService.getAllArtists());
+        model.addAttribute("labels", labelService.findAllLabels());
         return "admin/releases/add";
     }
 
     @PostMapping("/add")
-    public String saveRecord(@Valid Release release, BindingResult result){
+    public String saveRecord(@Valid @ModelAttribute("newRelease") Release release,
+                             BindingResult result){
         if (result.hasErrors()) {
             return "admin/releases/add";
         }

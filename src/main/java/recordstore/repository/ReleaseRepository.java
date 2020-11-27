@@ -10,9 +10,10 @@ import java.util.List;
 @Repository
 public interface ReleaseRepository extends JpaRepository<Release, Long> {
 
-    List<Release> findAllByGenre(String genre);
-    List<Release> findAllByArtist(String artist);
+//    old methods
+//    List<Release> findAllByGenre(String genre);
+//    List<Release> findAllByArtist(String artist);
 
-    @Query(value = "select distinct genre from releases", nativeQuery = true)
-    List<String> findAllGenres();
+//    @Query(value = "select distinct genre from releases", nativeQuery = true)
+//    List<String> findAllGenres();
 }

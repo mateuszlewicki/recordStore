@@ -1,40 +1,29 @@
 package recordstore.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(exclude = "releases")
 @Table(name = "genres", schema = "recordstore")
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Column(name = "title")
     @NotBlank(message = "Field is mandatory")
     private String title;
 
-    public Genre() {
-    }
-
-    public Genre(String title) {
-        this.title = title;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
+    private Set<Release> releases = new HashSet<>();
 }

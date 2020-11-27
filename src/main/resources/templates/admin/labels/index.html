@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/admin/components/head"></head>
+
+<body>
+<header th:replace="/admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+
+    <form class="form-inline my-2 my-lg-0 mr-2">
+        <a href="/admin/labels/add/" class="btn btn-primary" role="button">Add new label</a>
+    </form>
+
+    <table class="table table-striped">
+        <tr>
+            <th>Genre</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr th:each="label : ${labels}">
+            <td th:text="${label.title}"></td>
+            <td><a th:href="@{'edit/{id}'(id=${label.id})}"><img th:src="@{/images/edit.svg}" alt="logo" width="30"/></a></td>
+            <td><a th:href="@{'/admin/labels/delete/' + ${label.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
+        </tr>
+    </table>
+
+</body>
+</html>
