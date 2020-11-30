@@ -84,7 +84,7 @@ public class AdminReleaseController {
 //    }
 
     @GetMapping("delete/{id}")
-    public String delete(@PathVariable long id){
+    public String delete(@PathVariable long id) throws IOException {
     service.deleteRelease(id);
     return "redirect:/admin/releases/";
     }

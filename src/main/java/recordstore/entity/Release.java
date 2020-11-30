@@ -85,7 +85,7 @@ public class Release {
         this.setLabel(label);
         label.getReleases().add(this);
     }
-    public void removeLabel(Genre genre){
+    public void removeLabel(Label label){
         this.setLabel(null);
         label.getReleases().remove(this);
     }

@@ -48,8 +48,11 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public void deleteRelease(long id) {
-        repository.deleteById(id);
+    public void deleteRelease(long id) throws IOException {
+        Release release = repository.getOne(id);
+        release.removeLabel(release.getLabel());
+        repository.delete(release);
+        FileUploadUtil.deleteFile(release.getImg());
     }
 
 //    old methods

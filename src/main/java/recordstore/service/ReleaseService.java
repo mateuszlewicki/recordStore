@@ -13,7 +13,7 @@ public interface ReleaseService {
 
     Release getRelease(long id);
     void saveRelease(Release release) throws IOException;
-    void deleteRelease(long id);
+    void deleteRelease(long id) throws IOException;
 
     List<Release> getAllReleases();
 
