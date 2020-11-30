@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Artist;
 import recordstore.entity.Genre;
 import recordstore.entity.Label;
@@ -17,6 +18,7 @@ import recordstore.service.ReleaseService;
 
 import javax.sound.midi.Soundbank;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.List;
 
@@ -56,8 +58,8 @@ public class AdminReleaseController {
     }
 
     @PostMapping("/add")
-    public String saveRecord(@Valid @ModelAttribute("newRelease") Release release,
-                             BindingResult result){
+    public String saveRelease(@Valid @ModelAttribute("newRelease") Release release,
+                             BindingResult result) throws IOException {
         if (result.hasErrors()) {
             return "admin/releases/add";
         }
@@ -72,14 +74,14 @@ public class AdminReleaseController {
         return "admin/releases/edit";
     }
 
-    @PostMapping("/update/")
-    public String updateRecord(@Valid Release release, BindingResult result){
-        if(result.hasErrors()){
-            return "admin/releases/edit";
-        }
-        service.saveRelease(release);
-        return "redirect:/admin/releases/";
-    }
+//    @PostMapping("/update/")
+//    public String updateRecord(@Valid Release release, BindingResult result){
+//        if(result.hasErrors()){
+//            return "admin/releases/edit";
+//        }
+//        service.saveRelease(release);
+//        return "redirect:/admin/releases/";
+//    }
 
     @GetMapping("delete/{id}")
     public String delete(@PathVariable long id){

@@ -1,43 +1,34 @@
 package recordstore.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Artist;
 import recordstore.entity.Genre;
 import recordstore.entity.Label;
 import recordstore.entity.Release;
-import recordstore.repository.ArtistRepository;
-import recordstore.repository.GenreRepository;
-import recordstore.repository.LabelRepository;
 import recordstore.repository.ReleaseRepository;
+import recordstore.utils.FileUploadUtil;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
 
-    private final ReleaseRepository releaseRepository;
-    private final LabelRepository labelRepository;
-    private final ArtistRepository artistRepository;
-    private final GenreRepository genreRepository;
+    private final ReleaseRepository repository;
 
-    public ReleaseServiceImpl(ReleaseRepository releaseRepository,
-                              LabelRepository labelRepository,
-                              ArtistRepository artistRepository,
-                              GenreRepository genreRepository) {
-        this.releaseRepository = releaseRepository;
-        this.labelRepository = labelRepository;
-        this.artistRepository = artistRepository;
-        this.genreRepository = genreRepository;
+    public ReleaseServiceImpl(ReleaseRepository repository) {
+        this.repository = repository;
     }
-
 
     @Override
     public Release getRelease(long id) {
-        return releaseRepository.getOne(id);
+        return repository.getOne(id);
     }
 
     @Override
-    public void saveRelease(Release release) {
+    public void saveRelease(Release release) throws IOException {
         for (Artist artist : release.getArtists()) {
             release.addArtist(artist);
         }
@@ -45,12 +36,20 @@ public class ReleaseServiceImpl implements ReleaseService {
             release.addGenre(genre);
         }
         release.addLabel(release.getLabel());
-        releaseRepository.save(release);
+
+        String filename = StringUtils.cleanPath(release.getData().getOriginalFilename());
+         if(!release.getData().isEmpty()){
+             release.setImg(filename);
+         }
+        repository.save(release);
+         if(!release.getData().isEmpty()) {
+             FileUploadUtil.saveFile(filename, release.getData());
+         }
     }
 
     @Override
     public void deleteRelease(long id) {
-        releaseRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
 //    old methods
@@ -66,6 +65,6 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     @Override
     public List<Release> getAllReleases() {
-        return releaseRepository.findAll();
+        return repository.findAll();
     }
 }

@@ -1,8 +1,10 @@
 package recordstore.entity;
 
+import javafx.beans.DefaultProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -37,9 +39,11 @@ public class Release {
     @Column(name = "price")
     private double price;
 
-    @Column(name = "img")
-    @NotBlank(message = "Field is mandatory")
-    private String img;
+    @Column(name = "img", nullable = true)
+    private String img = "noImageAvailable.png";
+
+    @Transient
+    private MultipartFile data;
 
     @Column(name = "quantity")
     private int quantity;

@@ -6,6 +6,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Configuration
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
@@ -24,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
                 "/js/**")
                 .addResourceLocations(
                         "classpath:/META-INF/resources/webjars/",
-                        "classpath:/static/images/",
+                        "file:../recordstore/src/main/resources/static/images/",
                         "classpath:/static/css/",
                         "classpath:/static/js/");
     }

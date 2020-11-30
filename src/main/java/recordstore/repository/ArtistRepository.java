@@ -14,8 +14,6 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     List<ArtistProjection> findAllBy();
 
-    Artist findByName(String name);
-
 //    search
 //    @Query(value = "SELECT name FROM artists WHERE name LIKE :keyword%", nativeQuery = true)
 //    List<String> search(@Param("keyword") String keyword);
