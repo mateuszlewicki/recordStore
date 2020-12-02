@@ -26,7 +26,9 @@ public class FileUploadUtil {
     }
 
     public static void deleteFile(String filename) throws IOException {
-        Path path = Paths.get("src/main/resources/static/images/" + filename);
-        Files.delete(path);
+        if (!filename.equals("noImageAvailable.png")) {
+            Path path = Paths.get("src/main/resources/static/images/" + filename);
+            Files.delete(path);
+        }
     }
 }
