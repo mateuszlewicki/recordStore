@@ -23,6 +23,7 @@ public class Release {
     private long id;
 
     @Column(name = "code")
+    @NotBlank(message = "Field is mandatory")
     private String code;
 
     @Column(name = "title")
