@@ -5,7 +5,7 @@ target/
 src/main/resources/static/images/
 
 !edit.svg
-
+!noImageAvailable.png
 !trash.svg
 
 /src/main/resources/application.yml
