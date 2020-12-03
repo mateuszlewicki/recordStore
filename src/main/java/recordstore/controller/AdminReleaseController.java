@@ -51,16 +51,15 @@ public class AdminReleaseController {
     @GetMapping("/add")
     public String showAddForm(Model model){
         model.addAttribute("newRelease" , new Release());
-        model.addAttribute("genres", genreService.getAllGenres());
-        model.addAttribute("artists", artistService.getAllArtists());
-        model.addAttribute("labels", labelService.findAllLabels());
+        getModelAttributes(model);
         return "admin/releases/add";
     }
 
     @PostMapping("/add")
     public String saveRelease(@Valid @ModelAttribute("newRelease") Release release,
-                             BindingResult result) throws IOException {
+                             BindingResult result, Model model) throws IOException {
         if (result.hasErrors()) {
+            getModelAttributes(model);
             return "admin/releases/add";
         }
         service.saveRelease(release);
@@ -71,21 +70,31 @@ public class AdminReleaseController {
     public String showEditForm(@PathVariable long id, Model model){
         Release release = service.getRelease(id);
         model.addAttribute("release", release);
+        getModelAttributes(model);
         return "admin/releases/edit";
     }
 
-//    @PostMapping("/update/")
-//    public String updateRecord(@Valid Release release, BindingResult result){
-//        if(result.hasErrors()){
-//            return "admin/releases/edit";
-//        }
-//        service.saveRelease(release);
-//        return "redirect:/admin/releases/";
-//    }
+    @PostMapping("/update/")
+    public String updateRecord(@Valid @ModelAttribute("release") Release release,
+                               BindingResult result, Model model) throws IOException {
+        if(result.hasErrors()){
+            getModelAttributes(model);
+            return "admin/releases/edit";
+        }
+        service.saveRelease(release);
+        return "redirect:/admin/releases/";
+    }
 
     @GetMapping("delete/{id}")
     public String delete(@PathVariable long id) throws IOException {
     service.deleteRelease(id);
     return "redirect:/admin/releases/";
+    }
+
+    private Model getModelAttributes(Model model) {
+        model.addAttribute("genres", genreService.getAllGenres());
+        model.addAttribute("artists", artistService.getAllArtists());
+        model.addAttribute("labels", labelService.findAllLabels());
+        return model;
     }
 }
