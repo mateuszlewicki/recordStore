@@ -38,12 +38,15 @@ public class ReleaseServiceImpl implements ReleaseService {
         release.addLabel(release.getLabel());
 
         String filename = StringUtils.cleanPath(release.getData().getOriginalFilename());
+        String removePicture = release.getImg();
+
          if(!release.getData().isEmpty()){
              release.setImg(filename);
          }
         repository.save(release);
          if(!release.getData().isEmpty()) {
              FileUploadUtil.saveFile(filename, release.getData());
+             FileUploadUtil.deleteFile(removePicture);
          }
     }
 
