@@ -1,9 +1,7 @@
 package recordstore.entity;
 
 import javafx.beans.DefaultProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -13,8 +11,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "releases", schema = "recordstore")
 public class Release {
 
