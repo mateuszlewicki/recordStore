@@ -24,11 +24,13 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler(
                 "/webjars/**",
                 "/images/**",
+                "/fonts/**",
                 "/css/**",
                 "/js/**")
                 .addResourceLocations(
                         "classpath:/META-INF/resources/webjars/",
                         "file:../recordstore/src/main/resources/static/images/",
+                        "classpath:/static/fonts/",
                         "classpath:/static/css/",
                         "classpath:/static/js/");
     }
