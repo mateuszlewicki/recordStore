@@ -1,7 +1,31 @@
 @import "vars.css";
+@font-face {
+    font-family: 'Quicksand-Light';
+    src:url(../fonts/Quicksand-Light.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Quicksand';
+    src:url(../fonts/Quicksand-Regular.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Quicksand-Medium';
+    src:url(../fonts/Quicksand-Medium.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Quicksand-Bold';
+    src:url(../fonts/Quicksand-Bold.ttf) format('truetype');
+}
+body{
+    font-family: 'Quicksand';
+}
 .top-navbar{
     position: relative;
     background: var(--navbar-bg-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
 }
 .top-navbar a, .top-navbar button{
     color: var(--main-text-color);
@@ -10,7 +34,36 @@
     color: var(--white-color);
 }
 .aside-nav{
-    min-height: 100vh;
+    min-height: 100%;
     align-items: start;
     padding-left: 30px;
+    background: var(--aside-bg);
+    position: fixed;
+    width: 16.666%;
+    top: 0;
+    padding-top: 85px;
+}
+.aside-nav .nav-link{
+    color: var(--aside-link-color);
+    transition: all .3s ease;
+}
+.aside-nav .nav-link:hover{
+    text-decoration: underline;
+}
+.release-row{
+    margin-bottom: 30px;
+}
+.release-info p{
+    margin-bottom: 0;
+}
+.release-info .title{
+    font-family: 'Quicksand-Light';
+    font-size: 0.9rem;
+}
+.release-icon{
+    width: 20px;
+    opacity: 0.5;
+}
+.main{
+    margin-top: 95px;
 }

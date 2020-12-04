@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="/admin/components/head"></head>
-
 <body>
-
 <header th:replace="/admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 
-<div>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-6 col-lg-4">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-2 pl-0">
+            <div th:replace="/admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
+        </div>
+        <div class="col-12 col-md-10">
+            <div class="main">
 
                 <h3>Add new release</h3>
 
                 <form th:action="@{/admin/releases/add}" method="post" th:object="${newRelease}" enctype="multipart/form-data">
 
+                    <img th:src="@{'/images/'+${newRelease.img}}" width="200" alt="" th:id="image"/>
+
+                    <div class="form-group">
+                        <label for="data">Image</label>
+                        <input type="file" class="form-control" th:id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
+                    </div>
+
                     <div class="form-group">
                         <label for="artist">Artist</label>
-                        <select class="form-control selectpicker" th:field="*{artists}">
-                            <option value="">Choose artist</option>
+                        <select class="form-control selectpicker" th:field="*{artists}" size="5" multiple="multiple">
                             <option th:each="artist : ${artists}" th:value="${artist.id}" th:text="${artist.name}"/>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" class="form-control" id="title" th:name="title" placeholder="Title" maxlength="100"/>
+                        <input type="text" class="form-control" th:errorclass="is-invalid" id="title" th:name="title" placeholder="Title" maxlength="100" required/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
                     </div>
 
                     <div class="form-group">
@@ -38,41 +45,38 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="hidden" for="releaseDate">Release Date</label>
-                        <input type="text" class="form-control" id="releaseDate" th:name="releaseDate" placeholder="YYYY-MM-DD" maxlength="100"/>
+                        <label for="releaseDate">Release Date</label>
+                        <input type="text" class="form-control" th:errorclass="is-invalid" id="releaseDate" th:name="releaseDate" placeholder="YYYY-MM-DD" maxlength="100" required/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}"></p>
                     </div>
 
                     <div class="form-group">
                         <label for="genre">Genre</label>
-                        <select class="form-control selectpicker" th:field="*{genres}">
-                            <option value="">Choose genre</option>
+                        <select class="form-control selectpicker" th:field="*{genres}" size="5" multiple="multiple">
                             <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.title}"/>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="code">Code</label>
-                        <input type="text" class="form-control" id="code" th:name="code" placeholder="Code" maxlength="100"/>
+                        <input type="text" class="form-control" th:errorclass="is-invalid" id="code" th:name="code" placeholder="Code" maxlength="100" required/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></p>
                     </div>
 
                     <div class="form-group">
                         <label for="format">Format</label>
-                        <input type="text" class="form-control" id="format" th:name="format" placeholder="Format" maxlength="100"/>
+                        <input type="text" class="form-control" th:errorclass="is-invalid" id="format" th:name="format" placeholder="Format" maxlength="100" required/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('format')}" th:errors="*{format}"></p>
                     </div>
 
                     <div class="form-group">
                         <label for="price">Price</label>
-                        <input type="text" class="form-control" id="price" th:name="price" placeholder="Price" maxlength="100"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="data">Image</label>
-                        <input type="file" class="form-control" id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image" maxlength="100"/>
+                        <input type="text" class="form-control" id="price" th:name="price" placeholder="Price" maxlength="100" required/>
                     </div>
 
                     <div class="form-group">
                         <label for="quantity">Quantity</label>
-                        <input type="text" class="form-control" id="quantity" th:name="quantity" placeholder="Quantity" maxlength="100"/>
+                        <input type="text" class="form-control" id="quantity" th:name="quantity" placeholder="Quantity" maxlength="100" required/>
                     </div>
 
                     <button type="submit" class="btn btn-primary ml-auto">Submit</button>
@@ -83,5 +87,4 @@
     </div>
 </div>
 
-</body>
-</html>
+<th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
