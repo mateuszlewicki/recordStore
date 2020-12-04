@@ -33,8 +33,20 @@
                                 <span th:text="${release.label.title}"></span>
                             </p>
                             <p>
+                                <span class="title">Code: </span>
+                                <span th:text="${release.code}"></span>
+                            </p>
+                            <p>
                                 <span class="title">Genre: </span>
                                 <span th:each="genre : ${release.genres}" th:text="${genre.title}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Format: </span>
+                                <span th:text="${release.format}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Price: </span>
+                                <span th:text="${release.price}"></span>
                             </p>
                         </div>
                         <div class="col-1">
@@ -43,6 +55,13 @@
                         </div>
                     </div>
                 </div>
+
+                <div th:if="${releases.totalPages > 1}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/admin/releases/(page=${pageNumber})}"
+                       th:text="${pageNumber}"
+                       th:class="${pageNumber == releases.number + 1} ? active"></a>
+                </div>
+
             </div>
         </div>
     </div>

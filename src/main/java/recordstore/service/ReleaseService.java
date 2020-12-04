@@ -1,13 +1,10 @@
 package recordstore.service;
 
-import org.springframework.web.multipart.MultipartFile;
-import recordstore.entity.Artist;
-import recordstore.entity.Genre;
-import recordstore.entity.Label;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import recordstore.entity.Release;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface ReleaseService {
 
@@ -15,9 +12,5 @@ public interface ReleaseService {
     void saveRelease(Release release) throws IOException;
     void deleteRelease(long id) throws IOException;
 
-    List<Release> getAllReleases();
-
-    //old methods
-    //List<Release> getAllReleasesByGenre(String genre);
-    //List<Release> getAllReleasesByArtist(String artist);
+    Page<Release> getAllReleases(Pageable pageable);
 }

@@ -1,17 +1,17 @@
 package recordstore.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Artist;
 import recordstore.entity.Genre;
-import recordstore.entity.Label;
 import recordstore.entity.Release;
 import recordstore.repository.ReleaseRepository;
 import recordstore.utils.FileUploadUtil;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
@@ -58,19 +58,8 @@ public class ReleaseServiceImpl implements ReleaseService {
         FileUploadUtil.deleteFile(release.getImg());
     }
 
-//    old methods
-//    @Override
-//    public List<Release> getAllReleasesByGenre(String genre) {
-//        return repository.findAllByGenre(genre);
-//    }
-
-//    @Override
-//    public List<Release> getAllReleasesByArtist(String artist) {
-//        return repository.findAllByArtist(artist);
-//    }
-
     @Override
-    public List<Release> getAllReleases() {
-        return repository.findAll();
+    public Page<Release> getAllReleases(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }
