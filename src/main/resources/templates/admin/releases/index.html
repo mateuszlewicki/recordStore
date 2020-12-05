@@ -22,7 +22,7 @@
                         <div class="col-9 release-info">
                             <p>
                                 <span class="title">Artist: </span>
-                                <span th:each="artist : ${release.artists}" th:text="${artist.name}"></span>
+                                <span class="breadcrumb-item" th:each="artist : ${release.artists}" th:text="${artist.name}"></span>
                             </p>
                             <p>
                                 <span class="title">Title: </span>
@@ -38,7 +38,7 @@
                             </p>
                             <p>
                                 <span class="title">Genre: </span>
-                                <span th:each="genre : ${release.genres}" th:text="${genre.title}"></span>
+                                <span class="breadcrumb-item" th:each="genre : ${release.genres}" th:text="${genre.title}"></span>
                             </p>
                             <p>
                                 <span class="title">Format: </span>
@@ -55,16 +55,20 @@
                         </div>
                     </div>
                 </div>
-
-                <div th:if="${releases.totalPages > 1}" class="pagination" th:each="pageNumber : ${pageNumbers}">
-                    <a th:href="@{/admin/releases/(page=${pageNumber})}"
-                       th:text="${pageNumber}"
-                       th:class="${pageNumber == releases.number + 1} ? active"></a>
-                </div>
-
+                <nav aria-label="Pagination">
+                    <ul class="pagination-container">
+                        <li th:if="${releases.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
+                            <a th:href="@{/admin/releases/(page=${pageNumber})}"
+                               th:text="${pageNumber}"
+                               th:class="${pageNumber == releases.number + 1} ? active"></a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
 </div>
 
 <th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+</body>
+</html>

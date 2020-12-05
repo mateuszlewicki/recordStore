@@ -6,17 +6,29 @@
 <body>
 
 <header th:replace="/admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
-
-    <table class="table table-striped">
-        <tr>
-            <th>UserName</th>
-            <th>Delete</th>
-        </tr>
-        <tr th:each="account : ${accounts}">
-            <td th:text="${account.username}"></td>
-            <td><a th:href="@{'/admin/accounts/delete/' + ${account.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
-        </tr>
-    </table>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-2 pl-0">
+            <div th:replace="/admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
+        </div>
+        <div class="col-12 col-md-10">
+            <div class="main">
+                <div class="container p-0 my-4">
+                    <table class="table">
+                        <tr>
+                            <th>UserName</th>
+                            <th>Delete</th>
+                        </tr>
+                        <tr th:each="account : ${accounts}">
+                            <td th:text="${account.username}"></td>
+                            <td><a th:href="@{'/admin/accounts/delete/' + ${account.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

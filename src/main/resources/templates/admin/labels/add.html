@@ -6,10 +6,13 @@
 <body>
 <header th:replace="/admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 
-<div>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-6 col-lg-4">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-2 pl-0">
+            <div th:replace="/admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
+        </div>
+        <div class="col-12 col-md-10">
+            <div class="main">
 
                 <h3>Add new label</h3>
 
@@ -30,7 +33,7 @@
                         <label for="img">Image</label>
                         <input type="text" class="form-control" id="img" th:name="img" placeholder="Image" maxlength="100"/>
                     </div>
-                    <button type="submit" class="btn btn-primary ml-auto">Submit</button>
+                    <button type="submit" class="btn btn-primary mb-4">Submit</button>
                 </form>
             </div>
         </div>

@@ -16,11 +16,10 @@
 
                 <form th:action="@{/admin/releases/add}" method="post" th:object="${newRelease}" enctype="multipart/form-data">
 
-                    <img th:src="@{'/images/'+${newRelease.img}}" width="200" alt="" th:id="image"/>
-
                     <div class="form-group">
-                        <label for="data">Image</label>
-                        <input type="file" class="form-control" th:id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
+                        <label class="sr-only" for="data">Image</label>
+                        <img class="img-width mb-3" th:src="@{'/images/'+${newRelease.img}}" alt="" th:id="image"/>
+                        <input type="file" class="form-control-file" th:id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
                     </div>
 
                     <div class="form-group">
@@ -79,7 +78,7 @@
                         <input type="text" class="form-control" id="quantity" th:name="quantity" placeholder="Quantity" maxlength="100" required/>
                     </div>
 
-                    <button type="submit" class="btn btn-primary ml-auto">Submit</button>
+                    <button type="submit" class="btn btn-primary mb-4">Submit</button>
 
                 </form>
             </div>
@@ -88,3 +87,5 @@
 </div>
 
 <th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+</body>
+</html>

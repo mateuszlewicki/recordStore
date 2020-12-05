@@ -11,11 +11,11 @@
             <div th:replace="/admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
         </div>
         <div class="col-12 col-md-10">
-            <main>
-                <form class="form-inline">
-                    <a href="/admin/genres/add/" class="btn btn-primary" role="button">Add new release</a>
-                </form>
-
+            <div class="main">
+                <div class="container p-0 my-4">
+                    <a href="/admin/genres/add/" class="btn btn-primary" role="button">Add new genre</a>
+                </div>
+                <div class="container p-0">
                 <table class="table">
                     <tr>
                         <th>Genre</th>
@@ -28,7 +28,8 @@
                         <td><a th:href="@{'/admin/genres/delete/' + ${genre.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
                     </tr>
                 </table>
-            </main>
+                </div>
+            </div>
         </div>
     </div>
 </div>

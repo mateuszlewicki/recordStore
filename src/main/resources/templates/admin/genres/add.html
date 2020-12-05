@@ -13,16 +13,17 @@
                 <div th:replace="/admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
             </div>
             <div class="col-12 col-md-10">
+                <div class="main">
+                    <h3>Add new genre</h3>
 
-                <h3>Add new genre</h3>
-
-                <form th:action="@{/admin/genres/add}" method="post">
-                    <div class="form-group">
-                        <label for="title">Title</label>
-                        <input type="text" class="form-control" id="title" th:name="title" placeholder="Title" maxlength="100"/>
-                    </div>
-                    <button type="submit" class="btn btn-primary ml-auto">Submit</button>
-                </form>
+                    <form th:action="@{/admin/genres/add}" method="post">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" id="title" th:name="title" placeholder="Title" maxlength="100"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-4">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

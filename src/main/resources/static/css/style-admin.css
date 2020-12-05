@@ -18,6 +18,9 @@
 body{
     font-family: 'Quicksand';
 }
+.img-width{
+    width: 200px;
+}
 .top-navbar{
     position: relative;
     background: var(--navbar-bg-color);
@@ -66,4 +69,27 @@ body{
 }
 .main{
     margin-top: 95px;
+}
+pagination-container{
+    list-style: none;
+}
+.pagination-container .pagination-item{
+    display: inline-block;
+}
+.pagination-container .pagination-item .active{
+    pointer-events: none;
+}
+.pagination-container .pagination-item a{
+    color: #555555;
+    padding: 3px 6px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+.pagination-container .pagination-item a:hover,
+.pagination-container .pagination-item .active{
+    text-decoration: none;
+    border-bottom: 1px solid;
+}
+.pagination-container .pagination-item .active:hover{
+    cursor: none;
 }
