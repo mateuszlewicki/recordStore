@@ -50,7 +50,7 @@ public class AdminReleaseController {
     @GetMapping
     public String showAllReleases(Model model, @RequestParam("page") Optional<Integer> page){
         int currentPage = page.orElse(1);
-        Page<Release> releases = service.getAllReleases(PageRequest.of(currentPage - 1 ,10));
+        Page<Release> releases = service.getAllReleases(PageRequest.of(currentPage - 1 ,10 ));
         model.addAttribute("releases", releases);
         getPages(model, releases);
         return "admin/releases/index";
@@ -102,7 +102,7 @@ public class AdminReleaseController {
     private Model getModelAttributes(Model model) {
         model.addAttribute("genres", genreService.getAllGenres());
         model.addAttribute("artists", artistService.getAllArtists());
-        model.addAttribute("labels", labelService.findAllLabels());
+        model.addAttribute("labels", labelService.getAllLabelsTitles());
         return model;
     }
 

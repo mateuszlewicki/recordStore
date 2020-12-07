@@ -1,5 +1,7 @@
 package recordstore.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
@@ -32,7 +34,12 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public List<LabelProjection> findAllLabels() {
+    public List<LabelProjection> getAllLabelsTitles() {
         return repository.findAllBy();
+    }
+
+    @Override
+    public Page<Label> getAllLabels(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }

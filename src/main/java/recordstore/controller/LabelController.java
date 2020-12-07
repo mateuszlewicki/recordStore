@@ -21,7 +21,7 @@ public class LabelController {
 
     @GetMapping
     public String getAllLabels(Model model){
-        List<LabelProjection> labels = service.findAllLabels();
+        List<LabelProjection> labels = service.getAllLabelsTitles();
         model.addAttribute("labels", labels);
         return "labels";
     }

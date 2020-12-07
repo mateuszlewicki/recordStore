@@ -1,18 +1,21 @@
 package recordstore.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 import recordstore.service.LabelService;
 
 import javax.validation.Valid;
+import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin/labels")
@@ -25,9 +28,11 @@ public class AdminLabelController {
     }
 
     @GetMapping
-    public String showAllLabels(Model model){
-        List<LabelProjection> labels = service.findAllLabels();
+    public String showAllLabels(Model model, @RequestParam("page") Optional<Integer> page){
+        int currentPage = page.orElse(1);
+        Page<Label> labels = service.getAllLabels(PageRequest.of(currentPage - 1, 10));
         model.addAttribute("labels", labels);
+        getPages(model, labels);
         return "admin/labels/index";
     }
 
@@ -65,5 +70,16 @@ public class AdminLabelController {
     public String delete(@PathVariable long id){
         service.deleteLabel(id);
         return "redirect:/admin/labels/";
+    }
+
+    private Model getPages(Model model, Page<Label> labels) {
+        int pages = labels.getTotalPages();
+        if (pages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        return model;
     }
 }

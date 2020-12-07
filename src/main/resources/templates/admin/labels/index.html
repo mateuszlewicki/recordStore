@@ -30,6 +30,15 @@
                     </tr>
                 </table>
                 </div>
+                <nav aria-label="Pagination">
+                    <ul class="pagination-container">
+                        <li th:if="${labels.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
+                            <a th:href="@{/admin/labels/(page=${pageNumber})}"
+                               th:text="${pageNumber}"
+                               th:class="${pageNumber == labels.number + 1} ? active"></a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

@@ -1,5 +1,7 @@
 package recordstore.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 
@@ -11,5 +13,6 @@ public interface LabelService {
     void deleteLabel(long id);
 
     Label getLabel(long id);
-    List<LabelProjection> findAllLabels();
+    List<LabelProjection> getAllLabelsTitles();
+    Page<Label> getAllLabels(Pageable pageable);
 }
