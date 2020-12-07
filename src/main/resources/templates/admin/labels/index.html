@@ -17,18 +17,29 @@
                     <a href="/admin/labels/add/" class="btn btn-primary" role="button">Add new label</a>
                 </div>
                 <div class="container p-0">
-                <table class="table">
-                    <tr>
-                        <th>Genre</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                    <tr th:each="label : ${labels}">
-                        <td th:text="${label.title}"></td>
-                        <td><a th:href="@{'edit/{id}'(id=${label.id})}"><img th:src="@{/images/edit.svg}" alt="logo" width="30"/></a></td>
-                        <td><a th:href="@{'/admin/labels/delete/' + ${label.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
-                    </tr>
-                </table>
+                    <div class="row release-row" th:each="label : ${labels}">
+                        <div class="col-2 release-img">
+                            <img class="img-fluid" th:src="@{'/images/'+${label.img}}" width="200" alt=""/>
+                        </div>
+                        <div class="col-9 release-info">
+                            <p>
+                                <span class="title">Title: </span>
+                                <span th:text="${label.title}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Country: </span>
+                                <span th:text="${label.country}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Description: </span>
+                                <span th:text="${label.description}"></span>
+                            </p>
+                        </div>
+                        <div class="col-1">
+                            <a class="mr-2" th:href="@{'edit/{id}'(id=${label.id})}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo" width="30"/></a>
+                            <a class="delete" th:href="@{'/admin/labels/delete/' + ${label.id}}"><img class="release-icon" th:src="@{/images/trash.svg}" alt="logo" width="30"/></a>
+                        </div>
+                    </div>
                 </div>
                 <nav aria-label="Pagination">
                     <ul class="pagination-container">
@@ -44,5 +55,6 @@
     </div>
 </div>
 
+<th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
 </body>
 </html>

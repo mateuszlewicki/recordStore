@@ -5,12 +5,13 @@ import org.springframework.data.domain.Pageable;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface LabelService {
 
-    void saveLabel(Label label);
-    void deleteLabel(long id);
+    void saveLabel(Label label) throws IOException;
+    void deleteLabel(long id) throws IOException;
 
     Label getLabel(long id);
     List<LabelProjection> getAllLabelsTitles();

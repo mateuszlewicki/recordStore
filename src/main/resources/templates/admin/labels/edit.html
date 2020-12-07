@@ -16,9 +16,16 @@
 
                 <h3>Edit label</h3>
 
-                <form th:action="@{/admin/labels/update/}" th:object="${label}" method="post">
+                <form th:action="@{/admin/labels/update/}" th:object="${label}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="hidden" th:field="*{id}" th:value="${label.id}"/>
+                        <input type="hidden" th:field="*{img}" th:value="${label.img}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="sr-only" for="data">Image</label>
+                        <img class="img-width mb-3" th:src="@{'/images/'+${label.img}}" alt="" th:id="image"/>
+                        <input type="file" class="form-control-file" id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image" maxlength="100"/>
                     </div>
 
                     <div class="form-group">
@@ -34,11 +41,6 @@
                         <label for="description">Description</label>
                         <input class="form-control" type="text" id="description" th:field="*{description}" placeholder="Description" maxlength="100" th:value="${label.description}" />
                     </div>
-                    <div class="form-group">
-                        <label for="img">Image</label>
-                        <input class="form-control" type="text" id="img" th:field="*{img}" placeholder="Image" maxlength="100" th:value="${label.img}" />
-                    </div>
-
                     <button type="submit" class="btn btn-primary mb-4">Submit</button>
                 </form>
             </div>
@@ -46,5 +48,6 @@
     </div>
 </div>
 
+<th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
 </body>
 </html>

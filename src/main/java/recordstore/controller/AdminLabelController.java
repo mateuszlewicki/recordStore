@@ -12,6 +12,7 @@ import recordstore.service.LabelService;
 
 import javax.validation.Valid;
 import java.awt.print.Pageable;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,12 +38,13 @@ public class AdminLabelController {
     }
 
     @GetMapping("/add")
-    public String showAddForm(){
+    public String showAddForm(Model model){
+        model.addAttribute("newLabel", new Label());
         return "admin/labels/add";
     }
 
     @PostMapping("/add")
-    public String saveLabel(@Valid Label label, BindingResult result) {
+    public String saveLabel(@Valid @ModelAttribute("newLabel") Label label, BindingResult result) throws IOException {
         if (result.hasErrors()) {
             return "admin/labels/add";
         }
@@ -58,7 +60,7 @@ public class AdminLabelController {
     }
 
     @PostMapping("/update")
-    public String updateLabel(@Valid Label label, BindingResult result) {
+    public String updateLabel(@Valid @ModelAttribute("label") Label label, BindingResult result) throws IOException {
         if (result.hasErrors()) {
             return "admin/labels/edit";
         }
@@ -67,7 +69,7 @@ public class AdminLabelController {
     }
 
     @GetMapping("delete/{id}")
-    public String delete(@PathVariable long id){
+    public String delete(@PathVariable long id) throws IOException {
         service.deleteLabel(id);
         return "redirect:/admin/labels/";
     }

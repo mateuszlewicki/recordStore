@@ -39,7 +39,7 @@ public class Release {
     @Column(name = "price")
     private double price;
 
-    @Column(name = "img", nullable = true)
+    @Column(name = "img")
     private String img = "noImageAvailable.png";
 
     @Transient
