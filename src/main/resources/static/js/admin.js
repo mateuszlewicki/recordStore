@@ -16,3 +16,9 @@ function readURL(input) {
 $("#data").change(function () {
     readURL(this);
 })
+
+$(function() {
+    $('#search').autocomplete({
+        source: 'autocomplete'
+    });
+});

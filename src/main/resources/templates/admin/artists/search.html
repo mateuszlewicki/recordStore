@@ -14,20 +14,8 @@
         <div class="col-12 col-md-10">
             <div class="main">
 
-                <div class="container p-0">
-                    <form th:action="@{/admin/artists/search}">
-                        <input name="search" id="search" placeholder="Search" type="text">
-                        <button class="btn btn-search-icon" aria-label="Search" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-
-                <div class="container p-0 my-4">
-                    <a href="/admin/artists/add" class="btn btn-primary" role="button">Add new artist</a>
-                </div>
-                <div class="container p-0">
-                    <div class="row release-row" th:each="artist : ${artists}">
+                <div class="container p-0" th:if="${artist}">
+                    <div class="row release-row">
                         <div class="col-2 release-img">
                             <img class="img-fluid" th:src="@{'/images/'+${artist.img}}" width="200" alt=""/>
                         </div>
@@ -51,15 +39,11 @@
                         </div>
                     </div>
                 </div>
-                <nav aria-label="Pagination">
-                    <ul class="pagination-container">
-                        <li th:if="${artists.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
-                            <a th:href="@{/admin/artists/(page=${pageNumber})}"
-                               th:text="${pageNumber}"
-                               th:class="${pageNumber == artists.number + 1} ? active"></a>
-                        </li>
-                    </ul>
-                </nav>
+
+                <div th:unless="${artist}">
+                    <p>Artist not found</p>
+                </div>
+
             </div>
         </div>
     </div>

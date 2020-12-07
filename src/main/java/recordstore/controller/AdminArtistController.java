@@ -10,6 +10,7 @@ import recordstore.entity.Artist;
 import recordstore.projections.ArtistProjection;
 import recordstore.service.ArtistService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -71,6 +72,18 @@ public class AdminArtistController {
     public String delete(@PathVariable long id) throws IOException {
         service.deleteArtist(id);
         return "redirect:/admin/artists/";
+    }
+
+    @RequestMapping(value = "autocomplete")
+    @ResponseBody
+    public List<String> artistsNamesAutocomplete(HttpServletRequest request) {
+        return service.search(request.getParameter("term"));
+    }
+
+    @GetMapping("/search")
+    public String showSearchResult(@RequestParam("search") String search, Model model) {
+        model.addAttribute("artist", service.getArtistByName(search));
+        return "admin/artists/search";
     }
 
     private Model getPages(Model model, Page<Artist> artists) {

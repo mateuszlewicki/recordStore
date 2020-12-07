@@ -17,6 +17,6 @@ public interface ArtistService {
     List<ArtistProjection> getAllArtistsNames();
     Page<Artist> getAllArtists(Pageable pageable);
 
-//    old methods
-//    List<String> search(String keyword);
+    List<String> search(String keyword);
+    Artist getArtistByName(String query);
 }

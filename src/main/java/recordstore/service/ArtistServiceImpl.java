@@ -59,8 +59,13 @@ public class ArtistServiceImpl implements ArtistService {
         return repository.findAll(pageable);
     }
 
-//    @Override
-//    public List<String> search(String keyword) {
-//        return repository.search(keyword);
-//    }
+    @Override
+    public List<String> search(String keyword) {
+        return repository.search(keyword);
+    }
+
+    @Override
+    public Artist getArtistByName(String query) {
+        return repository.findArtistByName(query);
+    }
 }
