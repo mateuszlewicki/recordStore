@@ -22,7 +22,10 @@ public class GenreServiceImpl implements GenreService{
 
     @Override
     public void deleteGenre(long id) {
-        repository.deleteById(id);
+        Genre genre = repository.getOne(id);
+        if (genre.getReleases().size() == 0) {
+            repository.deleteById(id);
+        }
     }
 
     @Override
