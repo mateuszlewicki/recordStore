@@ -17,23 +17,44 @@
                     <a href="/admin/artists/add" class="btn btn-primary" role="button">Add new artist</a>
                 </div>
                 <div class="container p-0">
-                <table class="table">
-                    <tr>
-                        <th>Artist</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                    <tr th:each="artist : ${artists}">
-                        <td th:text="${artist.name}"></td>
-                        <td><a th:href="@{'edit/{id}'(id=${artist.id})}"><img th:src="@{/images/edit.svg}" alt="logo" width="30"/></a></td>
-                        <td><a th:href="@{'/admin/artists/delete/' + ${artist.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
-                    </tr>
-                </table>
+                    <div class="row release-row" th:each="artist : ${artists}">
+                        <div class="col-2 release-img">
+                            <img class="img-fluid" th:src="@{'/images/'+${artist.img}}" width="200" alt=""/>
+                        </div>
+                        <div class="col-9 release-info">
+                            <p>
+                                <span class="title">Artist: </span>
+                                <span th:text="${artist.name}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Country: </span>
+                                <span th:text="${artist.country}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Description: </span>
+                                <span th:text="${artist.description}"></span>
+                            </p>
+                        </div>
+                        <div class="col-1">
+                            <a class="mr-2" th:href="@{'edit/{id}'(id=${artist.id})}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo" width="30"/></a>
+                            <a class="delete" th:href="@{'/admin/artists/delete/' + ${artist.id}}"><img class="release-icon" th:src="@{/images/trash.svg}" alt="logo" width="30"/></a>
+                        </div>
+                    </div>
                 </div>
+                <nav aria-label="Pagination">
+                    <ul class="pagination-container">
+                        <li th:if="${artists.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
+                            <a th:href="@{/admin/artists/(page=${pageNumber})}"
+                               th:text="${pageNumber}"
+                               th:class="${pageNumber == artists.number + 1} ? active"></a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
 </div>
 
+<th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
 </body>
 </html>

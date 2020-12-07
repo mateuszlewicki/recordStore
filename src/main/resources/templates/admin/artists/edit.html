@@ -16,9 +16,16 @@
 
                 <h3>Edit artist</h3>
 
-                <form th:action="@{/admin/artists/update/}" th:object="${artist}" method="post">
+                <form th:action="@{/admin/artists/update/}" th:object="${artist}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="hidden" th:field="*{id}" th:value="${artist.id}"/>
+                        <input type="hidden" th:field="*{img}" th:value="${artist.img}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="sr-only" for="data">Image</label>
+                        <img class="img-width mb-3" th:src="@{'/images/'+${artist.img}}" alt="" th:id="image"/>
+                        <input type="file" class="form-control-file" id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image" maxlength="100"/>
                     </div>
 
                     <div class="form-group">
@@ -26,17 +33,15 @@
                         <input class="form-control is-valid" th:errorclass="is-invalid" type="text" id="name" th:field="*{name}" placeholder="Name" maxlength="100" th:value="${artist.name}" />
                         <p class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                     </div>
+
                     <div class="form-group">
                         <label for="country">Country</label>
                         <input class="form-control" type="text" id="country" th:field="*{country}" placeholder="Country" maxlength="100" th:value="${artist.country}" />
                     </div>
+
                     <div class="form-group">
                         <label for="description">Description</label>
                         <input class="form-control" type="text" id="description" th:field="*{description}" placeholder="Description" maxlength="100" th:value="${artist.description}" />
-                    </div>
-                    <div class="form-group">
-                        <label for="img">Image</label>
-                        <input class="form-control" type="text" id="img" th:field="*{img}" placeholder="Image" maxlength="100" th:value="${artist.img}" />
                     </div>
 
                     <button type="submit" class="btn btn-primary mb-4">Submit</button>
@@ -46,5 +51,6 @@
     </div>
 </div>
 
+<th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
 </body>
 </html>

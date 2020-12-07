@@ -101,7 +101,7 @@ public class AdminReleaseController {
 
     private Model getModelAttributes(Model model) {
         model.addAttribute("genres", genreService.getAllGenres());
-        model.addAttribute("artists", artistService.getAllArtists());
+        model.addAttribute("artists", artistService.getAllArtistsNames());
         model.addAttribute("labels", labelService.getAllLabelsTitles());
         return model;
     }

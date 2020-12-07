@@ -1,18 +1,21 @@
 package recordstore.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import recordstore.entity.Artist;
 import recordstore.projections.ArtistProjection;
 import recordstore.service.ArtistService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin/artists")
@@ -25,19 +28,22 @@ public class AdminArtistController {
     }
 
     @GetMapping
-    public String showAllArtists(Model model) {
-        List<ArtistProjection> artists = service.getAllArtists();
+    public String showAllArtists(Model model, @RequestParam("page")Optional<Integer> page) {
+        int currentPage = page.orElse(1);
+        Page<Artist> artists = service.getAllArtists(PageRequest.of(currentPage - 1, 10));
         model.addAttribute("artists", artists);
+        getPages(model, artists);
         return "admin/artists/index";
     }
 
     @GetMapping("/add")
-    public String showAddForm(){
+    public String showAddForm(Model model){
+        model.addAttribute("newArtist", new Artist());
         return "admin/artists/add";
     }
 
     @PostMapping("/add")
-    public String saveArtist(@Valid Artist artist, BindingResult result) {
+    public String saveArtist(@Valid @ModelAttribute("newArtist") Artist artist, BindingResult result) throws IOException {
         if (result.hasErrors()) {
             return "admin/artists/add";
         }
@@ -53,7 +59,7 @@ public class AdminArtistController {
     }
 
     @PostMapping("/update")
-    public String updateArtist(@Valid Artist artist, BindingResult result) {
+    public String updateArtist(@Valid @ModelAttribute("artist") Artist artist, BindingResult result) throws IOException {
         if (result.hasErrors()) {
             return "admin/artists/edit";
         }
@@ -62,8 +68,19 @@ public class AdminArtistController {
     }
 
     @GetMapping("delete/{id}")
-    public String delete(@PathVariable long id){
+    public String delete(@PathVariable long id) throws IOException {
         service.deleteArtist(id);
         return "redirect:/admin/artists/";
+    }
+
+    private Model getPages(Model model, Page<Artist> artists) {
+        int pages = artists.getTotalPages();
+        if (pages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        return model;
     }
 }

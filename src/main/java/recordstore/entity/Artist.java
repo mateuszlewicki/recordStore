@@ -3,6 +3,7 @@ package recordstore.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -31,7 +32,10 @@ public class Artist {
     private String description;
 
     @Column(name = "img")
-    private String img;
+    private String img = "noImageAvailable.png";
+
+    @Transient
+    private MultipartFile data;
 
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     private Set<Release> releases = new HashSet<>();

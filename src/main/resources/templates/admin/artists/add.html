@@ -16,29 +16,37 @@
 
                 <h3>Add new artist</h3>
 
-                <form th:action="@{/admin/artists/add}" method="post">
+                <form th:action="@{/admin/artists/add}" method="post" th:object="${newArtist}" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label class="sr-only" for="data">Image</label>
+                        <img class="img-width mb-3" th:src="@{'/images/'+${newArtist.img}}" alt="" th:id="image"/>
+                        <input type="file" class="form-control-file" th:id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
+                    </div>
+
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" th:name="name" placeholder="Name" maxlength="100"/>
                     </div>
+
                     <div class="form-group">
                         <label for="country">Country</label>
                         <input type="text" class="form-control" id="country" th:name="country" placeholder="Country" maxlength="100"/>
                     </div>
+
                     <div class="form-group">
                         <label for="description">Description</label>
                         <input type="text" class="form-control" id="description" th:name="description" placeholder="Description" maxlength="100"/>
                     </div>
-                    <div class="form-group">
-                        <label for="img">Image</label>
-                        <input type="text" class="form-control" id="img" th:name="img" placeholder="Image" maxlength="100"/>
-                    </div>
+
                     <button type="submit" class="btn btn-primary mb-4">Submit</button>
+
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+<th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
 </body>
 </html>
