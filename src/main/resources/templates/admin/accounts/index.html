@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="/admin/components/head"></head>
-
 <body>
-
 <header th:replace="/admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 col-md-2 pl-0">
@@ -14,21 +12,27 @@
         <div class="col-12 col-md-10">
             <div class="main">
                 <div class="container p-0 my-4">
-                    <table class="table">
-                        <tr>
-                            <th>UserName</th>
-                            <th>Delete</th>
-                        </tr>
-                        <tr th:each="account : ${accounts}">
-                            <td th:text="${account.username}"></td>
-                            <td><a th:href="@{'/admin/accounts/delete/' + ${account.id}}"><img th:src="@{/images/trash.svg}" alt="logo" width="30"/></a></td>
-                        </tr>
-                    </table>
+                    <div class="row release-row" th:each="account : ${accounts}">
+                        <div class="col-9 release-info">
+                            <p>
+                                <span class="title">Username: </span>
+                                <span th:text="${account.username}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Role: </span>
+                                <span class="breadcrumb-item" th:each="role : ${account.roles}" th:text="${role.name}"></span>
+                            </p>
+                        </div>
+                        <div class="col-1">
+                            <a class="delete" th:href="@{'/admin/accounts/delete/' + ${account.id}}"><img class="release-icon" th:src="@{/images/trash.svg}" alt="logo" width="30"/></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
 </body>
 </html>
