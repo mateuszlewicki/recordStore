@@ -1,6 +1,5 @@
 package recordstore.entity;
 
-import javafx.beans.DefaultProperty;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
