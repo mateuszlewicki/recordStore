@@ -16,4 +16,7 @@ public interface LabelService {
     Label getLabel(long id);
     List<LabelProjection> getAllLabelsTitles();
     Page<Label> getAllLabels(Pageable pageable);
+
+    List<String> search(String keyword);
+    Label getLabelByTitle(String title);
 }

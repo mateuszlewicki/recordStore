@@ -65,7 +65,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Artist getArtistByName(String query) {
-        return repository.findArtistByName(query);
+    public Artist getArtistByName(String name) {
+        return repository.findArtistByName(name);
     }
 }

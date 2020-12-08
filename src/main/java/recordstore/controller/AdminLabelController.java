@@ -10,6 +10,7 @@ import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 import recordstore.service.LabelService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.awt.print.Pageable;
 import java.io.IOException;
@@ -72,6 +73,18 @@ public class AdminLabelController {
     public String delete(@PathVariable long id) throws IOException {
         service.deleteLabel(id);
         return "redirect:/admin/labels/";
+    }
+
+    @RequestMapping(value = "autocomplete")
+    @ResponseBody
+    public List<String> labelsTitleAutocomplete(HttpServletRequest request) {
+        return service.search(request.getParameter("term"));
+    }
+
+    @GetMapping("/search")
+    public String showSearchResult(@RequestParam("search") String search, Model model) {
+        model.addAttribute("label", service.getLabelByTitle(search));
+        return "admin/labels/search";
     }
 
     private Model getPages(Model model, Page<Label> labels) {

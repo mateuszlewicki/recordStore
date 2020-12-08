@@ -18,5 +18,5 @@ public interface ArtistService {
     Page<Artist> getAllArtists(Pageable pageable);
 
     List<String> search(String keyword);
-    Artist getArtistByName(String query);
+    Artist getArtistByName(String name);
 }

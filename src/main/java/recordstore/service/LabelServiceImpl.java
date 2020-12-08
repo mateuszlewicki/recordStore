@@ -59,4 +59,14 @@ public class LabelServiceImpl implements LabelService {
     public Page<Label> getAllLabels(Pageable pageable) {
         return repository.findAll(pageable);
     }
+
+    @Override
+    public List<String> search(String keyword) {
+        return repository.search(keyword);
+    }
+
+    @Override
+    public Label getLabelByTitle(String title) {
+        return repository.findLabelByTitle(title);
+    }
 }
