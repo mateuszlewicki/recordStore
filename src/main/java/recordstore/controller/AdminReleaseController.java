@@ -8,9 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import recordstore.entity.Artist;
-import recordstore.entity.Genre;
-import recordstore.entity.Label;
 import recordstore.entity.Release;
 import recordstore.projections.ArtistProjection;
 import recordstore.projections.LabelProjection;
@@ -19,10 +16,9 @@ import recordstore.service.GenreService;
 import recordstore.service.LabelService;
 import recordstore.service.ReleaseService;
 
-import javax.sound.midi.Soundbank;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,6 +93,18 @@ public class AdminReleaseController {
     public String delete(@PathVariable long id) throws IOException {
     service.deleteRelease(id);
     return "redirect:/admin/releases/";
+    }
+
+    @RequestMapping(value = "autocomplete")
+    @ResponseBody
+    public List<String> releaseTitlesAutocomplete(HttpServletRequest request) {
+        return service.search(request.getParameter("term"));
+    }
+
+    @GetMapping("/search")
+    public String showSearchResult(@RequestParam("search") String search, Model model) {
+        model.addAttribute("release", service.getReleaseByTitle(search));
+        return "admin/releases/search";
     }
 
     private Model getModelAttributes(Model model) {

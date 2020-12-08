@@ -12,6 +12,7 @@ import recordstore.repository.ReleaseRepository;
 import recordstore.utils.FileUploadUtil;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
@@ -61,5 +62,15 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public Page<Release> getAllReleases(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    @Override
+    public List<String> search(String keyword) {
+        return repository.search(keyword);
+    }
+
+    @Override
+    public Release getReleaseByTitle(String title) {
+        return repository.findReleaseByTitle(title);
     }
 }

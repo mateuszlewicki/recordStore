@@ -19,6 +19,7 @@ $("#data").change(function () {
 
 $(function() {
     $('#search').autocomplete({
-        source: 'autocomplete'
+        source: 'autocomplete',
+        minLength: 2
     });
 });

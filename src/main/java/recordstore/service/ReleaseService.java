@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import recordstore.entity.Release;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface ReleaseService {
 
@@ -13,4 +14,7 @@ public interface ReleaseService {
     void deleteRelease(long id) throws IOException;
 
     Page<Release> getAllReleases(Pageable pageable);
+
+    List<String> search(String keyword);
+    Release getReleaseByTitle(String title);
 }
