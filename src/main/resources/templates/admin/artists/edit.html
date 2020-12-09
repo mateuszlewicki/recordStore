@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="/admin/components/head"></head>
+<head th:replace="admin/components/head"></head>
 
 <body>
-<header th:replace="/admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+<header th:replace="admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 col-md-2 pl-0">
-            <div th:replace="/admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
+            <div th:replace="admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
         </div>
         <div class="col-12 col-md-10">
             <div class="main">
@@ -51,6 +51,6 @@
     </div>
 </div>
 
-<th:block th:replace="/admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+<th:block th:replace="admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
 </body>
 </html>

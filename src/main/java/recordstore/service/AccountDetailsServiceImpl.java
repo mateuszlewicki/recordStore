@@ -1,5 +1,6 @@
 package recordstore.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,10 +18,14 @@ public class AccountDetailsServiceImpl implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AccountDetailsServiceImpl(AccountRepository accountRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AccountDetailsServiceImpl(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
+    }
+
+    @Autowired
+    public void setBCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
