@@ -5,21 +5,46 @@
 <body>
 
 <header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
-
-<div class="container my-3">
+<div class="container-fluid">
     <div class="row">
-        <div th:each="release : ${releases}" class="col-12 col-md-4 col-lg-3">
-            <div class="">
-                <img th:src="@{'images/'+${release.img}}" width="200" alt=""/>
-            </div>
-            <div class="">
-                <div th:text="${release.artist}"></div>
-                <div th:text="${release.title}"></div>
-                <div th:text="${release.label}"></div>
-                <div th:text="${release.code}"></div>
-                <div th:text="${release.format}"></div>
-                <div th:text="${release.releaseDate}"></div>
-                <div th:text="${release.price}"></div>
+        <div class="col-12 col-md-2 pl-0">
+            <div th:replace="components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
+        </div>
+        <div class="col-12 col-md-10">
+            <div class="main">
+                <div class="search_box">
+                    <form class="get container p-0 mb-0" action="/search">
+                        <fieldset>
+                            <div class="input-group">
+                                <input name="search" id="search" placeholder="Search" type="text">
+                                <button class="btn btn-search-icon" aria-label="Search" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="main-content mx-3" th:if="${artist}">
+                    <div class="row">
+<!--                        <div th:each="release : ${releases}" class="col-12 col-md-4 col-lg-3">-->
+<!--                            <div class="">-->
+<!--                                <img th:src="@{'images/'+${release.img}}" width="200" alt=""/>-->
+<!--                            </div>-->
+<!--                            <div class="">-->
+<!--                                <div th:text="${release.artist}"></div>-->
+<!--                                <div th:text="${release.title}"></div>-->
+<!--                                <div th:text="${release.label}"></div>-->
+<!--                                <div th:text="${release.code}"></div>-->
+<!--                                <div th:text="${release.format}"></div>-->
+<!--                                <div th:text="${release.releaseDate}"></div>-->
+<!--                                <div th:text="${release.price}"></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+                <div class="main-content mx-3" th:unless="${artist}">
+                    <p>Artist not found</p>
+                </div>
             </div>
         </div>
     </div>

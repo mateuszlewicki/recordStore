@@ -8,3 +8,10 @@ $( "#search-btn" ).click(function(e) {
     e.preventDefault();
     closeSearch();
 });
+
+$(function() {
+    $('#search').autocomplete({
+        source: 'autocomplete',
+        minLength: 2
+    });
+});

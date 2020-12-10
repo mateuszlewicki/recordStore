@@ -1,4 +1,23 @@
 @import "vars.css";
+@font-face {
+    font-family: 'Quicksand-Light';
+    src:url(../fonts/Quicksand-Light.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Quicksand';
+    src:url(../fonts/Quicksand-Regular.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Quicksand-Medium';
+    src:url(../fonts/Quicksand-Medium.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Quicksand-Bold';
+    src:url(../fonts/Quicksand-Bold.ttf) format('truetype');
+}
+body{
+    font-family: 'Quicksand';
+}
 input#search{
     border-bottom: 1px solid var(--navbar-bg-color);
 }
@@ -20,8 +39,11 @@ footer{
 .top-navbar{
     position: relative;
     background: var(--navbar-bg-color);
-    padding-top: 0rem;
-    padding-bottom: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
 
 }
 .top-navbar a, .top-navbar button{
@@ -57,7 +79,7 @@ footer{
 }
 .search_box.active{
     height: auto;
-    padding: 1%;
+    padding: 0;
     -webkit-transition: all 0.1s ease-in-out;
     -moz-transition:  all 0.1s ease-in-out;
     -ms-transition:  all 0.1s ease-in-out;
@@ -90,7 +112,7 @@ footer{
     color: #FFF;
     cursor: pointer;
     background: var(--btn-bg-color);
-    border-radius: 30px;
+    border-radius: 0px;
     opacity: 1;
     -webkit-transition: all 0.1s ease;
     -moz-transition: all 0.1s ease;
@@ -98,3 +120,24 @@ footer{
     -o-transition: all 0.1s ease;
     transition: all 0.1s ease;
 }
+.aside-nav{
+    min-height: 100%;
+    align-items: start;
+    padding-left: 30px;
+    background: var(--aside-bg);
+    position: fixed;
+    width: 16.666%;
+    top: 0;
+    padding-top: 85px;
+}
+.aside-nav .nav-link{
+    color: var(--aside-link-color);
+    transition: all .3s ease;
+}
+.aside-nav .nav-link:hover{
+    text-decoration: underline;
+}
+.main{
+    margin-top: 70px;
+}
+.main-content{margin-top: 15px;}
