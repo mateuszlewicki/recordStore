@@ -1,5 +1,6 @@
 package recordstore.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ import java.util.List;
 
 @Service
 public class ArtistServiceImpl implements ArtistService {
+
+    @Value("${upload.path}")
+    String path;
 
     private final ArtistRepository repository;
 
@@ -30,8 +34,8 @@ public class ArtistServiceImpl implements ArtistService {
         }
         repository.save(artist);
         if(!artist.getData().isEmpty()) {
-            FileUploadUtil.saveFile(filename, artist.getData());
-            FileUploadUtil.deleteFile(removeImg);
+            FileUploadUtil.saveFile(filename, artist.getData(), path);
+            FileUploadUtil.deleteFile(removeImg, path);
         }
     }
 
@@ -40,7 +44,7 @@ public class ArtistServiceImpl implements ArtistService {
         Artist artist = repository.getOne(id);
         if (artist.getReleases().size() == 0) {
             repository.deleteById(id);
-            FileUploadUtil.deleteFile(artist.getImg());
+            FileUploadUtil.deleteFile(artist.getImg(), path);
         }
     }
 

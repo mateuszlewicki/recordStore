@@ -1,5 +1,6 @@
 package recordstore.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ import java.util.List;
 
 @Service
 public class LabelServiceImpl implements LabelService {
+
+    @Value("${upload.path}")
+    String path;
 
     private final LabelRepository repository;
 
@@ -31,8 +35,8 @@ public class LabelServiceImpl implements LabelService {
         }
         repository.save(label);
         if(!label.getData().isEmpty()) {
-            FileUploadUtil.saveFile(filename, label.getData());
-            FileUploadUtil.deleteFile(removePicture);
+            FileUploadUtil.saveFile(filename, label.getData(), path);
+            FileUploadUtil.deleteFile(removePicture, path);
         }
     }
 
@@ -41,7 +45,7 @@ public class LabelServiceImpl implements LabelService {
         Label label = repository.getOne(id);
         if (label.getReleases().size() == 0) {
             repository.deleteById(id);
-            FileUploadUtil.deleteFile(label.getImg());
+            FileUploadUtil.deleteFile(label.getImg(), path);
         }
     }
 

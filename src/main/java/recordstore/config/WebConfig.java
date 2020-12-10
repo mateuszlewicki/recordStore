@@ -1,5 +1,6 @@
 package recordstore.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -13,6 +14,9 @@ import java.nio.file.Paths;
 @Configuration
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
+
+    @Value("${upload.path}")
+    String uploadPath;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -29,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
                 "/js/**")
                 .addResourceLocations(
                         "classpath:/META-INF/resources/webjars/",
-                        "file:../recordstore/src/main/resources/static/images/",
+                        "file:" + uploadPath,
                         "classpath:/static/fonts/",
                         "classpath:/static/css/",
                         "classpath:/static/js/");

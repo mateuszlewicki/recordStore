@@ -1,5 +1,6 @@
 package recordstore.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,9 @@ import java.util.List;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
+
+    @Value("${upload.path}")
+    String path;
 
     private final ReleaseRepository repository;
 
@@ -46,8 +50,8 @@ public class ReleaseServiceImpl implements ReleaseService {
          }
         repository.save(release);
          if(!release.getData().isEmpty()) {
-             FileUploadUtil.saveFile(filename, release.getData());
-             FileUploadUtil.deleteFile(removePicture);
+             FileUploadUtil.saveFile(filename, release.getData(), path);
+             FileUploadUtil.deleteFile(removePicture, path);
          }
     }
 
@@ -56,7 +60,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         Release release = repository.getOne(id);
         release.removeLabel(release.getLabel());
         repository.delete(release);
-        FileUploadUtil.deleteFile(release.getImg());
+        FileUploadUtil.deleteFile(release.getImg(), path);
     }
 
     @Override
