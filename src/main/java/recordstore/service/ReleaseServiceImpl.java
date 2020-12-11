@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Artist;
 import recordstore.entity.Genre;
 import recordstore.entity.Release;
@@ -14,6 +15,7 @@ import recordstore.utils.FileUploadUtil;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
@@ -42,7 +44,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         }
         release.addLabel(release.getLabel());
 
-        String filename = StringUtils.cleanPath(release.getData().getOriginalFilename());
+        String filename = createUniqueName(release.getData());
         String removePicture = release.getImg();
 
          if(!release.getData().isEmpty()){
@@ -76,5 +78,11 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public Release getReleaseByTitle(String title) {
         return repository.findReleaseByTitle(title);
+    }
+
+    private String createUniqueName (MultipartFile file) {
+        String uuid = UUID.randomUUID().toString();
+        String resultFilename = uuid + "." + file.getOriginalFilename();
+        return resultFilename;
     }
 }

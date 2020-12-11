@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 import recordstore.repository.LabelRepository;
@@ -12,6 +13,7 @@ import recordstore.utils.FileUploadUtil;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class LabelServiceImpl implements LabelService {
@@ -27,7 +29,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public void saveLabel(Label label) throws IOException {
-        String filename = StringUtils.cleanPath(label.getData().getOriginalFilename());
+        String filename = createUniqueName(label.getData());
         String removePicture = label.getImg();
 
         if(!label.getData().isEmpty()) {
@@ -72,5 +74,11 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public Label getLabelByTitle(String title) {
         return repository.findLabelByTitle(title);
+    }
+
+    private String createUniqueName (MultipartFile file) {
+        String uuid = UUID.randomUUID().toString();
+        String resultFilename = uuid + "." + file.getOriginalFilename();
+        return resultFilename;
     }
 }

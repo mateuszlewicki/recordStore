@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Artist;
 import recordstore.projections.ArtistProjection;
 import recordstore.repository.ArtistRepository;
@@ -12,6 +13,7 @@ import recordstore.utils.FileUploadUtil;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ArtistServiceImpl implements ArtistService {
@@ -27,7 +29,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public void saveArtist(Artist artist) throws IOException {
-        String filename = StringUtils.cleanPath(artist.getData().getOriginalFilename());
+        String filename = createUniqueName(artist.getData());
         String removeImg = artist.getImg();
         if (!artist.getData().isEmpty()) {
             artist.setImg(filename);
@@ -71,5 +73,11 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Artist getArtistByName(String name) {
         return repository.findArtistByName(name);
+    }
+
+    private String createUniqueName (MultipartFile file) {
+        String uuid = UUID.randomUUID().toString();
+        String resultFilename = uuid + "." + file.getOriginalFilename();
+        return resultFilename;
     }
 }
