@@ -68,30 +68,32 @@ footer{
     background: var(--white-bg-color);
     padding: 0 1%;
     margin: 0;
-    height: 0;
+    max-height: 0;
     overflow: hidden;
     box-sizing: border-box;
-    -webkit-transition: all 0.1s ease-in-out;
-    -moz-transition:  all 0.1s ease-in-out;
-    -ms-transition:  all 0.1s ease-in-out;
-    -o-transition:  all0.1s ease-in-out;
-    transition:  all 0.1s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition:  all 0.3s ease-in-out;
+    -ms-transition:  all 0.3s ease-in-out;
+    -o-transition:  all 0.3s ease-in-out;
+    transition:  all 0.3s ease-in-out;
 }
 .search_box.active{
     height: auto;
+    max-height: 190px;
     padding: 0;
-    -webkit-transition: all 0.1s ease-in-out;
-    -moz-transition:  all 0.1s ease-in-out;
-    -ms-transition:  all 0.1s ease-in-out;
-    -o-transition:  all 0.1s ease-in-out;
-    transition:  all 0.1s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition:  all 0.3s ease-in-out;
+    -ms-transition:  all 0.3s ease-in-out;
+    -o-transition:  all 0.3s ease-in-out;
+    transition:  all 0.3s ease-in-out;
     z-index: 1000;
 }
 .search_box input {
     width: 100%;
     font-size: 1em;
     margin-right: 1%;
-    padding:1%;
+    padding:10px;
+    padding-top: 25px;
     border: none;
     background: var(--white-bg-color);
     color: #000;
@@ -102,10 +104,9 @@ footer{
     width:7%;
     position: absolute;
     right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 0;
     height: auto;
-    padding: 1%;
+    padding: 15px 20px;
     margin-right: 1%;
     float: right;
     border: medium none;
@@ -114,11 +115,11 @@ footer{
     background: var(--btn-bg-color);
     border-radius: 0px;
     opacity: 1;
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -ms-transition: all 0.1s ease;
-    -o-transition: all 0.1s ease;
-    transition: all 0.1s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 .aside-nav{
     min-height: 100%;
@@ -140,4 +141,61 @@ footer{
 .main{
     margin-top: 70px;
 }
-.main-content{margin-top: 15px;}
+.main-content{
+    margin-top: 15px;
+}
+.main-content-login{
+    margin-top: 75px;
+}
+.custom-btn{
+    padding: 10px 25px;
+    border: medium none;
+    color: #FFF;
+    cursor: pointer;
+    background: var(--btn-bg-color);
+    border-radius: 0px;
+    opacity: 1;
+    border:1px solid var(--btn-bg-color);
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.custom-btn:hover, .custom-btn:focus{
+    background: #FFFFFF;
+    color: var(--btn-bg-color);
+}
+.custom-link{
+    color: var(--link-color);
+    text-decoration: none;
+    position: relative;
+}
+.custom-link::after{
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0px;
+    height: 1px;
+    margin: 1px 0 0;
+    transition: all 0.2s ease-in-out;
+    transition-duration: 0.3s;
+    opacity: 0;
+    background-color: var(--link-color);
+}
+.custom-link:hover::after, .custom-link:focus::after{
+    width:100%;
+    opacity: 1;
+}
+.custom-link:hover, .custom-link:focus {
+    text-decoration: none;
+    color: var(--link-color);
+}
+.custom-form-control{
+    border-radius: 0;
+}
+.custom-form-control:focus{
+    border: 1px solid transparent;
+    box-shadow: 0 0 0 .2rem var(--custom-focus-shadow-color);
+}
