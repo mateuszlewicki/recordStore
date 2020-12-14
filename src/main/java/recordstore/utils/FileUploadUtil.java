@@ -27,7 +27,9 @@ public class FileUploadUtil {
     public static void deleteFile(String filename, String removeDir) throws IOException {
         if (!filename.equals("noImageAvailable.png")) {
             Path path = Paths.get(removeDir + filename);
-            Files.delete(path);
+            if (Files.exists(path)) {
+                Files.delete(path);
+            }
         }
     }
 }
