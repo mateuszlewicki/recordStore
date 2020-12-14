@@ -31,29 +31,4 @@ public class SearchController {
         model.addAttribute("artist", service.getArtistByName(search));
         return "search";
     }
-
-//
-//    @RequestMapping(value = "search")
-//    @ResponseBody
-//    public List<String> search(HttpServletRequest request) {
-//        return service.search(request.getParameter("term"));
-//    }
-
-
-//    2
-//    private final ReleaseService service;
-//
-//    public SearchController(ReleaseService service) {
-//        this.service = service;
-//    }
-//
-//    @RequestMapping(value = "search")
-//    public String searchArtist(@RequestParam("search") String searchString, Model model){
-//        //getAllGenres(model);
-//        if(searchString != null){
-//            Object searchResult = service.getAllReleasesByArtist(searchString);
-//            model.addAttribute("releases", searchResult);
-//        }
-//        return "search";
-//    }
 }

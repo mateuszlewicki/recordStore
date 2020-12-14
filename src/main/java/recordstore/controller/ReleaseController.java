@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import recordstore.entity.Release;
 import recordstore.service.ReleaseService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -16,33 +17,26 @@ public class ReleaseController {
 
     private final ReleaseService service;
 
-    private List<Release> releases;
-
     public ReleaseController(ReleaseService service) {
         this.service = service;
     }
 
     @GetMapping
     public String getAllRecords(Model model){
-        //Page<Release> releases = service.getAllReleases();
-        //getAllGenres(model);
-        model.addAttribute("releases", releases);
+//        Page<Release> releases = service.getAllReleases();
+//        model.addAttribute("releases", releases);
         return "releases";
     }
 
-//    old methods
-//    @GetMapping("{genre}")
-//    public String getRecordsByGenre(@PathVariable("genre") String genre, Model model){
-//        releases = service.getAllReleasesByGenre(genre);
-//        //getAllGenres(model);
-//        model.addAttribute("releases", releases);
-//        return "releases";
+//    @RequestMapping(value = "autocomplete")
+//    @ResponseBody
+//    public List<String> releasesTitlesAutocomplete(HttpServletRequest request) {
+//        return service.search(request.getParameter("term"));
 //    }
-
-//    private void getAllGenres(Model model){
-//        List<String> genres;
-//        genres = service.getAllGenres();
-//        model.addAttribute("genres", genres);
+//
+//    @GetMapping("/search")
+//    public String showSearchResult(@RequestParam("search") String search, Model model) {
+//        model.addAttribute("releases", service.getReleaseByTitle(search));
+//        return "search";
 //    }
-
 }

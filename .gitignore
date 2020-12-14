@@ -2,4 +2,12 @@
 
 target/
 
+/src/main/resources/images/
+
+!noImageAvailable.png
+
+!trash.svg
+
+!edit.svg
+
 /src/main/resources/application.yml
