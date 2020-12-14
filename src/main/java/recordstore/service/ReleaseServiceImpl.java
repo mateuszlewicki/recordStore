@@ -82,7 +82,6 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     private String createUniqueName (MultipartFile file) {
         String uuid = UUID.randomUUID().toString();
-        String resultFilename = uuid + "." + file.getOriginalFilename();
-        return resultFilename;
+        return uuid + "." + file.getOriginalFilename();
     }
 }

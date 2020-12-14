@@ -1,17 +1,14 @@
 package recordstore.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-//import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 import recordstore.repository.LabelRepository;
 import recordstore.utils.FileUploadUtil;
-import recordstore.utils.FtpUploader;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,9 +19,6 @@ public class LabelServiceImpl implements LabelService {
 
     @Value("${upload.path}")
     String path;
-
-//    @Autowired
-//    DefaultFtpSessionFactory factory;
 
     private final LabelRepository repository;
 
@@ -44,7 +38,6 @@ public class LabelServiceImpl implements LabelService {
         if(!label.getData().isEmpty()) {
             FileUploadUtil.saveFile(filename, label.getData(), path);
             FileUploadUtil.deleteFile(removePicture, path);
-            //FtpUploader.uploadToFTP(filename, label.getData(), factory);
         }
     }
 
@@ -84,7 +77,6 @@ public class LabelServiceImpl implements LabelService {
 
     private String createUniqueName (MultipartFile file) {
         String uuid = UUID.randomUUID().toString();
-        String resultFilename = uuid + "." + file.getOriginalFilename();
-        return resultFilename;
+        return uuid + "." + file.getOriginalFilename();
     }
 }

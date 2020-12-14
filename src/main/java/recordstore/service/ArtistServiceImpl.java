@@ -77,7 +77,6 @@ public class ArtistServiceImpl implements ArtistService {
 
     private String createUniqueName (MultipartFile file) {
         String uuid = UUID.randomUUID().toString();
-        String resultFilename = uuid + "." + file.getOriginalFilename();
-        return resultFilename;
+        return uuid + "." + file.getOriginalFilename();
     }
 }
