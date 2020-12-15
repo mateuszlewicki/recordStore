@@ -2,6 +2,7 @@ package recordstore.entity;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
+import recordstore.enums.Format;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -32,20 +33,13 @@ public class Release {
     private Date releaseDate;
 
     @Column(name = "format")
-    @NotBlank(message = "Field is mandatory")
-    private String format;
-
-    @Column(name = "price")
-    private double price;
+    private Format format;
 
     @Column(name = "img")
     private String img = "noImageAvailable.png";
 
     @Transient
     private MultipartFile data;
-
-    @Column(name = "quantity")
-    private int quantity;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "releases_artists",

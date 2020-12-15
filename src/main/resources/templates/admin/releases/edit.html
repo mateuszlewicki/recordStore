@@ -71,20 +71,9 @@
 
                     <div class="form-group">
                         <label for="format">Format</label>
-                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="format" th:field="*{format}" placeholder="Format" maxlength="100" th:value="${release.format}"/>
-                        <p class="invalid-feedback" th:if="${#fields.hasErrors('format')}" th:errors="*{format}"></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="price" th:field="*{price}" placeholder="Price" maxlength="100" th:value="${release.price}"/>
-                        <p class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="quantity">Quantity</label>
-                        <input type="text" class="form-control is-valid" th:errorclass="is-invalid" id="quantity" th:field="*{quantity}" placeholder="Quantity" maxlength="100" th:value="${release.quantity}"/>
-                        <p class="invalid-feedback" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></p>
+                        <select class="form-control selectpicker" th:field="*{format}">
+                            <option th:each="format : ${formatTypes}" th:value="${format}" th:text="${format.type}"/>
+                        </select>
                     </div>
 
                     <button type="submit" class="btn btn-primary mb-4">Submit</button>

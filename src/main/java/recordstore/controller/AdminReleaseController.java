@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Release;
+import recordstore.enums.Format;
 import recordstore.projections.ArtistProjection;
 import recordstore.projections.LabelProjection;
 import recordstore.service.ArtistService;
@@ -111,6 +112,7 @@ public class AdminReleaseController {
         model.addAttribute("genres", genreService.getAllGenres());
         model.addAttribute("artists", artistService.getAllArtistsNames());
         model.addAttribute("labels", labelService.getAllLabelsTitles());
+        model.addAttribute("formatTypes" , Format.values());
         return model;
     }
 

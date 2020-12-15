@@ -64,18 +64,9 @@
 
                     <div class="form-group">
                         <label for="format">Format</label>
-                        <input type="text" class="form-control" th:errorclass="is-invalid" id="format" th:name="format" placeholder="Format" maxlength="100" required/>
-                        <p class="invalid-feedback" th:if="${#fields.hasErrors('format')}" th:errors="*{format}"></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="text" class="form-control" id="price" th:name="price" placeholder="Price" maxlength="100" required/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="quantity">Quantity</label>
-                        <input type="text" class="form-control" id="quantity" th:name="quantity" placeholder="Quantity" maxlength="100" required/>
+                        <select class="form-control selectpicker" th:field="*{format}">
+                            <option th:each="format : ${formatTypes}" th:value="${format}" th:text="${format.type}"/>
+                        </select>
                     </div>
 
                     <button type="submit" class="btn btn-primary mb-4">Submit</button>
