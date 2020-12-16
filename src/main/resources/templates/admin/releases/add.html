@@ -45,7 +45,7 @@
 
                     <div class="form-group">
                         <label for="releaseDate">Release Date</label>
-                        <input type="text" class="form-control" th:errorclass="is-invalid" id="releaseDate" th:name="releaseDate" placeholder="YYYY-MM-DD" maxlength="100" required/>
+                        <input type="text" class="form-control" th:errorclass="is-invalid" id="releaseDate" th:name="releaseDate" placeholder="YYYY-MM-DD" required/>
                         <p class="invalid-feedback" th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}"></p>
                     </div>
 

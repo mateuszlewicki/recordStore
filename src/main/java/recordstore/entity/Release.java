@@ -3,10 +3,10 @@ package recordstore.entity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.enums.Format;
+import recordstore.validation.ValidDateFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +30,8 @@ public class Release {
     private String title;
 
     @Column(name = "release_date")
-    private Date releaseDate;
+    @ValidDateFormat
+    private String releaseDate;
 
     @Column(name = "format")
     private Format format;
