@@ -68,4 +68,21 @@ public class Account implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+
+        if (getId() != account.getId()) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (getId() ^ (getId() >>> 32));
+    }
 }

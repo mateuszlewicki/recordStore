@@ -31,6 +31,7 @@
                     <div class="form-group">
                         <label class="" for="username">Username</label>
                         <input id="username" type="text" class="form-control custom-form-control" placeholder="" th:name="username" required/>
+                        <p class="signin-errors" th:text="${usernameError}"></p>
                     </div>
                     <div class="form-group">
                         <label class="" for="password">Password</label>
@@ -39,6 +40,7 @@
                     <div class="form-group">
                         <label class="" for="passwordConfirm">Confirm your password</label>
                         <input id="passwordConfirm" type="password" class="form-control custom-form-control" placeholder="" th:name="passwordConfirm" required/>
+                        <p class="signin-errors" th:text="${passwordError}"></p>
                     </div>
                     <button type="submit" class="btn custom-btn">Submit</button>
                 </form>

@@ -199,3 +199,7 @@ footer{
     border: 1px solid transparent;
     box-shadow: 0 0 0 .2rem var(--custom-focus-shadow-color);
 }
+
+.signin-errors{
+    color: red;
+}
