@@ -57,7 +57,8 @@ public class RegistrationControllerTest {
                 .param("username", "denis")
                 .param("password", "1234")
                 .param("passwordConfirm", "12345"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(view().name("registration"));
     }
 
     @Test
@@ -69,6 +70,7 @@ public class RegistrationControllerTest {
                 .param("username", "dns")
                 .param("password", "1234")
                 .param("passwordConfirm", "1234"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(view().name("registration"));
     }
 }
