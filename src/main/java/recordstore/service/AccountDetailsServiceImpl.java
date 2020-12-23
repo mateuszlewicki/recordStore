@@ -7,10 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import recordstore.entity.Account;
-import recordstore.entity.Role;
 import recordstore.repository.AccountRepository;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -48,7 +46,6 @@ public class AccountDetailsServiceImpl implements UserDetailsService {
         if (userFromDb != null) {
             return false;
         }
-        account.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
         accountRepository.save(account);
         return true;

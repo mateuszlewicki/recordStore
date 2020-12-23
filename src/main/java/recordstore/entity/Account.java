@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 @Entity
@@ -32,7 +33,7 @@ public class Account implements UserDetails {
     private String passwordConfirm;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    private Set<Role> roles = Collections.singleton(new Role(1L, "ROLE_USER"));
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
