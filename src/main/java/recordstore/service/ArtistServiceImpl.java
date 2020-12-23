@@ -1,15 +1,13 @@
 package recordstore.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Artist;
 import recordstore.projections.ArtistProjection;
 import recordstore.repository.ArtistRepository;
-import recordstore.utils.FileUploadUtil;
+import recordstore.utils.FileService;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,13 +16,13 @@ import java.util.UUID;
 @Service
 public class ArtistServiceImpl implements ArtistService {
 
-    @Value("${upload.path}")
-    String path;
-
     private final ArtistRepository repository;
 
-    public ArtistServiceImpl(ArtistRepository repository) {
+    private final FileService fileService;
+
+    public ArtistServiceImpl(ArtistRepository repository, FileService fileService) {
         this.repository = repository;
+        this.fileService = fileService;
     }
 
     @Override
@@ -36,8 +34,8 @@ public class ArtistServiceImpl implements ArtistService {
         }
         repository.save(artist);
         if(!artist.getData().isEmpty()) {
-            FileUploadUtil.saveFile(filename, artist.getData(), path);
-            FileUploadUtil.deleteFile(removeImg, path);
+            fileService.saveFile(filename, artist.getData());
+            fileService.deleteFile(removeImg);
         }
     }
 
@@ -46,7 +44,7 @@ public class ArtistServiceImpl implements ArtistService {
         Artist artist = repository.getOne(id);
         if (artist.getReleases().size() == 0) {
             repository.deleteById(id);
-            FileUploadUtil.deleteFile(artist.getImg(), path);
+            fileService.deleteFile(artist.getImg());
         }
     }
 

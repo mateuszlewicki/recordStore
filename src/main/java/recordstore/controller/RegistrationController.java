@@ -34,7 +34,7 @@ public class RegistrationController {
             return "registration";
         }
         if (!user.getPassword().equals(user.getPasswordConfirm())) {
-            model.addAttribute("passwordError", "Password not match");
+            model.addAttribute("passwordError", "Your new password and confirmation password do not match");
             return "registration";
         }
         if (!accountService.saveUser(user)) {
@@ -43,5 +43,4 @@ public class RegistrationController {
         }
         return "redirect:/login";
     }
-
 }

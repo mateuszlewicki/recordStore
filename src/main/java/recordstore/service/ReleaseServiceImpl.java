@@ -1,17 +1,14 @@
 package recordstore.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Artist;
 import recordstore.entity.Genre;
 import recordstore.entity.Release;
 import recordstore.repository.ReleaseRepository;
-import recordstore.utils.FileUploadUtil;
+import recordstore.utils.FileService;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,13 +17,13 @@ import java.util.UUID;
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
 
-    @Value("${upload.path}")
-    String path;
-
     private final ReleaseRepository repository;
 
-    public ReleaseServiceImpl(ReleaseRepository repository) {
+    private final FileService fileService;
+
+    public ReleaseServiceImpl(ReleaseRepository repository, FileService fileService) {
         this.repository = repository;
+        this.fileService = fileService;
     }
 
     @Override
@@ -52,8 +49,8 @@ public class ReleaseServiceImpl implements ReleaseService {
          }
         repository.save(release);
          if(!release.getData().isEmpty()) {
-             FileUploadUtil.saveFile(filename, release.getData(), path);
-             FileUploadUtil.deleteFile(removePicture, path);
+             fileService.saveFile(filename, release.getData());
+             fileService.deleteFile(removePicture);
          }
     }
 
@@ -62,7 +59,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         Release release = repository.getOne(id);
         release.removeLabel(release.getLabel());
         repository.delete(release);
-        FileUploadUtil.deleteFile(release.getImg(), path);
+        fileService.deleteFile(release.getImg());
     }
 
     @Override

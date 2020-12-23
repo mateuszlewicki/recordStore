@@ -1,11 +1,13 @@
 package recordstore.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import recordstore.utils.FileService;
 
 @Configuration
 @EnableWebMvc
@@ -33,5 +35,10 @@ public class WebConfig implements WebMvcConfigurer {
                         "classpath:/static/fonts/",
                         "classpath:/static/css/",
                         "classpath:/static/js/");
+    }
+
+    @Bean
+    public FileService fileService(){
+        return new FileService();
     }
 }

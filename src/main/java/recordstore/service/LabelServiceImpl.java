@@ -1,6 +1,5 @@
 package recordstore.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -8,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 import recordstore.repository.LabelRepository;
-import recordstore.utils.FileUploadUtil;
+import recordstore.utils.FileService;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,13 +16,13 @@ import java.util.UUID;
 @Service
 public class LabelServiceImpl implements LabelService {
 
-    @Value("${upload.path}")
-    String path;
-
     private final LabelRepository repository;
 
-    public LabelServiceImpl(LabelRepository repository) {
+    private final FileService fileService;
+
+    public LabelServiceImpl(LabelRepository repository, FileService fileService) {
         this.repository = repository;
+        this.fileService = fileService;
     }
 
     @Override
@@ -36,8 +35,8 @@ public class LabelServiceImpl implements LabelService {
         }
         repository.save(label);
         if(!label.getData().isEmpty()) {
-            FileUploadUtil.saveFile(filename, label.getData(), path);
-            FileUploadUtil.deleteFile(removePicture, path);
+            fileService.saveFile(filename, label.getData());
+            fileService.deleteFile(removePicture);
         }
     }
 
@@ -46,7 +45,7 @@ public class LabelServiceImpl implements LabelService {
         Label label = repository.getOne(id);
         if (label.getReleases().size() == 0) {
             repository.deleteById(id);
-            FileUploadUtil.deleteFile(label.getImg(), path);
+            fileService.deleteFile(label.getImg());
         }
     }
 
