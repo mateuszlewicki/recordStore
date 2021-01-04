@@ -1,0 +1,51 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="components/head"></head>
+<body>
+<header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-2 pl-0">
+            <div th:replace="components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
+        </div>
+        <div class="col-12 col-md-10">
+            <div class="main">
+                <div class="container p-0">
+                    <div class="row release-row" th:each="label : ${labels}">
+                        <div class="col-2 release-img">
+                            <img class="img-fluid" th:src="@{'/images/'+${label.img}}" width="200" alt=""/>
+                        </div>
+                        <div class="col-9 release-info">
+                            <p>
+                                <span class="title">Title: </span>
+                                <span th:text="${label.title}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Country: </span>
+                                <span th:text="${label.country}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Description: </span>
+                                <span th:text="${label.description}"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <nav aria-label="Pagination">
+                    <ul class="pagination-container">
+                        <li th:if="${labels.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
+                            <a th:href="@{/labels/(page=${pageNumber})}"
+                               th:text="${pageNumber}"
+                               th:class="${pageNumber == labels.number + 1} ? active"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+
+</body>
+</html>

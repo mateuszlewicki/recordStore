@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import recordstore.entity.Label;
-import recordstore.service.LabelService;
+import recordstore.entity.Artist;
+import recordstore.service.ArtistService;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,26 +16,26 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/labels")
-public class LabelController {
+@RequestMapping("/artists")
+public class ArtistController {
 
-    private final LabelService service;
+    private final ArtistService service;
 
-    public LabelController(LabelService service) {
+    public ArtistController(ArtistService service) {
         this.service = service;
     }
 
     @GetMapping
-    public String showAllLabels(Model model, @RequestParam("page") Optional<Integer> page) {
+    public String showAllArtists(Model model, @RequestParam("page") Optional<Integer> page) {
         int currentPage = page.orElse(1);
-        Page<Label> labels = service.getAllLabels(PageRequest.of(currentPage - 1, 10));
-        model.addAttribute("labels", labels);
-        getPages(model, labels);
-        return "labels";
+        Page<Artist> artists = service.getAllArtists(PageRequest.of(currentPage - 1, 10));
+        model.addAttribute("artists", artists);
+        getPages(model, artists);
+        return "artists";
     }
 
-    private void getPages(Model model, Page<Label> labels) {
-        int pages = labels.getTotalPages();
+    private void getPages(Model model, Page<Artist> artists) {
+        int pages = artists.getTotalPages();
         if (pages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
                     .boxed()

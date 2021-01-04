@@ -203,3 +203,44 @@ footer{
 .signin-errors{
     color: red;
 }
+
+.release-row{
+    margin-bottom: 30px;
+}
+.release-info p{
+    margin-bottom: 0;
+}
+.release-info .title{
+    font-family: 'Quicksand-Light';
+    font-size: 0.9rem;
+}
+.release-icon{
+    width: 20px;
+    opacity: 0.5;
+}
+.main{
+    margin-top: 95px;
+}
+pagination-container{
+    list-style: none;
+}
+.pagination-container .pagination-item{
+    display: inline-block;
+}
+.pagination-container .pagination-item .active{
+    pointer-events: none;
+}
+.pagination-container .pagination-item a{
+    color: #555555;
+    padding: 3px 6px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+.pagination-container .pagination-item a:hover,
+.pagination-container .pagination-item .active{
+    text-decoration: none;
+    border-bottom: 1px solid;
+}
+.pagination-container .pagination-item .active:hover{
+    cursor: none;
+}
