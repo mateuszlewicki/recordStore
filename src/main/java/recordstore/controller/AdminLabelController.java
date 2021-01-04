@@ -87,7 +87,7 @@ public class AdminLabelController {
         return "admin/labels/search";
     }
 
-    private Model getPages(Model model, Page<Label> labels) {
+    private void getPages(Model model, Page<Label> labels) {
         int pages = labels.getTotalPages();
         if (pages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
@@ -95,6 +95,5 @@ public class AdminLabelController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        return model;
     }
 }

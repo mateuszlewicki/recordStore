@@ -2,16 +2,12 @@ package recordstore.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.Release;
 import recordstore.enums.Format;
-import recordstore.projections.ArtistProjection;
-import recordstore.projections.LabelProjection;
 import recordstore.service.ArtistService;
 import recordstore.service.GenreService;
 import recordstore.service.LabelService;
@@ -108,15 +104,14 @@ public class AdminReleaseController {
         return "admin/releases/search";
     }
 
-    private Model getModelAttributes(Model model) {
+    private void getModelAttributes(Model model) {
         model.addAttribute("genres", genreService.getAllGenres());
         model.addAttribute("artists", artistService.getAllArtistsNames());
         model.addAttribute("labels", labelService.getAllLabelsTitles());
         model.addAttribute("formatTypes" , Format.values());
-        return model;
     }
 
-    private Model getPages(Model model, Page<Release> releases) {
+    private void getPages(Model model, Page<Release> releases) {
         int pages = releases.getTotalPages();
         if (pages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
@@ -124,6 +119,5 @@ public class AdminReleaseController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        return model;
     }
 }

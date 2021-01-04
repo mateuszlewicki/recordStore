@@ -86,7 +86,7 @@ public class AdminArtistController {
         return "admin/artists/search";
     }
 
-    private Model getPages(Model model, Page<Artist> artists) {
+    private void getPages(Model model, Page<Artist> artists) {
         int pages = artists.getTotalPages();
         if (pages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
@@ -94,6 +94,5 @@ public class AdminArtistController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        return model;
     }
 }
