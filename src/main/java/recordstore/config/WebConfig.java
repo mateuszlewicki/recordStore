@@ -28,13 +28,15 @@ public class WebConfig implements WebMvcConfigurer {
                 "/images/**",
                 "/fonts/**",
                 "/css/**",
-                "/js/**")
+                "/js/**",
+                "/select2/**")
                 .addResourceLocations(
                         "classpath:/META-INF/resources/webjars/",
                         "file:" + uploadPath,
                         "classpath:/static/fonts/",
                         "classpath:/static/css/",
-                        "classpath:/static/js/");
+                        "classpath:/static/js/",
+                        "classpath:/static/select2/");
     }
 
     @Bean

@@ -25,23 +25,42 @@
                     </form>
                 </div>
                 <div class="main-content mx-3" th:if="${artist}">
-                    <div class="row">
-<!--                        <div th:each="release : ${releases}" class="col-12 col-md-4 col-lg-3">-->
-<!--                            <div class="">-->
-<!--                                <img th:src="@{'images/'+${release.img}}" width="200" alt=""/>-->
-<!--                            </div>-->
-<!--                            <div class="">-->
-<!--                                <div th:text="${release.artist}"></div>-->
-<!--                                <div th:text="${release.title}"></div>-->
-<!--                                <div th:text="${release.label}"></div>-->
-<!--                                <div th:text="${release.code}"></div>-->
-<!--                                <div th:text="${release.format}"></div>-->
-<!--                                <div th:text="${release.releaseDate}"></div>-->
-<!--                                <div th:text="${release.price}"></div>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                    <div class="row release-row">
+                        <div class="col-2 release-img">
+                            <img class="img-fluid" th:src="@{'/images/'+${artist.img}}" width="200" alt=""/>
+                        </div>
+                        <div class="col-9 release-info">
+                            <p>
+                                <span class="title">Artist: </span>
+                                <span th:text="${artist.name}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Country: </span>
+                                <span th:text="${artist.country}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Description: </span>
+                                <span th:text="${artist.description}"></span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h5>Releases</h5>
+                    <div th:if="${artist.releases}">
+                        <table class="table">
+                            <tbody th:each="release : ${artist.releases}">
+                            <tr>
+                                <td><img th:src="@{'/images/'+${release.img}}" width="50" alt=""/></td>
+                                <td th:text="${release.title}"></td>
+                                <td th:text="${release.label.title}"></td>
+                                <td th:text="${release.releaseDate}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+
                 <div class="main-content mx-3" th:unless="${artist}">
                     <p>Artist not found</p>
                 </div>

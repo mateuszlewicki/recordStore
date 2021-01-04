@@ -23,3 +23,7 @@ $(function() {
         minLength: 2
     });
 });
+
+$(document).ready(function() {
+    $('select').select2();
+});

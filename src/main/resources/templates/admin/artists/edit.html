@@ -41,7 +41,7 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <input class="form-control" type="text" id="description" th:field="*{description}" placeholder="Description" maxlength="100" th:value="${artist.description}" />
+                        <input class="form-control" type="text" id="description" th:field="*{description}" placeholder="Description" th:value="${artist.description}" />
                     </div>
 
                     <button type="submit" class="btn btn-primary mb-4">Submit</button>
