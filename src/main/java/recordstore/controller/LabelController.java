@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import recordstore.entity.Label;
@@ -32,6 +33,12 @@ public class LabelController {
         model.addAttribute("labels", labels);
         getPages(model, labels);
         return "labels";
+    }
+
+    @GetMapping("/{id}")
+    public String showLabelInfo(@PathVariable long id, Model model){
+        model.addAttribute("label", service.getLabel(id));
+        return "label";
     }
 
     private void getPages(Model model, Page<Label> labels) {

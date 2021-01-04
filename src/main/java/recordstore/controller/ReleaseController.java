@@ -34,6 +34,12 @@ public class ReleaseController {
         return "releases";
     }
 
+    @GetMapping("/{id}")
+    public String showReleaseInfo(@PathVariable long id, Model model){
+        model.addAttribute("release", service.getRelease(id));
+        return "release";
+    }
+
     private void getPages(Model model, Page<Release> releases) {
         int pages = releases.getTotalPages();
         if (pages > 0) {

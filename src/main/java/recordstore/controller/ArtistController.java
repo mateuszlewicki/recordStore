@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import recordstore.entity.Artist;
@@ -32,6 +33,12 @@ public class ArtistController {
         model.addAttribute("artists", artists);
         getPages(model, artists);
         return "artists";
+    }
+
+    @GetMapping("/{id}")
+    public String showArtistInfo(@PathVariable long id, Model model){
+        model.addAttribute("artist", service.getArtist(id));
+        return "artist";
     }
 
     private void getPages(Model model, Page<Artist> artists) {

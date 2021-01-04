@@ -27,9 +27,9 @@
                 <div class="container p-0 mt-4">
                     <div class="row release-row" th:each="genre : ${genres}">
                         <div class="col-9 release-info">
-                            <p>
+                            <a th:href="@{'/genres/{id}'(id=${genre.id})}">
                                 <span th:text="${genre.title}"></span>
-                            </p>
+                            </a>
                         </div>
                     </div>
                 </div>

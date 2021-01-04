@@ -24,32 +24,32 @@
                         </fieldset>
                     </form>
                 </div>
-                <div class="main-content mx-3" th:if="${artist}">
+                <div class="main-content mx-3">
                     <div class="row release-row">
                         <div class="col-2 release-img">
-                            <img class="img-fluid" th:src="@{'/images/'+${artist.img}}" width="200" alt=""/>
+                            <img class="img-fluid" th:src="@{'/images/'+${label.img}}" width="200" alt=""/>
                         </div>
                         <div class="col-9 release-info">
                             <p>
-                                <span class="title">Artist: </span>
-                                <span th:text="${artist.name}"></span>
+                                <span class="title">Label: </span>
+                                <span th:text="${label.title}"></span>
                             </p>
                             <p>
                                 <span class="title">Country: </span>
-                                <span th:text="${artist.country}"></span>
+                                <span th:text="${label.country}"></span>
                             </p>
                             <p>
                                 <span class="title">Description: </span>
-                                <span th:text="${artist.description}"></span>
+                                <span th:text="${label.description}"></span>
                             </p>
                         </div>
                     </div>
 
                     <hr>
                     <h5>Releases</h5>
-                    <div th:if="${artist.releases}">
+                    <div th:if="${label.releases}">
                         <table class="table">
-                            <tbody th:each="release : ${artist.releases}">
+                            <tbody th:each="release : ${label.releases}">
                             <tr>
                                 <td>
                                     <a th:href="@{'/releases/{id}'(id=${release.id})}">
@@ -57,13 +57,13 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a th:href="@{'/releases/{id}'(id=${release.id})}">
-                                        <span th:text="${release.title}"></span>
+                                    <a class="breadcrumb-item" th:each="artist : ${release.artists}" th:href="@{'/artists/{id}'(id=${artist.id})}">
+                                        <span th:text="${artist.name}"></span>
                                     </a>
                                 </td>
                                 <td>
-                                    <a th:href="@{'/labels/{id}'(id=${release.label.id})}">
-                                        <span th:text="${release.label.title}"></span>
+                                    <a th:href="@{'/releases/{id}'(id=${release.id})}">
+                                        <span th:text="${release.title}"></span>
                                     </a>
                                 </td>
                                 <td th:text="${release.code}"></td>
@@ -73,13 +73,11 @@
                         </table>
                     </div>
                 </div>
-
-                <div class="main-content mx-3" th:unless="${artist}">
-                    <p>Artist not found</p>
-                </div>
             </div>
         </div>
     </div>
 </div>
 
 <th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+</body>
+</html>

@@ -4,6 +4,7 @@ package recordstore.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import recordstore.entity.Genre;
 import recordstore.service.GenreService;
@@ -25,5 +26,11 @@ public class GenreController {
         List<Genre> genres = service.getAllGenres();
         model.addAttribute("genres", genres);
         return "genres";
+    }
+
+    @GetMapping("/{id}")
+    public String showAllReleasesByGenre(@PathVariable long id, Model model){
+        model.addAttribute("genre", service.getGenre(id));
+        return "genre";
     }
 }

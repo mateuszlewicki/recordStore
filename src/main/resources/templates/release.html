@@ -1,8 +1,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="components/head"></head>
 <body>
-<header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 
+<header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 col-md-2 pl-0">
@@ -10,7 +10,6 @@
         </div>
         <div class="col-12 col-md-10">
             <div class="main">
-
                 <div class="search_box">
                     <form class="get container p-0 mb-0" action="/search">
                         <fieldset>
@@ -23,47 +22,48 @@
                         </fieldset>
                     </form>
                 </div>
-
-                <div class="container p-0 mt-4">
-                    <div class="row release-row" th:each="label : ${labels}">
+                <div class="main-content mx-3">
+                    <div class="row release-row">
                         <div class="col-2 release-img">
-                            <a th:href="@{'/labels/{id}'(id=${label.id})}">
-                                <img class="img-fluid" th:src="@{'/images/'+${label.img}}" width="200" alt=""/>
-                            </a>
+                            <img class="img-fluid" th:src="@{'/images/'+${release.img}}" width="200" alt=""/>
                         </div>
                         <div class="col-9 release-info">
                             <p>
-                                <span class="title">Title: </span>
-                                <a th:href="@{'/labels/{id}'(id=${label.id})}">
-                                    <span th:text="${label.title}"></span>
+                                <span class="title">Artist: </span>
+                                <a class="breadcrumb-item" th:each="artist : ${release.artists}" th:href="@{'/artists/{id}'(id=${artist.id})}">
+                                    <span th:text="${artist.name}"></span>
                                 </a>
                             </p>
                             <p>
-                                <span class="title">Country: </span>
-                                <span th:text="${label.country}"></span>
+                                <span class="title">Title: </span>
+                                <span th:text="${release.title}"></span>
                             </p>
                             <p>
-                                <span class="title">Description: </span>
-                                <span th:text="${label.description}"></span>
+                                <span class="title">Label: </span>
+                                <a th:href="@{'/labels/{id}'(id=${release.label.id})}">
+                                    <span th:text="${release.label.title}"></span>
+                                </a>
+                            </p>
+                            <p>
+                                <span class="title">Code: </span>
+                                <span th:text="${release.code}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Genre: </span>
+                                <span class="breadcrumb-item" th:each="genre : ${release.genres}" th:text="${genre.title}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Format: </span>
+                                <span th:text="${release.format.type}"></span>
                             </p>
                         </div>
                     </div>
                 </div>
-                <nav aria-label="Pagination">
-                    <ul class="pagination-container">
-                        <li th:if="${labels.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
-                            <a th:href="@{/labels/(page=${pageNumber})}"
-                               th:text="${pageNumber}"
-                               th:class="${pageNumber == labels.number + 1} ? active"></a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
 </div>
 
 <th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
-
 </body>
 </html>
