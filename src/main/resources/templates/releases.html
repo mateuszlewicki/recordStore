@@ -10,7 +10,21 @@
         </div>
         <div class="col-12 col-md-10">
             <div class="main">
-                <div class="container p-0">
+
+                <div class="search_box">
+                    <form class="get container p-0 mb-0" action="/search">
+                        <fieldset>
+                            <div class="input-group">
+                                <input name="search" id="search" placeholder="Search" type="text">
+                                <button class="btn btn-search-icon" aria-label="Search" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="container p-0 mt-4">
                     <div class="row release-row" th:each="release : ${releases}">
                         <div class="col-2 release-img">
                             <img class="img-fluid" th:src="@{'/images/'+${release.img}}" width="200" alt=""/>

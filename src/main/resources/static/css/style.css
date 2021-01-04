@@ -218,9 +218,9 @@ footer{
     width: 20px;
     opacity: 0.5;
 }
-.main{
-    margin-top: 95px;
-}
+/*.main{*/
+/*    margin-top: 95px;*/
+/*}*/
 pagination-container{
     list-style: none;
 }
