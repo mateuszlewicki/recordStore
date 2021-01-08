@@ -32,13 +32,13 @@ public class LabelController {
         Page<Label> labels = service.getAllLabels(PageRequest.of(currentPage - 1, 10));
         model.addAttribute("labels", labels);
         getPages(model, labels);
-        return "labels";
+        return "client/labels/index";
     }
 
     @GetMapping("/{id}")
     public String showLabelInfo(@PathVariable long id, Model model){
         model.addAttribute("label", service.getLabel(id));
-        return "label";
+        return "client/labels/view";
     }
 
     private void getPages(Model model, Page<Label> labels) {

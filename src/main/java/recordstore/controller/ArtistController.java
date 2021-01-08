@@ -32,13 +32,13 @@ public class ArtistController {
         Page<Artist> artists = service.getAllArtists(PageRequest.of(currentPage - 1, 10));
         model.addAttribute("artists", artists);
         getPages(model, artists);
-        return "artists";
+        return "client/artists/index";
     }
 
     @GetMapping("/{id}")
     public String showArtistInfo(@PathVariable long id, Model model){
         model.addAttribute("artist", service.getArtist(id));
-        return "artist";
+        return "client/artists/view";
     }
 
     private void getPages(Model model, Page<Artist> artists) {

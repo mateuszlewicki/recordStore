@@ -25,12 +25,12 @@ public class GenreController {
     public String showAllGenres(Model model){
         List<Genre> genres = service.getAllGenres();
         model.addAttribute("genres", genres);
-        return "genres";
+        return "client/genres/index";
     }
 
     @GetMapping("/{id}")
     public String showAllReleasesByGenre(@PathVariable long id, Model model){
         model.addAttribute("genre", service.getGenre(id));
-        return "genre";
+        return "client/genres/view";
     }
 }

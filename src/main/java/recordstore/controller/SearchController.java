@@ -30,6 +30,6 @@ public class SearchController {
     @GetMapping("/search")
     public String showSearchResult(@RequestParam("search") String search, Model model) {
         model.addAttribute("artist", service.getArtistByName(search));
-        return "search";
+        return "client/search/index";
     }
 }
