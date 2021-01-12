@@ -4,9 +4,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import recordstore.DTO.ReleaseDTO;
 import recordstore.entity.Artist;
 import recordstore.entity.Genre;
 import recordstore.entity.Release;
+import recordstore.entity.Track;
 import recordstore.repository.ReleaseRepository;
 import recordstore.utils.FileService;
 
@@ -33,19 +35,13 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     @Override
     public void saveRelease(Release release) throws IOException {
-        for (Artist artist : release.getArtists()) {
-            release.addArtist(artist);
-        }
-        for (Genre genre : release.getGenres()) {
-            release.addGenre(genre);
-        }
-        release.addLabel(release.getLabel());
-
         String filename = createUniqueName(release.getData());
         String removePicture = release.getImg();
 
          if(!release.getData().isEmpty()){
              release.setImg(filename);
+         } else {
+             release.setImg(release.getImg());
          }
         repository.save(release);
          if(!release.getData().isEmpty()) {

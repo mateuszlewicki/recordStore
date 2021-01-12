@@ -76,6 +76,19 @@
                         </select>
                     </div>
 
+                    <div id="input_wrapper">
+                        <div id="form-row_first" class="form-row" th:each="track, item : ${release.tracklist}">
+                            <div class="col">
+                                <label for="position">Position</label><br>
+                                <input id="position" type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].position}">
+                            </div>
+                            <div class="col">
+                                <label for="title">Title</label>
+                                <input id="title" type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].title}">
+                            </div>
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn btn-primary mb-4">Submit</button>
                 </form>
 

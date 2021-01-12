@@ -1,13 +1,17 @@
 package recordstore.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import recordstore.DTO.ReleaseDTO;
 import recordstore.entity.Release;
+import recordstore.entity.Track;
 import recordstore.enums.Format;
+import recordstore.mapper.ReleaseMapper;
 import recordstore.service.ArtistService;
 import recordstore.service.GenreService;
 import recordstore.service.LabelService;
@@ -24,6 +28,9 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("/admin/releases/")
 public class AdminReleaseController {
+
+    @Autowired
+    private ReleaseMapper releaseMapper;
 
     private final ReleaseService service;
     private final ArtistService artistService;
@@ -51,38 +58,43 @@ public class AdminReleaseController {
 
     @GetMapping("/add")
     public String showAddForm(Model model){
-        model.addAttribute("newRelease" , new Release());
+        ReleaseDTO releaseDTO = new ReleaseDTO();
+
+        releaseDTO.getTracklist().add(new Track());
+        releaseDTO.getTracklist().add(new Track());
+
+        model.addAttribute("release" , releaseDTO);
         getModelAttributes(model);
         return "admin/releases/add";
     }
 
     @PostMapping("/add")
-    public String saveRelease(@Valid @ModelAttribute("newRelease") Release release,
+    public String saveRelease(@Valid @ModelAttribute("newRelease") ReleaseDTO releaseDTO,
                              BindingResult result, Model model) throws IOException {
         if (result.hasErrors()) {
             getModelAttributes(model);
             return "admin/releases/add";
         }
-        service.saveRelease(release);
+        service.saveRelease(releaseMapper.fromDTO(releaseDTO));
         return "redirect:/admin/releases/";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable long id, Model model){
-        Release release = service.getRelease(id);
+        ReleaseDTO release = releaseMapper.toDTO(service.getRelease(id));
         model.addAttribute("release", release);
         getModelAttributes(model);
         return "admin/releases/edit";
     }
 
     @PostMapping("/update/")
-    public String updateRecord(@Valid @ModelAttribute("release") Release release,
+    public String updateRecord(@Valid @ModelAttribute("release") ReleaseDTO releaseDTO,
                                BindingResult result, Model model) throws IOException {
         if(result.hasErrors()){
             getModelAttributes(model);
             return "admin/releases/edit";
         }
-        service.saveRelease(release);
+        service.saveRelease(releaseMapper.fromDTO(releaseDTO));
         return "redirect:/admin/releases/";
     }
 
