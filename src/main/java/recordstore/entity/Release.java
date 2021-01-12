@@ -7,7 +7,9 @@ import recordstore.validation.ValidDateFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,7 +39,7 @@ public class Release {
     private Format format;
 
     @Column(name = "img")
-    private String img = "noImageAvailable.png";
+    private String img;
 
     @Transient
     private MultipartFile data;
@@ -56,6 +58,9 @@ public class Release {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Label label;
+
+    @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Track> tracklist = new ArrayList<>();
 
     public void addArtist(Artist artist){
         this.artists.add(artist);
@@ -82,5 +87,15 @@ public class Release {
     public void removeLabel(Label label){
         this.setLabel(null);
         label.getReleases().remove(this);
+    }
+
+    public void addTrack(Track track) {
+        this.tracklist.add(track);
+        track.setRelease(this);
+    }
+
+    public void removeTrack(Track track) {
+        this.tracklist.remove(track);
+        track.setRelease(null);
     }
 }
