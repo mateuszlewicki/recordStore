@@ -1,6 +1,5 @@
 package recordstore.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -29,18 +28,18 @@ import java.util.stream.IntStream;
 @RequestMapping("/admin/releases/")
 public class AdminReleaseController {
 
-    @Autowired
-    private ReleaseMapper releaseMapper;
+    private final ReleaseMapper releaseMapper;
 
     private final ReleaseService service;
     private final ArtistService artistService;
     private final LabelService labelService;
     private final GenreService genreService;
 
-    public AdminReleaseController(ReleaseService service,
+    public AdminReleaseController(ReleaseMapper releaseMapper, ReleaseService service,
                                   ArtistService artistService,
                                   LabelService labelService,
                                   GenreService genreService) {
+        this.releaseMapper = releaseMapper;
         this.service = service;
         this.artistService = artistService;
         this.labelService = labelService;
@@ -59,17 +58,13 @@ public class AdminReleaseController {
     @GetMapping("/add")
     public String showAddForm(Model model){
         ReleaseDTO releaseDTO = new ReleaseDTO();
-
-        releaseDTO.getTracklist().add(new Track());
-        releaseDTO.getTracklist().add(new Track());
-
         model.addAttribute("release" , releaseDTO);
         getModelAttributes(model);
         return "admin/releases/add";
     }
 
     @PostMapping("/add")
-    public String saveRelease(@Valid @ModelAttribute("newRelease") ReleaseDTO releaseDTO,
+    public String saveRelease(@Valid @ModelAttribute("release") ReleaseDTO releaseDTO,
                              BindingResult result, Model model) throws IOException {
         if (result.hasErrors()) {
             getModelAttributes(model);
@@ -81,8 +76,8 @@ public class AdminReleaseController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable long id, Model model){
-        ReleaseDTO release = releaseMapper.toDTO(service.getRelease(id));
-        model.addAttribute("release", release);
+        ReleaseDTO releaseDTO = releaseMapper.toDTO(service.getRelease(id));
+        model.addAttribute("release", releaseDTO);
         getModelAttributes(model);
         return "admin/releases/edit";
     }
@@ -114,6 +109,21 @@ public class AdminReleaseController {
     public String showSearchResult(@RequestParam("search") String search, Model model) {
         model.addAttribute("release", service.getReleaseByTitle(search));
         return "admin/releases/search";
+    }
+
+    @PostMapping("/addTrack")
+    public String addTrack(@ModelAttribute("release") ReleaseDTO releaseDTO, Model model) {
+        releaseDTO.getTracklist().add(new Track());
+        model.addAttribute("release", releaseDTO);
+        return "admin/releases/tracks";
+    }
+
+    @PostMapping("/removeTrack")
+    public String removeTrack(@ModelAttribute("release") ReleaseDTO releaseDTO,
+                              @RequestParam("removeIndex") int index, Model model) {
+        releaseDTO.getTracklist().remove(releaseDTO.getTracklist().get(index));
+        model.addAttribute("release", releaseDTO);
+        return "admin/releases/tracks";
     }
 
     private void getModelAttributes(Model model) {

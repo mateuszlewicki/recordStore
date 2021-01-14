@@ -76,16 +76,20 @@
                         </select>
                     </div>
 
-                    <div id="input_wrapper">
-                        <div id="form-row_first" class="form-row" th:each="track, item : ${release.tracklist}">
-                            <div class="col">
-                                <label for="position">Position</label><br>
-                                <input id="position" type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].position}">
-                            </div>
-                            <div class="col">
-                                <label for="title">Title</label>
-                                <input id="title" type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].title}">
-                            </div>
+                    <div class="dynamic-rows form-row">
+                        <div class="col-1">
+                            <h5>Tracklist</h5>
+                        </div>
+                        <div class="col">
+                            <button type="button" name="addTrack" method="post" class="btn btn-sm btn-success" data-dynamic-rows-url="/admin/releases/addTrack" th:action="@{/admin/releases/addTrack}">
+                                <i class="fas fa-plus"></i> Add new track
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="dynamic-rows">
+                        <div id="dynamicContent">
+                            <div th:replace="admin/releases/tracks :: tracks" xmlns:th="http://www.thymeleaf.org"></div>
                         </div>
                     </div>
 

@@ -27,3 +27,16 @@ $(function() {
 $(document).ready(function() {
     $('select').select2();
 });
+
+$('.dynamic-rows').on('click', 'button[data-dynamic-rows-url]', function () {
+
+    let url = $(this).data('dynamic-rows-url');
+
+    let formData = $('form').serializeArray();
+    let param = {};
+    param["name"] = $(this).attr('name');
+    param["value"] = $(this).val();
+    formData.push(param);
+
+    $('#dynamicContent').load(url, formData);
+});

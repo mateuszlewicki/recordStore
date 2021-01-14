@@ -59,6 +59,17 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="main-content mx-3">
+                    <hr>
+                    <div th:each="track: ${release.tracklist}">
+                        <p>
+                            <span th:text="${track.position}"></span>
+                            <span th:text="${track.title}"></span>
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
