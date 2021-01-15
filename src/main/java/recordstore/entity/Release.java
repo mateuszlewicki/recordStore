@@ -62,6 +62,9 @@ public class Release {
     @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Track> tracklist = new ArrayList<>();
 
+    @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<YouTubeVideo> playlist = new ArrayList<>();
+
     public void addArtist(Artist artist){
         this.artists.add(artist);
         artist.getReleases().add(this);
@@ -97,5 +100,15 @@ public class Release {
     public void removeTrack(Track track) {
         this.tracklist.remove(track);
         track.setRelease(null);
+    }
+
+    public void addVideo(YouTubeVideo video) {
+        this.playlist.add(video);
+        video.setRelease(this);
+    }
+
+    public void removeVideo(YouTubeVideo video) {
+        this.playlist.remove(video);
+        video.setRelease(null);
     }
 }

@@ -244,3 +244,6 @@ pagination-container{
 .pagination-container .pagination-item .active:hover{
     cursor: none;
 }
+.playlist{
+    display: none;
+}

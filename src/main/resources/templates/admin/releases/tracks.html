@@ -1,15 +1,13 @@
 <div th:fragment="tracks" xmlns:th="http://www.w3.org/1999/xhtml">
-    <div th:each="track, item : ${release.tracklist}" class="form-row">
+    <div th:each="track, item : ${release.tracklist}" class="form-row mt-2 align-items-center">
 
-        <input type="hidden" th:field="${release.tracklist[__${item.index}__].id}" th:value="${release.id}"/>
+        <input type="hidden" th:field="${release.tracklist[__${item.index}__].id}"/>
 
         <div class="col-1">
-            <label for="position">Position</label><br>
-            <input id="position" type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].position}" th:name="position">
+            <input type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].position}" placeholder="Position">
         </div>
         <div class="col">
-            <label for="title">Title</label>
-            <input id="title" type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].title}" th:name="title">
+            <input type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].title}" placeholder="Title">
         </div>
 
         <div class="col">

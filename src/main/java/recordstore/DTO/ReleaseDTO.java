@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
-import recordstore.entity.Artist;
-import recordstore.entity.Genre;
-import recordstore.entity.Label;
-import recordstore.entity.Track;
+import recordstore.entity.*;
 import recordstore.enums.Format;
 import recordstore.validation.ValidDateFormat;
 
@@ -40,4 +37,5 @@ public class ReleaseDTO {
     private Set<Genre> genres = new HashSet<>();
     private Label label;
     private List<Track> tracklist = new ArrayList<>();
+    private List<YouTubeVideo> playlist = new ArrayList<>();
 }

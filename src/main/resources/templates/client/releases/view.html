@@ -59,22 +59,32 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="main-content mx-3">
-                    <hr>
-                    <div th:each="track: ${release.tracklist}">
-                        <p>
-                            <span th:text="${track.position}"></span>
-                            <span th:text="${track.title}"></span>
-                        </p>
+                <hr>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="main-content mx-3">
+                            <div th:each="track: ${release.tracklist}">
+                                <p>
+                                    <span class="mr-5" th:text="${track.position}"></span>
+                                    <span th:text="${track.title}"></span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
+                    <span class="playlist" th:each="v, item: ${release.playlist}" th:text="${item.last}?${v.videoId}:${v.videoId}+','"></span>
+                    <div class="col-12 col-md-6 text-right" th:if="${release.playlist.size()>0}">
+                        <div id="player"></div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+<script type="text/javascript" th:src="@{/js/youtube-player.js}"></script>
+
 </body>
 </html>

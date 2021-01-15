@@ -76,24 +76,31 @@
                         </select>
                     </div>
 
-                    <div class="dynamic-rows form-row">
-                        <div class="col-1">
-                            <h5>Tracklist</h5>
-                        </div>
-                        <div class="col">
-                            <button type="button" name="addTrack" method="post" class="btn btn-sm btn-success" data-dynamic-rows-url="/admin/releases/addTrack" th:action="@{/admin/releases/addTrack}">
-                                <i class="fas fa-plus"></i> Add new track
-                            </button>
-                        </div>
+                    <div class="dynamic-track-rows mt-3">
+                        <button type="button" name="addTrack" method="post" class="btn btn-sm btn-primary" data-dynamic-rows-url="/admin/releases/addTrack" th:action="@{/admin/releases/addTrack}">
+                            <i class="fas fa-plus"></i> Add new track
+                        </button>
                     </div>
 
-                    <div class="dynamic-rows">
-                        <div id="dynamicContent">
+                    <div class="dynamic-track-rows">
+                        <div id="dynamicTrackRows">
                             <div th:replace="admin/releases/tracks :: tracks" xmlns:th="http://www.thymeleaf.org"></div>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary mb-4">Submit</button>
+                    <div class="dynamic-video-rows mt-3">
+                        <button type="button" name="addVideo" method="post" class="btn btn-sm btn-primary" data-dynamic-rows-url="/admin/releases/addVideo" th:action="@{/admin/releases/addVideo}">
+                            <i class="fas fa-plus"></i> Add new video
+                        </button>
+                    </div>
+
+                    <div class="dynamic-video-rows">
+                        <div id="dynamicVideoRows">
+                            <div th:replace="admin/releases/video :: video" xmlns:th="http://www.thymeleaf.org"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success my-4">Submit</button>
                 </form>
 
             </div>

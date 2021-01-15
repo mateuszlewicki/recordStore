@@ -28,15 +28,22 @@ $(document).ready(function() {
     $('select').select2();
 });
 
-$('.dynamic-rows').on('click', 'button[data-dynamic-rows-url]', function () {
-
+$('.dynamic-track-rows').on('click', 'button[data-dynamic-rows-url]', function () {
     let url = $(this).data('dynamic-rows-url');
-
     let formData = $('form').serializeArray();
     let param = {};
     param["name"] = $(this).attr('name');
     param["value"] = $(this).val();
     formData.push(param);
+    $('#dynamicTrackRows').load(url, formData);
+});
 
-    $('#dynamicContent').load(url, formData);
+$('.dynamic-video-rows').on('click', 'button[data-dynamic-rows-url]', function () {
+    let url = $(this).data('dynamic-rows-url');
+    let formData = $('form').serializeArray();
+    let param = {};
+    param["name"] = $(this).attr('name');
+    param["value"] = $(this).val();
+    formData.push(param);
+    $('#dynamicVideoRows').load(url, formData);
 });

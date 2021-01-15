@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import recordstore.DTO.ReleaseDTO;
 import recordstore.entity.Release;
 import recordstore.entity.Track;
+import recordstore.entity.YouTubeVideo;
 import recordstore.enums.Format;
 import recordstore.mapper.ReleaseMapper;
 import recordstore.service.ArtistService;
@@ -124,6 +125,21 @@ public class AdminReleaseController {
         releaseDTO.getTracklist().remove(releaseDTO.getTracklist().get(index));
         model.addAttribute("release", releaseDTO);
         return "admin/releases/tracks";
+    }
+
+    @PostMapping("/addVideo")
+    public String addVideo(@ModelAttribute("release") ReleaseDTO releaseDTO, Model model) {
+        releaseDTO.getPlaylist().add(new YouTubeVideo());
+        model.addAttribute("release", releaseDTO);
+        return "admin/releases/video";
+    }
+
+    @PostMapping("/removeVideo")
+    public String removeVideo(@ModelAttribute("release") ReleaseDTO releaseDTO,
+                              @RequestParam("removeIndex") int index, Model model) {
+        releaseDTO.getPlaylist().remove(releaseDTO.getPlaylist().get(index));
+        model.addAttribute("release", releaseDTO);
+        return "admin/releases/video";
     }
 
     private void getModelAttributes(Model model) {

@@ -2,10 +2,7 @@ package recordstore.mapper;
 
 import org.springframework.stereotype.Component;
 import recordstore.DTO.ReleaseDTO;
-import recordstore.entity.Artist;
-import recordstore.entity.Genre;
-import recordstore.entity.Release;
-import recordstore.entity.Track;
+import recordstore.entity.*;
 
 @Component
 public class ReleaseMapper {
@@ -22,6 +19,7 @@ public class ReleaseMapper {
         releaseDTO.setGenres(release.getGenres());
         releaseDTO.setLabel(release.getLabel());
         releaseDTO.setTracklist(release.getTracklist());
+        releaseDTO.setPlaylist(release.getPlaylist());
         return releaseDTO;
     }
 
@@ -46,6 +44,10 @@ public class ReleaseMapper {
 
         for (Track track : releaseDTO.getTracklist()) {
             release.addTrack(track);
+        }
+
+        for (YouTubeVideo video : releaseDTO.getPlaylist()) {
+            release.addVideo(video);
         }
 
         return release;
