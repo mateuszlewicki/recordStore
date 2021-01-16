@@ -11,10 +11,10 @@
         </div>
 
         <div class="col">
-            <button type="button" name="removeIndex" method="post" class="btn btn-sm btn-danger"
+            <button type="button" name="removeIndex" method="post" class="btn btn-sm btn-link"
                     data-dynamic-rows-url="/admin/releases/removeTrack" th:action="@{/admin/releases/removeTrack}"
                     th:value="${item.index}">
-                <i class="fas fa-minus"></i>
+                <img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/>
             </button>
         </div>
 

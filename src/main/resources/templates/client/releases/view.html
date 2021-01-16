@@ -72,8 +72,8 @@
                         </div>
                     </div>
 
-                    <span class="playlist" th:each="v, item: ${release.playlist}" th:text="${item.last}?${v.videoId}:${v.videoId}+','"></span>
-                    <div class="col-12 col-md-6 text-right" th:if="${release.playlist.size()>0}">
+                    <div class="col-12 col-md-6 text-right" th:if="${videoIds.length()>0}">
+                        <span class="playlist" th:text="${videoIds}"></span>
                         <div id="player"></div>
                     </div>
 

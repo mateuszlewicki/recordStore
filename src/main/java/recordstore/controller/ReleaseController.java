@@ -6,8 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import recordstore.entity.Release;
+import recordstore.entity.YouTubeVideo;
 import recordstore.service.ReleaseService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,7 +37,9 @@ public class ReleaseController {
 
     @GetMapping("/{id}")
     public String showReleaseInfo(@PathVariable long id, Model model){
-        model.addAttribute("release", service.getRelease(id));
+        Release release = service.getRelease(id);
+        model.addAttribute("release", release);
+        getVideoIds(model, release);
         return "client/releases/view";
     }
 
@@ -46,5 +51,16 @@ public class ReleaseController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+    }
+
+    private void getVideoIds(Model model, Release release){
+        StringBuilder builder = new StringBuilder();
+        for(YouTubeVideo video : release.getPlaylist()){
+            builder.append(video.getVideoId() + ",");
+        }
+        if (builder.length() > 0){
+            builder.deleteCharAt(builder.length()-1);
+        }
+        model.addAttribute("videoIds", builder.toString());
     }
 }
