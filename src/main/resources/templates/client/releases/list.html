@@ -25,6 +25,8 @@
                 </div>
 
                 <div class="container p-0 mt-4">
+                    <h5 th:text="${genre.title}"></h5>
+                    <hr>
                     <div class="row release-row" th:each="release : ${releases}">
                         <div class="col-2 release-img">
                             <a th:href="@{'/releases/{id}'(id=${release.id})}">
@@ -54,7 +56,9 @@
                             </p>
                             <p>
                                 <span class="title">Genre: </span>
-                                <span class="breadcrumb-item" th:each="genre : ${release.genres}" th:text="${genre.title}"></span>
+                                <a class="breadcrumb-item" th:each="genre : ${release.genres}" th:href="@{'/releases/genre/{id}'(id=${genre.id})}">
+                                    <span th:text="${genre.title}"></span>
+                                </a>
                             </p>
                             <p>
                                 <span class="title">Format: </span>
@@ -66,7 +70,7 @@
                 <nav aria-label="Pagination">
                     <ul class="pagination-container">
                         <li th:if="${releases.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
-                            <a th:href="@{'/genres/{id}/?page={page}'(id=${genre.id},page=${pageNumber})}"
+                            <a th:href="@{'/releases/genre/{id}/?page={page}'(id=${genre.id},page=${pageNumber})}"
                                th:text="${pageNumber}"
                                th:class="${pageNumber == releases.number + 1} ? active"></a>
                         </li>
