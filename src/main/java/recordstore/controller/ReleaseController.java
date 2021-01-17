@@ -2,6 +2,7 @@ package recordstore.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,9 @@ public class ReleaseController {
     }
 
     @GetMapping
-    public String showAllreleases(Model model, @RequestParam("page") Optional<Integer> page){
+    public String showAllReleases(Model model, @RequestParam("page") Optional<Integer> page){
         int currentPage = page.orElse(1);
-        Page<Release> releases = service.getAllReleases(PageRequest.of(currentPage - 1 ,10 ));
+        Page<Release> releases = service.getAllReleases(PageRequest.of(currentPage - 1 ,10, Sort.by("releaseDate").descending()));
         model.addAttribute("releases", releases);
         getPages(model, releases);
         return "client/releases/index";
@@ -43,7 +44,7 @@ public class ReleaseController {
                                          @RequestParam("page") Optional<Integer> page){
         int currentPage = page.orElse(1);
         Genre genre = genreService.getGenre(id);
-        Page<Release> releases = service.getAllReleasesByGenre(genre, PageRequest.of(currentPage - 1 ,10 ));
+        Page<Release> releases = service.getAllReleasesByGenre(genre, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
         model.addAttribute("releases", releases);
         model.addAttribute("genre", genre);
         getPages(model, releases);
@@ -71,7 +72,8 @@ public class ReleaseController {
     private void getVideoIds(Model model, Release release){
         StringBuilder builder = new StringBuilder();
         for(YouTubeVideo video : release.getPlaylist()){
-            builder.append(video.getVideoId() + ",");
+            builder.append(video.getVideoId());
+            builder.append(",");
         }
         if (builder.length() > 0){
             builder.deleteCharAt(builder.length()-1);
