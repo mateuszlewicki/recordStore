@@ -64,6 +64,11 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
+    public Page<Release> getAllReleasesByGenre(Genre genre, Pageable pageable) {
+        return repository.findAllByGenres(genre, pageable);
+    }
+
+    @Override
     public List<String> search(String keyword) {
         return repository.search(keyword);
     }
