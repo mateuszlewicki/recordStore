@@ -46,8 +46,8 @@
                             </p>
                         </div>
                         <div class="col-1">
-                            <a class="mr-2" th:href="@{'edit/{id}'(id=${release.id})}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo" width="30"/></a>
-                            <a class="delete" th:href="@{'/admin/releases/delete/' + ${release.id}}"><img class="release-icon" th:src="@{/images/trash.svg}" alt="logo" width="30"/></a>
+                            <a class="mr-2" th:href="@{'edit/{id}'(id=${release.id})}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo"/></a>
+                            <a class="delete" th:href="@{'/admin/releases/delete/' + ${release.id}}"><img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/></a>
                         </div>
                     </div>
                 </div>

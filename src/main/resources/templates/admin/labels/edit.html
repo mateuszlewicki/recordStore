@@ -16,7 +16,7 @@
 
                 <h3>Edit label</h3>
 
-                <form th:action="@{/admin/labels/update/}" th:object="${label}" method="post" enctype="multipart/form-data">
+                <form th:action="@{'/admin/labels/edit/{id}'(id=${label.id})}" th:object="${label}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="hidden" th:field="*{id}" th:value="${label.id}"/>
                         <input type="hidden" th:field="*{img}" th:value="${label.img}"/>

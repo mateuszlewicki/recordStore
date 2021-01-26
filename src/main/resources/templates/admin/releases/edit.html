@@ -17,7 +17,7 @@
 
                 <h3>Edit release</h3>
 
-                <form th:action="@{/admin/releases/update/}" th:object="${release}" method="post" enctype="multipart/form-data">
+                <form th:action="@{'/admin/releases/edit/{id}'(id=${release.id})}" th:object="${release}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="hidden" th:field="*{id}" th:value="${release.id}"/>
                         <input type="hidden" th:field="*{img}" th:value="${release.img}"/>

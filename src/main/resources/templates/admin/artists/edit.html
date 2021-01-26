@@ -16,7 +16,7 @@
 
                 <h3>Edit artist</h3>
 
-                <form th:action="@{/admin/artists/update/}" th:object="${artist}" method="post" enctype="multipart/form-data">
+                <form th:action="@{'/admin/artists/edit/{id}'(id=${artist.id})}" th:object="${artist}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="hidden" th:field="*{id}" th:value="${artist.id}"/>
                         <input type="hidden" th:field="*{img}" th:value="${artist.img}"/>
