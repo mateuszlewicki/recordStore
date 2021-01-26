@@ -83,7 +83,7 @@ public class AdminReleaseController {
         return "admin/releases/edit";
     }
 
-    @PostMapping("/update/")
+    @PostMapping("/edit/{id}")
     public String updateRecord(@Valid @ModelAttribute("release") ReleaseDTO releaseDTO,
                                BindingResult result, Model model) throws IOException {
         if(result.hasErrors()){
@@ -96,8 +96,8 @@ public class AdminReleaseController {
 
     @GetMapping("delete/{id}")
     public String delete(@PathVariable long id) throws IOException {
-    service.deleteRelease(id);
-    return "redirect:/admin/releases/";
+        service.deleteRelease(id);
+        return "redirect:/admin/releases/";
     }
 
     @RequestMapping(value = "autocomplete")

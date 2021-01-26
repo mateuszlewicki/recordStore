@@ -247,3 +247,8 @@ pagination-container{
 .playlist{
     display: none;
 }
+
+.error-icon{
+    width: 50px;
+    opacity: 0.5;
+}

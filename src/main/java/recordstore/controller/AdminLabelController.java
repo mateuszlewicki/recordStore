@@ -60,7 +60,7 @@ public class AdminLabelController {
         return "admin/labels/edit";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/edit/{id}")
     public String updateLabel(@Valid @ModelAttribute("label") Label label, BindingResult result) throws IOException {
         if (result.hasErrors()) {
             return "admin/labels/edit";

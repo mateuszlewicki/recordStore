@@ -10,4 +10,6 @@ target/
 
 !edit.svg
 
+!error.svg
+
 /src/main/resources/application.yml
