@@ -37,6 +37,14 @@ public class RegistrationController {
             model.addAttribute("passwordError", "Your new password and confirmation password do not match");
             return "registration";
         }
+        if (user.getPassword().length() < 6) {
+            model.addAttribute("passwordError", "Password should have min 6 characters");
+            return "registration";
+        }
+        if (user.getPassword().length() > 16) {
+            model.addAttribute("passwordError", "Password should have max 16 characters");
+            return "registration";
+        }
         if (!accountService.saveUser(user)) {
             model.addAttribute("usernameError", "User with the same name already exists");
             return "registration";
