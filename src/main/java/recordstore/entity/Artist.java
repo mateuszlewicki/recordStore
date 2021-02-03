@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+import recordstore.validation.MultipartFileSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -35,6 +36,7 @@ public class Artist {
     private String img = "noImageAvailable.png";
 
     @Transient
+    @MultipartFileSize
     private MultipartFile data;
 
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)

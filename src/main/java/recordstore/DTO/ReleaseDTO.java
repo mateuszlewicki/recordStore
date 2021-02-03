@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import recordstore.entity.*;
 import recordstore.enums.Format;
 import recordstore.validation.ValidDateFormat;
+import recordstore.validation.MultipartFileSize;
 
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class ReleaseDTO {
 
     private Format format;
     private String img = "noImageAvailable.png";
+
+    @MultipartFileSize
     private MultipartFile data;
     private Set<Artist> artists = new HashSet<>();
     private Set<Genre> genres = new HashSet<>();

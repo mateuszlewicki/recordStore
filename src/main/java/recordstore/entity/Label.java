@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
+import recordstore.validation.MultipartFileSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -35,6 +36,7 @@ public class Label {
     private String img = "noImageAvailable.png";
 
     @Transient
+    @MultipartFileSize
     private MultipartFile data;
 
     @OneToMany(mappedBy = "label", orphanRemoval = false)

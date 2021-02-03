@@ -21,12 +21,14 @@
                     <div class="form-group">
                         <label class="sr-only" for="data">Image</label>
                         <img class="img-width mb-3" th:src="@{'/images/'+${newArtist.img}}" alt="" th:id="image"/>
-                        <input type="file" class="form-control-file" th:id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
+                        <input type="file" class="form-control-file" th:errorclass="is-invalid" id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('data')}" th:errors="*{data}"></p>
                     </div>
 
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" th:name="name" placeholder="Name" maxlength="100"/>
+                        <input type="text" class="form-control" th:errorclass="is-invalid" id="name" th:name="name" placeholder="Name" maxlength="100"/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                     </div>
 
                     <div class="form-group">
