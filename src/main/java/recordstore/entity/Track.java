@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @NoArgsConstructor
@@ -19,9 +20,11 @@ public class Track {
     private long id;
 
     @Column(name = "position")
+    @NotBlank(message = "Field is mandatory")
     String position;
 
     @Column(name = "title")
+    @NotBlank(message = "Field is mandatory")
     String title;
 
     @ManyToOne(fetch = FetchType.LAZY)

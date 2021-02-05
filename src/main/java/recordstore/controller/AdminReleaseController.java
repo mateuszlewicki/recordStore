@@ -7,9 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import recordstore.DTO.ReleaseDTO;
+import recordstore.DTO.TrackDTO;
+import recordstore.DTO.YouTubeVideoDTO;
 import recordstore.entity.Release;
-import recordstore.entity.Track;
-import recordstore.entity.YouTubeVideo;
 import recordstore.enums.Format;
 import recordstore.mapper.ReleaseMapper;
 import recordstore.service.ArtistService;
@@ -114,7 +114,7 @@ public class AdminReleaseController {
 
     @PostMapping("/addTrack")
     public String addTrack(@ModelAttribute("release") ReleaseDTO releaseDTO, Model model) {
-        releaseDTO.getTracklist().add(new Track());
+        releaseDTO.getTracklist().add(new TrackDTO());
         model.addAttribute("release", releaseDTO);
         return "admin/releases/tracks";
     }
@@ -129,7 +129,7 @@ public class AdminReleaseController {
 
     @PostMapping("/addVideo")
     public String addVideo(@ModelAttribute("release") ReleaseDTO releaseDTO, Model model) {
-        releaseDTO.getPlaylist().add(new YouTubeVideo());
+        releaseDTO.getPlaylist().add(new YouTubeVideoDTO());
         model.addAttribute("release", releaseDTO);
         return "admin/releases/video";
     }

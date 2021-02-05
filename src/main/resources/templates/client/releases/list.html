@@ -25,8 +25,6 @@
                 </div>
 
                 <div class="container p-0 mt-4">
-                    <h5 th:text="${genre.title}"></h5>
-                    <hr>
                     <div class="row release-row" th:each="release : ${releases}">
                         <div class="col-2 release-img">
                             <a th:href="@{'/releases/{id}'(id=${release.id})}">

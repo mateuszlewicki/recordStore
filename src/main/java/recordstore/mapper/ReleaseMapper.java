@@ -2,7 +2,11 @@ package recordstore.mapper;
 
 import org.springframework.stereotype.Component;
 import recordstore.DTO.ReleaseDTO;
+import recordstore.DTO.TrackDTO;
+import recordstore.DTO.YouTubeVideoDTO;
 import recordstore.entity.*;
+
+import java.util.stream.Collectors;
 
 @Component
 public class ReleaseMapper {
@@ -18,8 +22,8 @@ public class ReleaseMapper {
         releaseDTO.setArtists(release.getArtists());
         releaseDTO.setGenres(release.getGenres());
         releaseDTO.setLabel(release.getLabel());
-        releaseDTO.setTracklist(release.getTracklist());
-        releaseDTO.setPlaylist(release.getPlaylist());
+        releaseDTO.setTracklist(release.getTracklist().stream().map(this::trackToDTO).collect(Collectors.toList()));
+        releaseDTO.setPlaylist(release.getPlaylist().stream().map(this::videoToDTO).collect(Collectors.toList()));
         return releaseDTO;
     }
 
@@ -42,14 +46,44 @@ public class ReleaseMapper {
 
         release.addLabel(releaseDTO.getLabel());
 
-        for (Track track : releaseDTO.getTracklist()) {
-            release.addTrack(track);
+        for (TrackDTO trackDTO : releaseDTO.getTracklist()) {
+            release.addTrack(trackFromDTO(trackDTO));
         }
 
-        for (YouTubeVideo video : releaseDTO.getPlaylist()) {
-            release.addVideo(video);
+        for (YouTubeVideoDTO videoDTO : releaseDTO.getPlaylist()) {
+            release.addVideo(videoFromDTO(videoDTO));
         }
 
         return release;
+    }
+
+    private TrackDTO trackToDTO(Track track) {
+        TrackDTO trackDTO = new TrackDTO();
+        trackDTO.setId(track.getId());
+        trackDTO.setPosition(track.getPosition());
+        trackDTO.setTitle(track.getTitle());
+        return trackDTO;
+    }
+
+    private Track trackFromDTO(TrackDTO trackDTO) {
+        Track track = new Track();
+        track.setId(trackDTO.getId());
+        track.setPosition(trackDTO.getPosition());
+        track.setTitle(trackDTO.getTitle());
+        return track;
+    }
+
+    private YouTubeVideoDTO videoToDTO(YouTubeVideo video) {
+        YouTubeVideoDTO videoDTO = new YouTubeVideoDTO();
+        videoDTO.setId(videoDTO.getId());
+        videoDTO.setVideoId(video.getVideoId());
+        return videoDTO;
+    }
+
+    private YouTubeVideo videoFromDTO(YouTubeVideoDTO videoDTO) {
+        YouTubeVideo video = new YouTubeVideo();
+        video.setId(videoDTO.getId());
+        video.setVideoId(videoDTO.getVideoId());
+        return video;
     }
 }

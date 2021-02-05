@@ -4,7 +4,8 @@
         <input type="hidden" th:field="${release.playlist[__${item.index}__].id}"/>
 
         <div class="col-4">
-            <input type="text" class="form-control" th:field="${release.playlist[__${item.index}__].videoId}" placeholder="Video id">
+            <input type="text" class="form-control" th:errorclass="is-invalid" th:field="${release.playlist[__${item.index}__].videoId}" placeholder="Video id">
+            <p class="invalid-feedback" th:if="${#fields.hasErrors('${release.playlist[__${item.index}__].videoId}')}" th:errors="*{playlist[__${item.index}__].videoId}"></p>
         </div>
 
         <div class="col">

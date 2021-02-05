@@ -6,6 +6,7 @@ import recordstore.enums.Format;
 import recordstore.validation.ValidDateFormat;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -59,9 +60,11 @@ public class Release {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Label label;
 
+    @Valid
     @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Track> tracklist = new ArrayList<>();
 
+    @Valid
     @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<YouTubeVideo> playlist = new ArrayList<>();
 

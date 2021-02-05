@@ -4,10 +4,12 @@
         <input type="hidden" th:field="${release.tracklist[__${item.index}__].id}"/>
 
         <div class="col-1">
-            <input type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].position}" placeholder="Position">
+            <input type="text" class="form-control" th:errorclass="is-invalid" th:field="${release.tracklist[__${item.index}__].position}" placeholder="Position">
+            <p class="invalid-feedback" th:if="${#fields.hasErrors('${release.tracklist[__${item.index}__].position}')}" th:errors="*{tracklist[__${item.index}__].position}"></p>
         </div>
         <div class="col">
-            <input type="text" class="form-control" th:field="${release.tracklist[__${item.index}__].title}" placeholder="Title">
+            <input type="text" class="form-control" th:errorclass="is-invalid" th:field="${release.tracklist[__${item.index}__].title}" placeholder="Title">
+            <p class="invalid-feedback" th:if="${#fields.hasErrors('${release.tracklist[__${item.index}__].title}')}" th:errors="*{tracklist[__${item.index}__].title}"></p>
         </div>
 
         <div class="col">

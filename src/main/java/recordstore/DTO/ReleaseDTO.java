@@ -9,7 +9,10 @@ import recordstore.enums.Format;
 import recordstore.validation.ValidDateFormat;
 import recordstore.validation.MultipartFileSize;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,14 +34,26 @@ public class ReleaseDTO {
     @ValidDateFormat
     private String releaseDate;
 
+    @NotNull(message = "Field is mandatory")
     private Format format;
+
     private String img = "noImageAvailable.png";
 
     @MultipartFileSize
     private MultipartFile data;
+
+    @NotEmpty(message = "Field is mandatory")
     private Set<Artist> artists = new HashSet<>();
+
+    @NotEmpty(message = "Field is mandatory")
     private Set<Genre> genres = new HashSet<>();
+
+    @NotNull(message = "Field is mandatory")
     private Label label;
-    private List<Track> tracklist = new ArrayList<>();
-    private List<YouTubeVideo> playlist = new ArrayList<>();
+
+    @Valid
+    private List<TrackDTO> tracklist = new ArrayList<>();
+
+    @Valid
+    private List<YouTubeVideoDTO> playlist = new ArrayList<>();
 }
