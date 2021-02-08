@@ -24,7 +24,12 @@
                             </p>
                         </div>
                         <div class="col-1">
-                            <a class="delete" th:href="@{'/admin/accounts/delete/' + ${account.id}}"><img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/></a>
+                            <form th:action="@{/admin/accounts/delete}" method="post">
+                                <input type="hidden" name="id" th:value="${account.id}"/>
+                                <button type="submit" class="btn btn-sm btn-link delete">
+                                    <img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

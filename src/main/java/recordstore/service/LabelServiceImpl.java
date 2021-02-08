@@ -55,6 +55,11 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
+    public boolean isPresent(long id) {
+        return repository.existsById(id);
+    }
+
+    @Override
     public List<LabelProjection> getAllLabelsTitles() {
         return repository.findAllBy();
     }

@@ -14,39 +14,46 @@
         <div class="col-12 col-md-10">
             <div class="main">
 
-                <h3>Edit artist</h3>
+                <div th:if="${artist}">
+                    <h3>Edit artist</h3>
 
-                <form th:action="@{'/admin/artists/edit/{id}'(id=${artist.id})}" th:object="${artist}" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <input type="hidden" th:field="*{id}" th:value="${artist.id}"/>
-                        <input type="hidden" th:field="*{img}" th:value="${artist.img}"/>
-                    </div>
+                    <form th:action="@{'/admin/artists/edit/{id}'(id=${artist.id})}" th:object="${artist}" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="hidden" th:field="*{id}" th:value="${artist.id}"/>
+                            <input type="hidden" th:field="*{img}" th:value="${artist.img}"/>
+                        </div>
 
-                    <div class="form-group">
-                        <label class="sr-only" for="data">Image</label>
-                        <img class="img-width mb-3" th:src="@{'/images/'+${artist.img}}" alt="" th:id="image"/>
-                        <input type="file" class="form-control-file" th:errorclass="is-invalid" id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
-                        <p class="invalid-feedback" th:if="${#fields.hasErrors('data')}" th:errors="*{data}"></p>
-                    </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="data">Image</label>
+                            <img class="img-width mb-3" th:src="@{'/images/'+${artist.img}}" alt="" th:id="image"/>
+                            <input type="file" class="form-control-file" th:errorclass="is-invalid" id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
+                            <p class="invalid-feedback" th:if="${#fields.hasErrors('data')}" th:errors="*{data}"></p>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input class="form-control is-valid" th:errorclass="is-invalid" type="text" id="name" th:field="*{name}" placeholder="Name" maxlength="100" th:value="${artist.name}" />
-                        <p class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-                    </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input class="form-control is-valid" th:errorclass="is-invalid" type="text" id="name" th:field="*{name}" placeholder="Name" maxlength="100" th:value="${artist.name}" />
+                            <p class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <input class="form-control" type="text" id="country" th:field="*{country}" placeholder="Country" maxlength="100" th:value="${artist.country}" />
-                    </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input class="form-control" type="text" id="country" th:field="*{country}" placeholder="Country" maxlength="100" th:value="${artist.country}" />
+                        </div>
 
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <input class="form-control" type="text" id="description" th:field="*{description}" placeholder="Description" th:value="${artist.description}" />
-                    </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input class="form-control" type="text" id="description" th:field="*{description}" placeholder="Description" th:value="${artist.description}" />
+                        </div>
 
-                    <button type="submit" class="btn btn-primary mb-4">Submit</button>
-                </form>
+                        <button type="submit" class="btn btn-primary mb-4">Submit</button>
+                    </form>
+                </div>
+
+                <div class="main-content mx-3" th:unless="${artist}">
+                    <p th:text="${error}"></p>
+                </div>
+
             </div>
         </div>
     </div>

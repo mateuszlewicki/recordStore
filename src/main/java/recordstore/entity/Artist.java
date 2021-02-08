@@ -33,10 +33,9 @@ public class Artist {
     private String description;
 
     @Column(name = "img")
-    private String img = "noImageAvailable.png";
+    private String img;
 
     @Transient
-    @MultipartFileSize
     private MultipartFile data;
 
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)

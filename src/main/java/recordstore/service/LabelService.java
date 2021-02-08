@@ -14,6 +14,7 @@ public interface LabelService {
     void deleteLabel(long id) throws IOException;
 
     Label getLabel(long id);
+    boolean isPresent(long id);
     List<LabelProjection> getAllLabelsTitles();
     Page<Label> getAllLabels(Pageable pageable);
 

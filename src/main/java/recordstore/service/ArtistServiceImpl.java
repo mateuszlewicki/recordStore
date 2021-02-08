@@ -54,6 +54,11 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    public boolean isPresent(long id) {
+        return repository.existsById(id);
+    }
+
+    @Override
     public List<ArtistProjection> getAllArtistsNames() {
         return repository.findAllBy();
     }

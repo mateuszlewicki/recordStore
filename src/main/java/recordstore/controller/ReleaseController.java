@@ -43,19 +43,27 @@ public class ReleaseController {
                                          @PathVariable long id,
                                          @RequestParam("page") Optional<Integer> page){
         int currentPage = page.orElse(1);
-        Genre genre = genreService.getGenre(id);
-        Page<Release> releases = service.getAllReleasesByGenre(genre, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
-        model.addAttribute("releases", releases);
-        model.addAttribute("genre", genre);
-        getPages(model, releases);
+        if (genreService.isPresent(id)){
+            Genre genre = genreService.getGenre(id);
+            Page<Release> releases = service.getAllReleasesByGenre(genre, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+            model.addAttribute("releases", releases);
+            model.addAttribute("genre", genre);
+            getPages(model, releases);
+        } else {
+            model.addAttribute("error", "Genre not found");
+        }
         return "client/releases/list";
     }
 
     @GetMapping("/{id}")
     public String showReleaseInfo(@PathVariable long id, Model model){
-        Release release = service.getRelease(id);
-        model.addAttribute("release", release);
-        getVideoIds(model, release);
+        if (service.isPresent(id)){
+            Release release = service.getRelease(id);
+            model.addAttribute("release", release);
+            getVideoIds(model, release);
+        } else {
+            model.addAttribute("error", "Release not found");
+        }
         return "client/releases/view";
     }
 

@@ -34,6 +34,11 @@ public class GenreServiceImpl implements GenreService{
     }
 
     @Override
+    public boolean isPresent(long id) {
+        return repository.existsById(id);
+    }
+
+    @Override
     public List<Genre> getAllGenres() {
         return repository.findAll();
     }

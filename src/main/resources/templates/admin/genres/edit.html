@@ -13,21 +13,29 @@
             </div>
             <div class="col-12 col-md-10">
                 <div class="main">
-                    <h3>Edit genre</h3>
 
-                    <form th:action="@{/admin/genres/update/}" th:object="${genre}" method="post">
-                        <div class="form-group">
-                            <input type="hidden" th:field="*{id}" th:value="${genre.id}"/>
-                        </div>
+                    <div th:if="${genre}">
+                        <h3>Edit genre</h3>
 
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input class="form-control is-valid" th:errorclass="is-invalid" type="text" id="title" th:field="*{title}" placeholder="Title" maxlength="100" th:value="${genre.title}" />
-                            <p class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
-                        </div>
+                        <form th:action="@{'/admin/genres/edit/{id}'(id=${genre.id})}" th:object="${genre}" method="post">
+                            <div class="form-group">
+                                <input type="hidden" th:field="*{id}" th:value="${genre.id}"/>
+                            </div>
 
-                        <button type="submit" class="btn btn-primary mb-4">Submit</button>
-                    </form>
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input class="form-control is-valid" th:errorclass="is-invalid" type="text" id="title" th:field="*{title}" placeholder="Title" maxlength="100" th:value="${genre.title}" />
+                                <p class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mb-4">Submit</button>
+                        </form>
+                    </div>
+
+                    <div class="main-content mx-3" th:unless="${genre}">
+                        <p th:text="${error}"></p>
+                    </div>
+
                 </div>
             </div>
         </div>

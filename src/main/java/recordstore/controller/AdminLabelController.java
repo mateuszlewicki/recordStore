@@ -6,13 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import recordstore.DTO.LabelDTO;
 import recordstore.entity.Label;
-import recordstore.projections.LabelProjection;
+import recordstore.mapper.LabelMapper;
 import recordstore.service.LabelService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +23,12 @@ import java.util.stream.IntStream;
 @RequestMapping("/admin/labels")
 public class AdminLabelController {
 
+    private final LabelMapper labelMapper;
+
     private final LabelService service;
 
-    public AdminLabelController(LabelService service) {
+    public AdminLabelController(LabelMapper labelMapper, LabelService service) {
+        this.labelMapper = labelMapper;
         this.service = service;
     }
 
@@ -40,38 +43,44 @@ public class AdminLabelController {
 
     @GetMapping("/add")
     public String showAddForm(Model model){
-        model.addAttribute("newLabel", new Label());
+        model.addAttribute("newLabel", new LabelDTO());
         return "admin/labels/add";
     }
 
     @PostMapping("/add")
-    public String saveLabel(@Valid @ModelAttribute("newLabel") Label label, BindingResult result) throws IOException {
+    public String saveLabel(@Valid @ModelAttribute("newLabel") LabelDTO labelDTO, BindingResult result) throws IOException {
         if (result.hasErrors()) {
             return "admin/labels/add";
         }
-        service.saveLabel(label);
+        service.saveLabel(labelMapper.fromDTO(labelDTO));
         return "redirect:/admin/labels/";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm (@PathVariable long id, Model model) {
-        Label label = service.getLabel(id);
-        model.addAttribute("label", label);
+        if (service.isPresent(id)) {
+            LabelDTO labelDTO = labelMapper.toDTO(service.getLabel(id));
+            model.addAttribute("label", labelDTO);
+        } else {
+            model.addAttribute("error", "Label is not found");
+        }
         return "admin/labels/edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String updateLabel(@Valid @ModelAttribute("label") Label label, BindingResult result) throws IOException {
+    public String updateLabel(@Valid @ModelAttribute("label") LabelDTO labelDTO, BindingResult result) throws IOException {
         if (result.hasErrors()) {
             return "admin/labels/edit";
         }
-        service.saveLabel(label);
+        service.saveLabel(labelMapper.fromDTO(labelDTO));
         return "redirect:/admin/labels/";
     }
 
-    @GetMapping("delete/{id}")
-    public String delete(@PathVariable long id) throws IOException {
-        service.deleteLabel(id);
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") long id) throws IOException {
+        if (service.isPresent(id)){
+            service.deleteLabel(id);
+        }
         return "redirect:/admin/labels/";
     }
 

@@ -10,5 +10,6 @@ public interface GenreService {
     void deleteGenre(long id);
 
     Genre getGenre(long id);
+    boolean isPresent(long id);
     List<Genre> getAllGenres();
 }

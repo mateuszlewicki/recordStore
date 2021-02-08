@@ -77,9 +77,13 @@ public class AdminReleaseController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable long id, Model model){
-        ReleaseDTO releaseDTO = releaseMapper.toDTO(service.getRelease(id));
-        model.addAttribute("release", releaseDTO);
-        getModelAttributes(model);
+        if (service.isPresent(id)){
+            ReleaseDTO releaseDTO = releaseMapper.toDTO(service.getRelease(id));
+            model.addAttribute("release", releaseDTO);
+            getModelAttributes(model);
+        } else {
+            model.addAttribute("error", "Release is not found");
+        }
         return "admin/releases/edit";
     }
 
@@ -94,9 +98,11 @@ public class AdminReleaseController {
         return "redirect:/admin/releases/";
     }
 
-    @GetMapping("delete/{id}")
-    public String delete(@PathVariable long id) throws IOException {
-        service.deleteRelease(id);
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") long id) throws IOException {
+        if (service.isPresent(id)){
+            service.deleteRelease(id);
+        }
         return "redirect:/admin/releases/";
     }
 

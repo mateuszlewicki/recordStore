@@ -37,7 +37,11 @@ public class LabelController {
 
     @GetMapping("/{id}")
     public String showLabelInfo(@PathVariable long id, Model model){
-        model.addAttribute("label", service.getLabel(id));
+        if (service.isPresent(id)) {
+            model.addAttribute("label", service.getLabel(id));
+        } else {
+            model.addAttribute("error", "Label not found");
+        }
         return "client/labels/view";
     }
 

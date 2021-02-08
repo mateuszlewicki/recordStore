@@ -48,7 +48,12 @@
                         </div>
                         <div class="col-1">
                             <a class="mr-2" th:href="@{'edit/{id}'(id=${artist.id})}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo"/></a>
-                            <a class="delete" th:href="@{'/admin/artists/delete/' + ${artist.id}}"><img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/></a>
+                            <form th:action="@{/admin/artists/delete}" method="post">
+                                <input type="hidden" name="id" th:value="${artist.id}"/>
+                                <button type="submit" class="btn btn-sm btn-link delete">
+                                    <img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

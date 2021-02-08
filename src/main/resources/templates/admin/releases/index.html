@@ -58,7 +58,12 @@
                         </div>
                         <div class="col-1">
                             <a class="mr-2" th:href="@{'edit/{id}'(id=${release.id})}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo"/></a>
-                            <a class="delete" th:href="@{'/admin/releases/delete/' + ${release.id}}"><img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/></a>
+                            <form th:action="@{/admin/releases/delete}" method="post">
+                                <input type="hidden" name="id" th:value="${release.id}"/>
+                                <button type="submit" class="btn btn-sm btn-link delete">
+                                    <img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

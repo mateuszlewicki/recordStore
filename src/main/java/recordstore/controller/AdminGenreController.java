@@ -3,14 +3,12 @@ package recordstore.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import recordstore.entity.Genre;
 import recordstore.service.GenreService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -46,12 +44,16 @@ public class AdminGenreController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable long id, Model model) {
-        Genre genre = service.getGenre(id);
-        model.addAttribute("genre", genre);
+        if (service.isPresent(id)) {
+            Genre genre = service.getGenre(id);
+            model.addAttribute("genre", genre);
+        } else {
+            model.addAttribute("error", "Genre is not found");
+        }
         return "admin/genres/edit";
     }
 
-    @PostMapping("/update/")
+    @PostMapping("/edit/{id}")
     public String updateGenre(@Valid Genre genre, BindingResult result) {
         if (result.hasErrors()) {
             return "admin/genres/edit";
@@ -60,9 +62,11 @@ public class AdminGenreController {
         return "redirect:/admin/genres/";
     }
 
-    @GetMapping("delete/{id}")
-    public String delete(@PathVariable long id){
-        service.deleteGenre(id);
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") long id) throws IOException {
+        if (service.isPresent(id)){
+            service.deleteGenre(id);
+        }
         return "redirect:/admin/genres/";
     }
 }

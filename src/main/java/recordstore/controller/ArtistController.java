@@ -37,7 +37,11 @@ public class ArtistController {
 
     @GetMapping("/{id}")
     public String showArtistInfo(@PathVariable long id, Model model){
-        model.addAttribute("artist", service.getArtist(id));
+        if (service.isPresent(id)){
+            model.addAttribute("artist", service.getArtist(id));
+        } else {
+            model.addAttribute("error", "Artist not found");
+        }
         return "client/artists/view";
     }
 
