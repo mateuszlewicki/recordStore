@@ -15,7 +15,7 @@ import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
-import recordstore.service.AccountDetailsServiceImpl;
+import recordstore.service.AccountServiceImpl;
 import recordstore.service.FacebookConnectionSignup;
 import recordstore.service.FacebookSignInAdapter;
 
@@ -24,7 +24,7 @@ import recordstore.service.FacebookSignInAdapter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AccountDetailsServiceImpl accountDetailsService;
+    private AccountServiceImpl accountServiceImpl;
 
     @Autowired
     private FacebookConnectionSignup facebookConnectionSignup;
@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(accountDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(accountServiceImpl).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Override

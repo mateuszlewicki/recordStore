@@ -12,13 +12,13 @@ import recordstore.repository.AccountRepository;
 import java.util.List;
 
 @Service
-public class AccountDetailsServiceImpl implements UserDetailsService {
+public class AccountServiceImpl implements UserDetailsService, AccountService {
 
     private final AccountRepository accountRepository;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AccountDetailsServiceImpl(AccountRepository accountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
@@ -38,6 +38,10 @@ public class AccountDetailsServiceImpl implements UserDetailsService {
 
     public List<Account> getAllUsers() {
         return accountRepository.findAll();
+    }
+
+    public boolean isPresent(long id) {
+        return accountRepository.existsById(id);
     }
 
     public boolean saveUser(Account account) {

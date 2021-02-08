@@ -9,9 +9,9 @@ import recordstore.entity.Account;
 @Service
 public class FacebookConnectionSignup implements ConnectionSignUp {
 
-    private final AccountDetailsServiceImpl service;
+    private final AccountService service;
 
-    public FacebookConnectionSignup(AccountDetailsServiceImpl service) {
+    public FacebookConnectionSignup(AccountService service) {
         this.service = service;
     }
 

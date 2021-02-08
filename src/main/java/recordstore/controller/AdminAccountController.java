@@ -3,27 +3,29 @@ package recordstore.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import recordstore.service.AccountDetailsServiceImpl;
+import recordstore.service.AccountService;
 
 @Controller
 @RequestMapping("admin/accounts/")
 public class AdminAccountController {
 
-    private final AccountDetailsServiceImpl accountDetailsService;
+    private final AccountService accountService;
 
-    public AdminAccountController(AccountDetailsServiceImpl accountDetailsService) {
-        this.accountDetailsService = accountDetailsService;
+    public AdminAccountController(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     @GetMapping
     public String getAllUsers(Model model) {
-        model.addAttribute("accounts", accountDetailsService.getAllUsers());
+        model.addAttribute("accounts", accountService.getAllUsers());
         return "admin/accounts/index";
     }
 
-    @GetMapping("delete/{id}")
-    public String delete(@PathVariable long id){
-    accountDetailsService.deleteUser(id);
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") long id){
+        if (accountService.isPresent(id)) {
+            accountService.deleteUser(id);
+        }
     return "redirect:/admin/accounts/";
     }
 }

@@ -4,7 +4,8 @@ import org.junit.Test;
 import org.springframework.test.web.servlet.*;
 
 import recordstore.entity.Account;
-import recordstore.service.AccountDetailsServiceImpl;
+import recordstore.service.AccountService;
+import recordstore.service.AccountServiceImpl;
 
 import static org.mockito.Mockito.*;
 
@@ -17,7 +18,7 @@ public class RegistrationControllerTest {
 
     @Test
     public void circularViewPathIssue() throws Exception {
-        AccountDetailsServiceImpl mockService = mock(AccountDetailsServiceImpl.class);
+        AccountService mockService = mock(AccountService.class);
         RegistrationController controller = new RegistrationController(mockService);
         MockMvc mockMvc = standaloneSetup(controller).build();
         mockMvc.perform(get("/registration/"))
@@ -26,7 +27,7 @@ public class RegistrationControllerTest {
 
     @Test
     public void shouldShowRegistration() throws Exception {
-        AccountDetailsServiceImpl mockService = mock(AccountDetailsServiceImpl.class);
+        AccountService mockService = mock(AccountService.class);
         RegistrationController controller = new RegistrationController(mockService);
         MockMvc mockMvc = standaloneSetup(controller).build();
         mockMvc.perform(get("/registration/")).andExpect(view().name("registration"));
@@ -34,15 +35,15 @@ public class RegistrationControllerTest {
 
     @Test
     public void shouldRegistrationProcess() throws Exception{
-        AccountDetailsServiceImpl mockService = mock(AccountDetailsServiceImpl.class);
+        AccountService mockService = mock(AccountService.class);
         Account unsaved = new Account();
         when(mockService.saveUser(unsaved)).thenReturn(true);
         RegistrationController controller = new RegistrationController(mockService);
         MockMvc mockMvc = standaloneSetup(controller).build();
         mockMvc.perform(post("/registration/")
                 .param("username", "denis")
-                .param("password", "1234")
-                .param("passwordConfirm", "1234"))
+                .param("password", "123456")
+                .param("passwordConfirm", "123456"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
         verify(mockService, atLeastOnce()).saveUser(unsaved);
@@ -50,26 +51,26 @@ public class RegistrationControllerTest {
 
     @Test
     public void shouldRedirectToRegistrationWithPasswordError() throws Exception{
-        AccountDetailsServiceImpl mockService = mock(AccountDetailsServiceImpl.class);
+        AccountService mockService = mock(AccountService.class);
         RegistrationController controller = new RegistrationController(mockService);
         MockMvc mockMvc = standaloneSetup(controller).build();
         mockMvc.perform(post("/registration/")
                 .param("username", "denis")
-                .param("password", "1234")
-                .param("passwordConfirm", "12345"))
+                .param("password", "123456")
+                .param("passwordConfirm", "123457"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registration"));
     }
 
     @Test
     public void shouldRedirectToRegistrationWithUsernameError() throws Exception{
-        AccountDetailsServiceImpl mockService = mock(AccountDetailsServiceImpl.class);
+        AccountService mockService = mock(AccountService.class);
         RegistrationController controller = new RegistrationController(mockService);
         MockMvc mockMvc = standaloneSetup(controller).build();
         mockMvc.perform(post("/registration/")
                 .param("username", "dns")
-                .param("password", "1234")
-                .param("passwordConfirm", "1234"))
+                .param("password", "123456")
+                .param("passwordConfirm", "123456"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registration"));
     }

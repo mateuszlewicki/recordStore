@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import recordstore.entity.Account;
-import recordstore.service.AccountDetailsServiceImpl;
+import recordstore.service.AccountService;
 
 import javax.validation.Valid;
 
 @Controller
 public class RegistrationController {
 
-    private final AccountDetailsServiceImpl accountService;
+    private final AccountService accountService;
 
-    public RegistrationController(AccountDetailsServiceImpl accountService) {
+    public RegistrationController(AccountService accountService) {
         this.accountService = accountService;
     }
 
