@@ -29,9 +29,6 @@ public class Account implements UserDetails {
     @NotBlank(message = "Field is mandatory")
     private String password;
 
-    @Transient
-    private String passwordConfirm;
-
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = Collections.singleton(new Role(1L, "ROLE_USER"));
 

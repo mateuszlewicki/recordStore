@@ -27,20 +27,27 @@
                     <span class="h3">Sign in</span>
                 </div>
 
-                <form th:action="@{/registration}" th:object="${user}" method="post">
+                <form th:action="@{/registration}" th:object="${user}" method="post" enctype="">
                     <div class="form-group">
-                        <label class="" for="username">Username</label>
-                        <input id="username" type="text" class="form-control custom-form-control" placeholder="" th:name="username" required/>
+                        <label for="username">Username</label>
+                        <input id="username" type="text" class="form-control custom-form-control" th:name="username" th:field="*{username}" required/>
                         <p class="signin-errors" th:text="${usernameError}"></p>
                     </div>
                     <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control custom-form-control" th:errorclass="is-invalid" id="email" th:name="email" th:field="*{email}" required/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                    </div>
+                    <div class="form-group">
                         <label class="" for="password">Password</label>
-                        <input id="password" type="password" class="form-control custom-form-control" placeholder="" th:name="password" required/>
+                        <input type="password" class="form-control custom-form-control" th:errorclass="is-invalid" id="password" th:name="password" required/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
                     </div>
                     <div class="form-group">
                         <label class="" for="passwordConfirm">Confirm your password</label>
-                        <input id="passwordConfirm" type="password" class="form-control custom-form-control" placeholder="" th:name="passwordConfirm" required/>
-                        <p class="signin-errors" th:text="${passwordError}"></p>
+                        <input type="password" class="form-control custom-form-control" th:errorclass="invalid-feedback" id="passwordConfirm" th:name="passwordConfirm" required/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></p>
+                        <p class="signin-errors" th:if="${#fields.hasErrors('${user}')}" th:errors="${user}"></p>
                     </div>
                     <button type="submit" class="btn custom-btn">Submit</button>
                 </form>

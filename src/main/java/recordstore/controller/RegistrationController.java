@@ -6,7 +6,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import recordstore.entity.Account;
+import recordstore.DTO.AccountDTO;
+import recordstore.mapper.AccountMapper;
 import recordstore.service.AccountService;
 
 import javax.validation.Valid;
@@ -14,38 +15,30 @@ import javax.validation.Valid;
 @Controller
 public class RegistrationController {
 
+    private final AccountMapper accountMapper;
+
     private final AccountService accountService;
 
-    public RegistrationController(AccountService accountService) {
+    public RegistrationController(AccountMapper accountMapper, AccountService accountService) {
+        this.accountMapper = accountMapper;
         this.accountService = accountService;
     }
 
     @GetMapping("/registration")
     public String showSignUpForm(Model model) {
-        model.addAttribute("userForm", new Account());
+        model.addAttribute("user", new AccountDTO());
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("user") @Valid Account user,
-                          BindingResult bindingResult, Model model) {
+    public String addUser(@ModelAttribute("user") @Valid AccountDTO accountDTO,
+                          BindingResult result, Model model) {
 
-        if (bindingResult.hasErrors()) {
+        if (result.hasErrors()) {
+            model.addAttribute("user", accountDTO);
             return "registration";
         }
-        if (!user.getPassword().equals(user.getPasswordConfirm())) {
-            model.addAttribute("passwordError", "Your new password and confirmation password do not match");
-            return "registration";
-        }
-        if (user.getPassword().length() < 6) {
-            model.addAttribute("passwordError", "Password should have min 6 characters");
-            return "registration";
-        }
-        if (user.getPassword().length() > 16) {
-            model.addAttribute("passwordError", "Password should have max 16 characters");
-            return "registration";
-        }
-        if (!accountService.saveUser(user)) {
+        if (!accountService.saveUser(accountMapper.fromDTO(accountDTO))) {
             model.addAttribute("usernameError", "User with the same name already exists");
             return "registration";
         }
