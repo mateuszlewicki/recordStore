@@ -18,6 +18,4 @@ public class YouTubeVideoDTO {
     @NotBlank(message = "Field is mandatory")
     @Pattern(regexp = "^([A-Za-z0-9\\-]*)", message = "Only Video Id")
     String videoId;
-
-    private Release release;
 }

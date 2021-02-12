@@ -5,19 +5,18 @@ import org.junit.jupiter.api.Test;
 import javax.validation.ConstraintValidatorContext;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
-import java.util.Locale;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DateFormatValidationTest {
+class DateFormatValidatorTest {
 
     @Test
     void givenValidator_whenValidDatePassed_ThenTrue(){
         ConstraintValidatorContext context = null;
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd")
                 .withResolverStyle(ResolverStyle.STRICT);
-        DateFormatValidation validator = new DateFormatValidation(dateFormatter);
+        DateFormatValidator validator = new DateFormatValidator(dateFormatter);
 
         assertTrue(validator.isValid("2019-02-28", context));
     }
@@ -27,7 +26,7 @@ class DateFormatValidationTest {
         ConstraintValidatorContext context = null;
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd")
                 .withResolverStyle(ResolverStyle.STRICT);
-        DateFormatValidation validator = new DateFormatValidation(dateFormatter);
+        DateFormatValidator validator = new DateFormatValidator(dateFormatter);
 
         assertFalse(validator.isValid("2019-02-30", context));
     }

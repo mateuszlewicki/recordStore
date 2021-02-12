@@ -18,6 +18,4 @@ public class TrackDTO {
 
     @NotBlank(message = "Field is mandatory")
     String title;
-
-    private ReleaseDTO releaseDTO;
 }
