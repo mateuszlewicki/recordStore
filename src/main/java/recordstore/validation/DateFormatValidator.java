@@ -10,15 +10,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 
-public class DateFormatValidation implements ConstraintValidator<ValidDateFormat, String> {
+public class DateFormatValidator implements ConstraintValidator<ValidDateFormat, String> {
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd")
             .withResolverStyle(ResolverStyle.STRICT);
 
-    public DateFormatValidation() {
+    public DateFormatValidator() {
     }
 
-    public DateFormatValidation(DateTimeFormatter dateFormatter) {
+    public DateFormatValidator(DateTimeFormatter dateFormatter) {
         this.dateFormatter = dateFormatter;
     }
 

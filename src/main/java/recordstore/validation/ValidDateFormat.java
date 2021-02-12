@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = DateFormatValidation.class)
+@Constraint(validatedBy = DateFormatValidator.class)
 public @interface ValidDateFormat {
 
     String message() default "Date is not valid";
