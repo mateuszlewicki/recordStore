@@ -12,7 +12,7 @@ public class FileUploadExceptionAdvice {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ModelAndView handleMaxSizeException(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("errors/uploadError");
+        ModelAndView modelAndView = new ModelAndView("errorPages/uploadError");
         modelAndView.getModel().put("message", "The file is too large to upload!");
         modelAndView.getModel().put("url", request.getRequestURI());
         return modelAndView;

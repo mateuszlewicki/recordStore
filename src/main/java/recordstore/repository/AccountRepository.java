@@ -5,5 +5,6 @@ import recordstore.entity.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-    Account findByUsername(String username);
+    Account findByEmail(String email);
+    boolean existsAccountByEmail(String email);
 }

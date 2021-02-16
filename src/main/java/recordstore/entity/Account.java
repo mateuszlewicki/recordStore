@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import recordstore.validation.ValidEmail;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -28,6 +29,14 @@ public class Account implements UserDetails {
     @Column(name = "password")
     @NotBlank(message = "Field is mandatory")
     private String password;
+
+    @Column(name = "email")
+    @ValidEmail
+    @NotBlank(message = "Field is mandatory")
+    private String email;
+
+    @Column(name = "enabled")
+    private boolean enabled = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = Collections.singleton(new Role(1L, "ROLE_USER"));
@@ -64,7 +73,7 @@ public class Account implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override

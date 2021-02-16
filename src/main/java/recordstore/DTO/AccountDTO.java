@@ -24,7 +24,7 @@ public class AccountDTO {
     @NotBlank(message = "Field is mandatory")
     private String passwordConfirm;
 
-    @NotBlank
+    @NotBlank(message = "Field is mandatory")
     @ValidEmail
     private String email;
 }

@@ -30,13 +30,14 @@
                 <form th:action="@{/registration}" th:object="${user}" method="post" enctype="">
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input id="username" type="text" class="form-control custom-form-control" th:name="username" th:field="*{username}" required/>
-                        <p class="signin-errors" th:text="${usernameError}"></p>
+                        <input id="username" type="text" class="form-control custom-form-control" th:errorclass="is-invalid" th:name="username" th:field="*{username}" required/>
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control custom-form-control" th:errorclass="is-invalid" id="email" th:name="email" th:field="*{email}" required/>
                         <p class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                        <p class="signin-errors" th:text="${emailError}"></p>
                     </div>
                     <div class="form-group">
                         <label class="" for="password">Password</label>

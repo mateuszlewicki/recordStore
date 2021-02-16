@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
@@ -16,6 +17,7 @@ import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import recordstore.service.AccountDetailsService;
+import recordstore.handler.CustomAuthenticationFailureHandler;
 import recordstore.service.FacebookConnectionSignup;
 import recordstore.service.FacebookSignInAdapter;
 
@@ -52,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .failureHandler(authenticationFailureHandler())
                 .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
@@ -60,6 +63,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .csrf().disable();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 
     @Bean
