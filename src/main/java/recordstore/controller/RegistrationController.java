@@ -5,7 +5,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +13,12 @@ import recordstore.DTO.AccountDTO;
 import recordstore.entity.Account;
 import recordstore.entity.VerificationToken;
 import recordstore.error.AccountAlreadyExistException;
+import recordstore.error.MailAuthenticationException;
+import recordstore.error.TokenNotFoundException;
 import recordstore.mapper.AccountMapper;
 import recordstore.registration.OnRegistrationCompleteEvent;
 import recordstore.service.AccountService;
+import recordstore.utils.EmailService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -26,11 +28,13 @@ import java.util.Calendar;
 public class RegistrationController {
 
     private final AccountMapper accountMapper;
-
     private final AccountService accountService;
 
     @Autowired
     ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    EmailService emailService;
 
     public RegistrationController(AccountMapper accountMapper, AccountService accountService) {
         this.accountMapper = accountMapper;
@@ -52,12 +56,15 @@ public class RegistrationController {
         try{
             Account account = accountService.createNewAccount(accountMapper.fromDTO(accountDTO));
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(account, request.getContextPath()));
-        } catch (AccountAlreadyExistException aaeEx) {
-            model.addAttribute("emailError", "User with the same email already exists.");
+        } catch (AccountAlreadyExistException e) {
+            model.addAttribute("emailError", e.getMessage());
             return "registration";
-        } catch (RuntimeException ex){
+        } catch (MailAuthenticationException e){
             model.addAttribute("message", "Error in java mail configuration.");
             return "/errorPages/emailError";
+        } catch (RuntimeException e){
+            model.addAttribute("message", e.getMessage());
+            return "/errorPages/badUser";
         }
         return "redirect:/login";
     }
@@ -69,19 +76,38 @@ public class RegistrationController {
             model.addAttribute("message", "Invalid token.");
             return "/errorPages/badUser";
         }
-        if (isDateExpired(verificationToken)) {
-            model.addAttribute("message", "Your registration token has expired. Please register again.");
+        if (isDateExpired(verificationToken) && verificationToken.getAccount().isEnabled() == false) {
+            model.addAttribute("message", "Your registration token has expired.");
+            model.addAttribute("expired", true);
+            model.addAttribute("token", verificationToken.getToken());
             return "/errorPages/badUser";
         }
         accountService.saveRegisterUser(verificationToken.getAccount());
         return "redirect:/login";
     }
 
+    @GetMapping("/resendRegistrationToken")
+    public String resendRegistrationToken(HttpServletRequest request,
+                                          @RequestParam("token") String existingToken, Model model) {
+        try {
+            VerificationToken token = accountService.generateNewVerificationToken(existingToken);
+            Account account = token.getAccount();
+            emailService.sendEmailWithVerificationToken(request.getContextPath(), account.getEmail(), token.getToken());
+        } catch (TokenNotFoundException e) {
+            model.addAttribute("message", e.getMessage());
+            return "/errorPages/badUser";
+        } catch (MailAuthenticationException e) {
+            model.addAttribute("message", "Error in java mail configuration.");
+            return "/errorPages/emailError";
+        } catch (RuntimeException e) {
+            model.addAttribute("message", e.getMessage());
+            return "/errorPages/badUser";
+        }
+        return "redirect:/login";
+    }
+
     private boolean isDateExpired(VerificationToken token) {
         Calendar calendar = Calendar.getInstance();
-        if (token.getExpiryDate().getTime() - calendar.getTime().getTime() <= 0) {
-            return true;
-        }
-        return false;
+        return token.getExpiryDate().getTime() - calendar.getTime().getTime() <= 0;
     }
 }

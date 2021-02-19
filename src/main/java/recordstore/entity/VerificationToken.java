@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,18 +21,26 @@ public class VerificationToken {
     private Long id;
 
     @Column(name = "token")
-    @NotBlank(message = "Field is mandatory")
-    private String token;
+    private String token = generateToken();
 
     @OneToOne(targetEntity = Account.class, fetch = FetchType.EAGER)
     private Account account;
 
     private Date expiryDate = calculateExpiryDate(EXPIRATION);
 
+    public void updateToken() {
+        this.token = generateToken();
+        this.expiryDate = calculateExpiryDate(EXPIRATION);
+    }
+
     private Date calculateExpiryDate(final int expiryTimeInMinutes) {
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(new Date().getTime());
         cal.add(Calendar.MINUTE, expiryTimeInMinutes);
         return new Date(cal.getTime().getTime());
+    }
+
+    private String generateToken() {
+        return UUID.randomUUID().toString();
     }
 }

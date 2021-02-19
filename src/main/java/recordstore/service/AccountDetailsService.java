@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import recordstore.entity.Account;
 import recordstore.repository.AccountRepository;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class AccountDetailsService implements UserDetailsService {
 
     private final AccountRepository accountRepository;

@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-2">
 
-                    <div th:if="${session[SPRING_SECURITY_LAST_EXCEPTION]}" class="alert alert-danger"
+                    <div th:if="${param.error != null}" class="alert alert-danger"
                          th:utext="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</div>
 
                     <form class="my-4" action="/signin/facebook" method="POST">

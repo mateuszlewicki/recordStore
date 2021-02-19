@@ -3,10 +3,12 @@ package recordstore.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import recordstore.utils.EmailService;
 import recordstore.utils.FileService;
 
 @Configuration
@@ -42,5 +44,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public FileService fileService(){
         return new FileService();
+    }
+
+    @Bean
+    public EmailService emailService(JavaMailSender javaMailSender){
+        return new EmailService(javaMailSender);
     }
 }

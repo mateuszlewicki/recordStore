@@ -17,7 +17,7 @@ import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import recordstore.service.AccountDetailsService;
-import recordstore.handler.CustomAuthenticationFailureHandler;
+import recordstore.error.CustomAuthenticationFailureHandler;
 import recordstore.service.FacebookConnectionSignup;
 import recordstore.service.FacebookSignInAdapter;
 

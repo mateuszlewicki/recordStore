@@ -1,4 +1,4 @@
-package recordstore.interceptor;
+package recordstore.error;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

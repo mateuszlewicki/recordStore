@@ -9,6 +9,9 @@
     <div class="text-center">
         <img class="error-icon" th:src="@{/images/error.svg}" alt="logo"/>
         <h3 th:text="${message}"></h3>
+        <div th:if="${expired}">
+            <a th:href="@{'/resendRegistrationToken?token=' + ${token}}" class="btn custom-btn mt-4">Resend registration token</a>
+        </div>
         <a th:href="@{/registration}" class="btn custom-btn mt-4">SIGN UP</a>
     </div>
 </div>

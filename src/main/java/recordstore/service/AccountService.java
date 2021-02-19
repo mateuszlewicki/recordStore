@@ -11,7 +11,8 @@ public interface AccountService {
     boolean isPresent(long id);
     Account createNewAccount(Account account);
     void saveRegisterUser(Account account);
-    void createVerificationToken(Account account, String token);
+    VerificationToken createVerificationToken(Account account);
     VerificationToken getVerificationToken(String token);
+    VerificationToken generateNewVerificationToken(String existingToken);
     void deleteUser(long id);
 }

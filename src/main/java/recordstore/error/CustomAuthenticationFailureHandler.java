@@ -1,4 +1,4 @@
-package recordstore.handler;
+package recordstore.error;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;

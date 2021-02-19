@@ -7,5 +7,6 @@ import recordstore.entity.VerificationToken;
 public interface VerificationTokenRepository extends JpaRepository<VerificationToken, Long> {
 
     VerificationToken findByToken(String token);
-    void deleteByAccount_Id(long id);
+    VerificationToken findByAccount_Id(long id);
+    boolean existsVerificationTokenByToken(String token);
 }
