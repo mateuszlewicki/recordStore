@@ -12,18 +12,8 @@
         </div>
         <div class="col-12 col-md-10">
             <div class="main">
-                <div class="search_box">
-                    <form class="get container p-0 mb-0" action="/search">
-                        <fieldset>
-                            <div class="input-group">
-                                <input name="search" id="search" placeholder="Search" type="text">
-                                <button class="btn btn-search-icon" aria-label="Search" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
+
+                <div th:replace="components/search :: search" xmlns:th="http://www.thymeleaf.org"></div>
 
                 <div th:if="${artist}">
                     <div class="main-content mx-3">
