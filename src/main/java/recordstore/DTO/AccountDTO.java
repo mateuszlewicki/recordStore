@@ -1,7 +1,6 @@
 package recordstore.DTO;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import recordstore.validation.PasswordMatches;
 import recordstore.validation.ValidEmail;
@@ -27,4 +26,6 @@ public class AccountDTO {
     @NotBlank(message = "Field is mandatory")
     @ValidEmail
     private String email;
+
+    private String img = "noImageAvailable.png";
 }

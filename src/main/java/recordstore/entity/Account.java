@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.validation.ValidEmail;
 
 import javax.persistence.*;
@@ -34,6 +35,9 @@ public class Account implements UserDetails {
     @ValidEmail
     @NotBlank(message = "Field is mandatory")
     private String email;
+
+    @Column(name = "img")
+    private String img;
 
     @Column(name = "enabled")
     private boolean enabled = false;

@@ -252,3 +252,7 @@ pagination-container{
     width: 50px;
     opacity: 0.5;
 }
+
+.img-width{
+    width: 200px;
+}
