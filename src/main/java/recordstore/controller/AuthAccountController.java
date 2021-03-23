@@ -28,12 +28,6 @@ public class AuthAccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/dashboard")
-    public String showDashboard(Model model, @AuthenticationPrincipal Account account) {
-        model.addAttribute("account", accountService.getAccount(account.getId()));
-        return "client/user/dashboard";
-    }
-
     @GetMapping("/edit")
     public String showEditForm(Model model, @AuthenticationPrincipal Account account) {
         model.addAttribute("account", accountMapper.toDTO(accountService.getAccount(account.getId())));
@@ -41,12 +35,12 @@ public class AuthAccountController {
     }
 
     @PostMapping("/edit")
-    public String updateAccount(@Valid @ModelAttribute("account") UpdateAccountDTO dto,
+    public String updateAccount(@Valid @ModelAttribute("account") UpdateAccountDTO accountDTO,
                                 BindingResult result) throws IOException {
         if (result.hasErrors()) {
             return "client/user/edit";
         }
-        accountService.updateAccount(dto);
-        return "redirect:/auth/dashboard";
+        accountService.updateAccount(accountDTO);
+        return "redirect:/account/" + accountDTO.getId();
     }
 }

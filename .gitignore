@@ -12,4 +12,6 @@ target/
 
 !error.svg
 
+!logout.svg
+
 /src/main/resources/application.yml

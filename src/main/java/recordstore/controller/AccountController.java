@@ -1,5 +1,6 @@
 package recordstore.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +20,13 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public String showAccountInfo(@PathVariable long id, Model model) {
+    public String showAccountInfo(@PathVariable long id, Model model, @AuthenticationPrincipal Account authAccount) {
         if (accountService.isPresent(id)) {
             Account account = accountService.getAccount(id);
             model.addAttribute("account", account);
+            if (authAccount != null && authAccount.getId() == id) {
+                model.addAttribute("dashboard" ,true);
+            }
         } else {
             model.addAttribute("error", "Account not found");
         }

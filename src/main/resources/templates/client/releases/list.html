@@ -58,14 +58,14 @@
                     <nav aria-label="Pagination">
                         <ul class="pagination-container">
                             <li th:if="${releases.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
-                                <a th:href="@{'/releases/genre/{id}/?page={page}'(id=${genre.id},page=${pageNumber})}"
+                                <a th:href="@{'/releases/genre/{id}/?page={page}'(id=${id},page=${pageNumber})}"
                                    th:text="${pageNumber}"
                                    th:class="${pageNumber == releases.number + 1} ? active"></a>
                             </li>
                         </ul>
                     </nav>
                 </div>
-                <div class="main-content mx-3" th:unless="${release}">
+                <div class="main-content mx-3" th:unless="${releases}">
                     <p th:text="${error}"></p>
                 </div>
             </div>

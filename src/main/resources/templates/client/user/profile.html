@@ -32,6 +32,10 @@
                                 <span th:text="${account.email}"></span>
                             </p>
                         </div>
+                        <div class="col-1" th:if="${dashboard}">
+                            <a th:href="@{/auth/edit}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo"/></a>
+                            <a th:href="@{/logout}"><img class="release-icon ml-3" th:src="@{/images/logout.svg}" alt="logo"/></a>
+                        </div>
                     </div>
                 </div>
             </div>
