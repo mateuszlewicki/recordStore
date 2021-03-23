@@ -64,8 +64,8 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public Page<Release> getAllReleasesByGenre(Genre genre, Pageable pageable) {
-        return repository.findAllByGenres(genre, pageable);
+    public Page<Release> getReleasesByGenre(long id, Pageable pageable) {
+        return repository.findReleasesByGenres_id(id, pageable);
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface ReleaseService {
     void deleteRelease(long id) throws IOException;
 
     Page<Release> getAllReleases(Pageable pageable);
-    Page<Release> getAllReleasesByGenre(Genre genre, Pageable pageable);
+    Page<Release> getReleasesByGenre(long id, Pageable pageable);
 
     List<String> search(String keyword);
     Release getReleaseByTitle(String title);

@@ -6,10 +6,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import recordstore.entity.Genre;
 import recordstore.entity.Release;
 import recordstore.entity.YouTubeVideo;
-import recordstore.service.GenreService;
 import recordstore.service.ReleaseService;
 
 import java.util.List;
@@ -22,11 +20,9 @@ import java.util.stream.IntStream;
 public class ReleaseController {
 
     private final ReleaseService service;
-    private final GenreService genreService;
 
-    public ReleaseController(ReleaseService service, GenreService genreService) {
+    public ReleaseController(ReleaseService service) {
         this.service = service;
-        this.genreService = genreService;
     }
 
     @GetMapping
@@ -43,11 +39,10 @@ public class ReleaseController {
                                          @PathVariable long id,
                                          @RequestParam("page") Optional<Integer> page){
         int currentPage = page.orElse(1);
-        if (genreService.isPresent(id)){
-            Genre genre = genreService.getGenre(id);
-            Page<Release> releases = service.getAllReleasesByGenre(genre, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+        Page<Release> releases = service.getReleasesByGenre(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+        if (!releases.isEmpty()) {
             model.addAttribute("releases", releases);
-            model.addAttribute("genre", genre);
+            model.addAttribute("id", id);
             getPages(model, releases);
         } else {
             model.addAttribute("error", "Genre not found");
