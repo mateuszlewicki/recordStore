@@ -87,11 +87,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(long id) throws IOException {
         if (accountRepository.findById(id).isPresent()) {
             VerificationToken token = tokenRepository.findByAccount_Id(id);
+            String removePicture = accountRepository.getOne(id).getImg();
             tokenRepository.delete(token);
             accountRepository.deleteById(id);
+            fileService.deleteFile(removePicture);
         }
     }
 

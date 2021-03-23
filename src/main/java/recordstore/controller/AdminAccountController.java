@@ -5,6 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import recordstore.service.AccountService;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping("admin/accounts/")
 public class AdminAccountController {
@@ -22,7 +24,7 @@ public class AdminAccountController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("id") long id){
+    public String delete(@RequestParam("id") long id) throws IOException {
         if (accountService.isPresent(id)) {
             accountService.deleteUser(id);
         }

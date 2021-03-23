@@ -18,5 +18,5 @@ public interface AccountService {
     VerificationToken createVerificationToken(Account account);
     VerificationToken getVerificationToken(String token);
     VerificationToken generateNewVerificationToken(String existingToken);
-    void deleteUser(long id);
+    void deleteUser(long id) throws IOException;
 }
