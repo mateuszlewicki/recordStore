@@ -8,6 +8,8 @@ import recordstore.registration.OnRegistrationCompleteEvent;
 import recordstore.service.AccountService;
 import recordstore.utils.EmailService;
 
+import javax.mail.MessagingException;
+
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
@@ -21,10 +23,14 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
-        this.confirmRegistration(event);
+        try {
+            this.confirmRegistration(event);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void confirmRegistration(OnRegistrationCompleteEvent event) {
+    private void confirmRegistration(OnRegistrationCompleteEvent event) throws MessagingException {
         Account account = event.getAccount();
         VerificationToken token = accountService.createVerificationToken(account);
         emailService.sendEmailWithVerificationToken(event.getAppUrl(), account.getEmail(), token.getToken());

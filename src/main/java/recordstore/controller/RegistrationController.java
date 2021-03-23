@@ -20,6 +20,7 @@ import recordstore.registration.OnRegistrationCompleteEvent;
 import recordstore.service.AccountService;
 import recordstore.utils.EmailService;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Calendar;
@@ -88,7 +89,7 @@ public class RegistrationController {
 
     @GetMapping("/resendRegistrationToken")
     public String resendRegistrationToken(HttpServletRequest request,
-                                          @RequestParam("token") String existingToken, Model model) {
+                                          @RequestParam("token") String existingToken, Model model) throws MessagingException {
         try {
             VerificationToken token = accountService.generateNewVerificationToken(existingToken);
             Account account = token.getAccount();

@@ -1,7 +1,10 @@
 package recordstore.utils;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 public class EmailService {
 
@@ -11,20 +14,19 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
-    public void sendEmailWithVerificationToken(String contextPath, String recipientAddress, String token) {
-        SimpleMailMessage email = constructEmailMessage(contextPath, recipientAddress, token);
-        mailSender.send(email);
-    }
+    public void sendEmailWithVerificationToken(String contextPath, String recipientAddress, String token) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
-    private SimpleMailMessage constructEmailMessage(String contextPath, String recipientAddress, String token) {
         String confirmationUrl = contextPath + "/registrationConfirm?token=" + token;
-        String message = "You registered successfully. To confirm your registration, please click on the below link.";
+        String message = "You registered successfully. To confirm your registration, please click on the ";
 
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(recipientAddress);
-        email.setSubject("Registration confirmation");
-        email.setText(message + " \r\n" + "http://localhost:8080" + confirmationUrl);
-        email.setFrom("thebeststore@mariia.top");
-        return email;
+        helper.setText(message + "<a href='http://localhost:8080" + confirmationUrl + "'>link</a>", true);
+
+        helper.setSubject("Registration confirmation");
+        helper.setTo(recipientAddress);
+        helper.setFrom("thebeststore@mariia.top");
+
+        mailSender.send(mimeMessage);
     }
 }
