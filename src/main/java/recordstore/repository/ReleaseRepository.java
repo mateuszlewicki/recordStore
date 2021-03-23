@@ -12,8 +12,8 @@ import java.util.List;
 
 public interface ReleaseRepository extends JpaRepository<Release, Long> {
 
-    @Query(value = "SELECT title FROM releases WHERE title LIKE %:keyword%", nativeQuery = true)
+    @Query(value = "SELECT title FROM releases WHERE title LIKE '%':keyword'%'", nativeQuery = true)
     List<String> search(@Param("keyword") String keyword);
     Release findReleaseByTitle(String title);
-    Page<Release> findAllByGenres(Genre genre, Pageable pageable);
+    Page<Release> findReleasesByGenres_id(long id, Pageable pageable);
 }
