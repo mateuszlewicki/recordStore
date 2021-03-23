@@ -12,7 +12,7 @@ public interface LabelRepository extends JpaRepository<Label, Long> {
 
     List<LabelProjection> findAllBy();
 
-    @Query(value = "SELECT title FROM labels WHERE title LIKE :keyword'%'", nativeQuery = true)
+    @Query(value = "SELECT title FROM labels WHERE title LIKE :keyword%", nativeQuery = true)
     List<String> search(@Param("keyword") String keyword);
     Label findLabelByTitle(String title);
 }
