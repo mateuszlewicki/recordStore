@@ -16,11 +16,12 @@
 
             <div th:if="${param.error != null}" class="alert alert-danger"
                  th:utext="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</div>
+            <div class="alert-success" th:text="${message}"></div>
 
-            <form class="my-4" action="/signin/facebook" method="POST">
-                <input type="hidden" name="scope" value="public_profile"/>
-                <input type="submit" class="btn custom-btn" value="Continue with Facebook"/>
-            </form>
+<!--            <form class="my-4" action="/signin/facebook" method="POST">-->
+<!--                <input type="hidden" name="scope" value="public_profile"/>-->
+<!--                <input type="submit" class="btn custom-btn" value="Continue with Facebook"/>-->
+<!--            </form>-->
 
             <div class="mb-3">
                 <span class="h3">Enter your login and password</span>

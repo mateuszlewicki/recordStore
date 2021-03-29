@@ -67,7 +67,8 @@ public class RegistrationController {
             model.addAttribute("message", e.getMessage());
             return "/errorPages/badUser";
         }
-        return "redirect:/login";
+        model.addAttribute("message", "We have sent you an email to confirm your registration");
+        return "login";
     }
 
     @GetMapping("/registrationConfirm")
