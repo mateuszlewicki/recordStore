@@ -17,13 +17,13 @@ import javax.validation.Valid;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/auth")
-public class AuthAccountController {
+@RequestMapping("/user")
+public class UserAccountController {
 
     private final AccountMapper accountMapper;
     private final AccountService accountService;
 
-    public AuthAccountController(AccountMapper accountMapper, AccountService accountService) {
+    public UserAccountController(AccountMapper accountMapper, AccountService accountService) {
         this.accountMapper = accountMapper;
         this.accountService = accountService;
     }

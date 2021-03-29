@@ -20,7 +20,7 @@
                 <div th:if="${account}">
                     <h3>Edit account</h3>
 
-                    <form th:action="@{/auth/edit}" th:object="${account}" method="post" enctype="multipart/form-data">
+                    <form th:action="@{/user/edit}" th:object="${account}" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <input type="hidden" th:field="*{id}" th:value="${account.id}"/>
                             <input type="hidden" th:field="*{img}" th:value="${account.img}"/>
