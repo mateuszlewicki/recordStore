@@ -1,8 +1,6 @@
 package recordstore.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,14 +8,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = "releases")
 @Table(name = "genres", schema = "recordstore")
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "title")

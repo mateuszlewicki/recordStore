@@ -21,7 +21,6 @@ import java.util.Set;
 public class Release {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 

@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class Track {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "position")

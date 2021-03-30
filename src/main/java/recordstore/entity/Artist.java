@@ -1,8 +1,6 @@
 package recordstore.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.validation.MultipartFileSize;
 
@@ -12,14 +10,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = "releases")
 @Table(name = "artists", schema = "recordstore")
 public class Artist {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "name")
