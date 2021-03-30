@@ -18,7 +18,6 @@ import java.util.Set;
 public class Artist {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 

@@ -7,7 +7,7 @@
 <body>
 <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
     <div class="text-center">
-        <img class="error-icon" th:src="@{/images/error.svg}" alt="logo"/>
+        <img class="error-icon" th:src="@{/images/service/error.svg}" alt="logo"/>
         <h3 th:text="${message}"></h3>
         <div th:if="${expired}">
             <a th:href="@{'/resendRegistrationToken?token=' + ${token}}" class="btn custom-btn mt-4">Resend registration token</a>

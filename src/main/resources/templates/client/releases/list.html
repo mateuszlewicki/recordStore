@@ -18,7 +18,7 @@
                         <div class="row release-row" th:each="release : ${releases}">
                             <div class="col-2 release-img">
                                 <a th:href="@{'/releases/{id}'(id=${release.id})}">
-                                    <img class="img-fluid" th:src="@{'/images/'+${release.img}}" width="200" alt=""/>
+                                    <img class="img-fluid" th:src="@{'/images/releases/'+${release.img}}" width="200" alt=""/>
                                 </a>
                             </div>
                             <div class="col-9 release-info">

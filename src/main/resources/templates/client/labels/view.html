@@ -19,7 +19,7 @@
                     <div class="main-content mx-3">
                         <div class="row release-row">
                             <div class="col-2 release-img">
-                                <img class="img-fluid" th:src="@{'/images/'+${label.img}}" width="200" alt=""/>
+                                <img class="img-fluid" th:src="@{'/images/labels/'+${label.img}}" width="200" alt=""/>
                             </div>
                             <div class="col-9 release-info">
                                 <p>
@@ -45,7 +45,7 @@
                                 <tr>
                                     <td>
                                         <a th:href="@{'/releases/{id}'(id=${release.id})}">
-                                            <img th:src="@{'/images/'+${release.img}}" width="50" alt=""/>
+                                            <img th:src="@{'/images/releases/'+${release.img}}" width="50" alt=""/>
                                         </a>
                                     </td>
                                     <td>

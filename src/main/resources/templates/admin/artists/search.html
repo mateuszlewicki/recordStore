@@ -17,7 +17,7 @@
                 <div class="container p-0" th:if="${artist}">
                     <div class="row release-row">
                         <div class="col-2 release-img">
-                            <img class="img-fluid" th:src="@{'/images/'+${artist.img}}" width="200" alt=""/>
+                            <img class="img-fluid" th:src="@{'/images/artists/'+${artist.img}}" width="200" alt=""/>
                         </div>
                         <div class="col-9 release-info">
                             <p>
@@ -34,11 +34,11 @@
                             </p>
                         </div>
                         <div class="col-1">
-                            <a class="mr-2" th:href="@{'edit/{id}'(id=${artist.id})}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo"/></a>
+                            <a class="mr-2" th:href="@{'edit/{id}'(id=${artist.id})}"><img class="release-icon" th:src="@{/images/service/edit.svg}" alt="logo"/></a>
                             <form th:action="@{/admin/artists/delete}" method="post">
                                 <input type="hidden" name="id" th:value="${artist.id}"/>
                                 <button type="submit" class="btn btn-sm btn-link delete">
-                                    <img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/>
+                                    <img class="release-icon" th:src="@{/images/service/trash.svg}" alt="logo"/>
                                 </button>
                             </form>
                         </div>

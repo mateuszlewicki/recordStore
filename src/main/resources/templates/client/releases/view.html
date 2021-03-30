@@ -17,9 +17,9 @@
                     <div class="main-content mx-3">
                         <div class="row release-row">
                             <div class="col-2 release-img">
-                                <img class="img-fluid" th:src="@{'/images/'+${release.img}}" width="200" alt=""/>
+                                <img class="img-fluid" th:src="@{'/images/releases/'+${release.img}}" width="200" alt=""/>
                             </div>
-                            <div class="col-9 release-info">
+                            <div class="col-6 release-info">
                                 <p>
                                     <span class="title">Artist: </span>
                                     <a class="breadcrumb-item" th:each="artist : ${release.artists}" th:href="@{'/artists/{id}'(id=${artist.id})}">
@@ -54,6 +54,26 @@
                                     <span class="title">Format: </span>
                                     <span th:text="${release.format.type}"></span>
                                 </p>
+                            </div>
+                            <div class="col-4">
+                                <div class="d-flex">
+                                    <form th:action="@{/user/addToCollection}" method="post">
+                                        <input type="hidden" name="id" th:value="${release.id}"/>
+                                        <button type="submit" class="btn btn-secondary">
+                                            Add to collection
+                                        </button>
+                                    </form>
+                                    <form class="ml-3" th:action="@{/user/addToWantlist}" method="post">
+                                        <input type="hidden" name="id" th:value="${release.id}"/>
+                                        <button type="submit" class="btn btn-secondary">
+                                            Add to wantlist
+                                        </button>
+                                    </form>
+                                </div>
+                                <div>
+                                    Statistics:
+                                    <p>Have: <span th:text="${release.getAccounts().size()}"></span></p>
+                                </div>
                             </div>
                         </div>
                     </div>

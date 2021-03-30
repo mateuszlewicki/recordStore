@@ -20,7 +20,7 @@
                 <div class="main-content mx-3">
                     <div class="row release-row">
                         <div class="col-2 release-img">
-                            <img class="img-fluid" th:src="@{'/images/'+${account.img}}" width="200" alt=""/>
+                            <img class="img-fluid" th:src="@{'/images/accounts/'+${account.img}}" width="200" alt=""/>
                         </div>
                         <div class="col-9 release-info">
                             <p>
@@ -33,8 +33,8 @@
                             </p>
                         </div>
                         <div class="col-1" th:if="${dashboard}">
-                            <a th:href="@{/user/edit}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo"/></a>
-                            <a th:href="@{/logout}"><img class="release-icon ml-3" th:src="@{/images/logout.svg}" alt="logo"/></a>
+                            <a th:href="@{/user/edit}"><img class="release-icon" th:src="@{/images/service/edit.svg}" alt="logo"/></a>
+                            <a th:href="@{/logout}"><img class="release-icon ml-3" th:src="@{/images/service/logout.svg}" alt="logo"/></a>
                         </div>
                     </div>
                 </div>

@@ -24,11 +24,11 @@
                             </p>
                         </div>
                         <div class="col-1">
-                            <a class="mr-2" th:href="@{'edit/{id}'(id=${genre.id})}"><img class="release-icon" th:src="@{/images/edit.svg}" alt="logo"/></a>
+                            <a class="mr-2" th:href="@{'edit/{id}'(id=${genre.id})}"><img class="release-icon" th:src="@{/images/service/edit.svg}" alt="logo"/></a>
                             <form th:action="@{/admin/genres/delete}" method="post">
                                 <input type="hidden" name="id" th:value="${genre.id}"/>
                                 <button type="submit" class="btn btn-sm btn-link delete">
-                                    <img class="release-icon" th:src="@{/images/trash.svg}" alt="logo"/>
+                                    <img class="release-icon" th:src="@{/images/service/trash.svg}" alt="logo"/>
                                 </button>
                             </form>
                         </div>
