@@ -9,9 +9,7 @@ import recordstore.validation.ValidEmail;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -43,7 +41,16 @@ public class Account implements UserDetails {
     private boolean enabled = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "accounts_roles",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = Collections.singleton(new Role(1L, "ROLE_USER"));
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "accounts_releases",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "release_id"))
+    private Set<Release> collection = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -95,5 +102,15 @@ public class Account implements UserDetails {
     @Override
     public int hashCode() {
         return (int) (getId() ^ (getId() >>> 32));
+    }
+
+    public void addToCollection(Release release) {
+        this.collection.add(release);
+        release.getAccounts().add(this);
+    }
+
+    public void removeFromCollection(Release release) {
+        this.collection.remove(release);
+        release.getAccounts().remove(this);
     }
 }

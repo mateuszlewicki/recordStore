@@ -21,7 +21,8 @@ import java.util.Set;
 public class Release {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "code")
@@ -67,6 +68,9 @@ public class Release {
     @Valid
     @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<YouTubeVideo> playlist = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "collection", fetch = FetchType.LAZY)
+    private Set<Account> accounts = new HashSet<>();
 
     public void addArtist(Artist artist){
         this.artists.add(artist);
