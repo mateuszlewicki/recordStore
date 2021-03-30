@@ -16,6 +16,8 @@ import java.util.UUID;
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
 
+    private final String DIRECTORY ="releases/";
+
     private final ReleaseRepository repository;
 
     private final FileService fileService;
@@ -45,8 +47,8 @@ public class ReleaseServiceImpl implements ReleaseService {
          }
         repository.save(release);
          if(!release.getData().isEmpty()) {
-             fileService.saveFile(filename, release.getData());
-             fileService.deleteFile(removePicture);
+             fileService.saveFile(filename, DIRECTORY, release.getData());
+             fileService.deleteFile(removePicture, DIRECTORY);
          }
     }
 
@@ -55,7 +57,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         Release release = repository.getOne(id);
         release.removeLabel(release.getLabel());
         repository.delete(release);
-        fileService.deleteFile(release.getImg());
+        fileService.deleteFile(release.getImg(), DIRECTORY);
     }
 
     @Override

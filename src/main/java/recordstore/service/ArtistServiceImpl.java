@@ -16,6 +16,8 @@ import java.util.UUID;
 @Service
 public class ArtistServiceImpl implements ArtistService {
 
+    private final String DIRECTORY ="artists/";
+
     private final ArtistRepository repository;
 
     private final FileService fileService;
@@ -34,8 +36,8 @@ public class ArtistServiceImpl implements ArtistService {
         }
         repository.save(artist);
         if(!artist.getData().isEmpty()) {
-            fileService.saveFile(filename, artist.getData());
-            fileService.deleteFile(removeImg);
+            fileService.saveFile(filename, DIRECTORY, artist.getData());
+            fileService.deleteFile(removeImg, DIRECTORY);
         }
     }
 
@@ -44,7 +46,7 @@ public class ArtistServiceImpl implements ArtistService {
         Artist artist = repository.getOne(id);
         if (artist.getReleases().size() == 0) {
             repository.deleteById(id);
-            fileService.deleteFile(artist.getImg());
+            fileService.deleteFile(artist.getImg(), DIRECTORY);
         }
     }
 

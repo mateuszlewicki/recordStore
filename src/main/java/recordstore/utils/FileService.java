@@ -15,8 +15,8 @@ public class FileService {
     @Value("${upload.path}")
     String path;
 
-    public void saveFile(String filename, MultipartFile multipartFile) throws IOException {
-        Path uploadPath = Paths.get(path);
+    public void saveFile(String filename, String directory, MultipartFile multipartFile) throws IOException {
+        Path uploadPath = Paths.get(path + directory);
         if (!Files.exists(uploadPath)) {
             Files.createDirectory(uploadPath);
         }
@@ -28,9 +28,9 @@ public class FileService {
         }
     }
 
-    public void deleteFile(String filename) throws IOException {
+    public void deleteFile(String filename, String directory) throws IOException {
         if (!filename.equals("noImageAvailable.png")) {
-            Path path1 = Paths.get(path + filename);
+            Path path1 = Paths.get(path + directory + filename);
             if (Files.exists(path1)) {
                 Files.delete(path1);
             }
