@@ -2,6 +2,7 @@ package recordstore.service;
 
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
+import recordstore.entity.Release;
 import recordstore.entity.VerificationToken;
 
 import java.io.IOException;
@@ -19,4 +20,5 @@ public interface AccountService {
     VerificationToken getVerificationToken(String token);
     VerificationToken generateNewVerificationToken(String existingToken);
     void deleteUser(long id) throws IOException;
+    void addReleaseToCollection(long accountId, long releaseId);
 }

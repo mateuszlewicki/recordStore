@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import recordstore.DTO.AccountDTO;
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
+import recordstore.entity.Release;
 import recordstore.entity.VerificationToken;
 import recordstore.error.AccountAlreadyExistException;
 import recordstore.error.TokenNotFoundException;
 import recordstore.repository.AccountRepository;
+import recordstore.repository.ReleaseRepository;
 import recordstore.repository.VerificationTokenRepository;
 import recordstore.utils.FileService;
 
@@ -23,16 +24,20 @@ import java.util.UUID;
 @Transactional
 public class AccountServiceImpl implements AccountService {
 
+    private final String DIRECTORY ="accounts/";
+
     private final AccountRepository accountRepository;
     private final VerificationTokenRepository tokenRepository;
+    private final ReleaseRepository releaseRepository;
 
     private final FileService fileService;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AccountServiceImpl(AccountRepository accountRepository, VerificationTokenRepository tokenRepository, FileService fileService) {
+    public AccountServiceImpl(AccountRepository accountRepository, VerificationTokenRepository tokenRepository, ReleaseRepository releaseRepository, FileService fileService) {
         this.accountRepository = accountRepository;
         this.tokenRepository = tokenRepository;
+        this.releaseRepository = releaseRepository;
         this.fileService = fileService;
     }
 
@@ -78,8 +83,8 @@ public class AccountServiceImpl implements AccountService {
         if(!accountDTO.getData().isEmpty()) {
             String filename = createUniqueName(accountDTO.getData());
             String removePicture = account.getImg();
-            fileService.saveFile(filename, accountDTO.getData());
-            fileService.deleteFile(removePicture);
+            fileService.saveFile(filename, DIRECTORY, accountDTO.getData());
+            fileService.deleteFile(removePicture, DIRECTORY);
             account.setImg(filename);
         }
         account.setUsername(accountDTO.getUsername());
@@ -93,8 +98,16 @@ public class AccountServiceImpl implements AccountService {
             String removePicture = accountRepository.getOne(id).getImg();
             tokenRepository.delete(token);
             accountRepository.deleteById(id);
-            fileService.deleteFile(removePicture);
+            fileService.deleteFile(removePicture, DIRECTORY);
         }
+    }
+
+    @Override
+    public void addReleaseToCollection(long accountId, long releaseId) {
+        Account account = accountRepository.getOne(accountId);
+        Release release = releaseRepository.getOne(releaseId);
+        account.addToCollection(release);
+        accountRepository.save(account);
     }
 
     @Override

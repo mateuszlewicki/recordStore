@@ -4,10 +4,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
 import recordstore.mapper.AccountMapper;
@@ -42,5 +39,12 @@ public class UserAccountController {
         }
         accountService.updateAccount(accountDTO);
         return "redirect:/account/" + accountDTO.getId();
+    }
+
+    @PostMapping("/addCollection")
+    public String addReleaseToCollection(@RequestParam("id") long id,
+                                        @AuthenticationPrincipal Account account) {
+        accountService.addReleaseToCollection(account.getId(), id);
+        return "redirect:/releases/" + id;
     }
 }
