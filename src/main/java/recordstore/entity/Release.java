@@ -69,7 +69,10 @@ public class Release {
     private List<YouTubeVideo> playlist = new ArrayList<>();
 
     @ManyToMany(mappedBy = "collection", fetch = FetchType.LAZY)
-    private Set<Account> accounts = new HashSet<>();
+    private Set<Account> collections = new HashSet<>();
+
+    @ManyToMany(mappedBy = "wantlist", fetch = FetchType.LAZY)
+    private Set<Account> wantlists = new HashSet<>();
 
     public void addArtist(Artist artist){
         this.artists.add(artist);

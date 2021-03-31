@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.multipart.MultipartFile;
 import recordstore.validation.ValidEmail;
 
 import javax.persistence.*;
@@ -47,10 +46,16 @@ public class Account implements UserDetails {
     private Set<Role> roles = Collections.singleton(new Role(1L, "ROLE_USER"));
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "accounts_releases",
+    @JoinTable(name = "collections",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "release_id"))
     private Set<Release> collection = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "wantlists",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "release_id"))
+    private Set<Release> wantlist = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -106,11 +111,21 @@ public class Account implements UserDetails {
 
     public void addToCollection(Release release) {
         this.collection.add(release);
-        release.getAccounts().add(this);
+        release.getCollections().add(this);
     }
 
     public void removeFromCollection(Release release) {
         this.collection.remove(release);
-        release.getAccounts().remove(this);
+        release.getCollections().remove(this);
+    }
+
+    public void addToWantlist(Release release) {
+        this.wantlist.add(release);
+        release.getWantlists().add(this);
+    }
+
+    public void removeFromWantlist(Release release) {
+        this.wantlist.remove(release);
+        release.getWantlists().remove(this);
     }
 }
