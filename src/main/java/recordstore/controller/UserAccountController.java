@@ -40,11 +40,4 @@ public class UserAccountController {
         accountService.updateAccount(accountDTO);
         return "redirect:/account/" + accountDTO.getId();
     }
-
-    @PostMapping("/addCollection")
-    public String addReleaseToCollection(@RequestParam("id") long id,
-                                        @AuthenticationPrincipal Account account) {
-        accountService.addReleaseToCollection(account.getId(), id);
-        return "redirect:/releases/" + id;
-    }
 }

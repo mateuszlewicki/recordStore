@@ -3,9 +3,11 @@ package recordstore.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import recordstore.entity.Account;
 import recordstore.entity.Release;
 import recordstore.entity.YouTubeVideo;
 import recordstore.service.ReleaseService;
@@ -51,10 +53,11 @@ public class ReleaseController {
     }
 
     @GetMapping("/{id}")
-    public String showReleaseInfo(@PathVariable long id, Model model){
+    public String showReleaseInfo(@PathVariable long id, Model model, @AuthenticationPrincipal Account account){
         if (service.isPresent(id)){
             Release release = service.getRelease(id);
             model.addAttribute("release", release);
+            getButtonsAttributes(model, release, account);
             getVideoIds(model, release);
         } else {
             model.addAttribute("error", "Release not found");
@@ -82,5 +85,22 @@ public class ReleaseController {
             builder.deleteCharAt(builder.length()-1);
         }
         model.addAttribute("videoIds", builder.toString());
+    }
+
+    private void getButtonsAttributes(Model model, Release release, Account account) {
+        if (release.getCollections().contains(account)) {
+            model.addAttribute("action_coll", "removeFromCollection");
+            model.addAttribute("message_coll", "Remove from collection");
+        } else {
+            model.addAttribute("action_coll", "addToCollection");
+            model.addAttribute("message_coll", "Add to collection");
+        }
+        if (release.getWantlists().contains(account)) {
+            model.addAttribute("action_wl", "removeFromWantlist");
+            model.addAttribute("message_wl", "Remove from wantlist");
+        } else {
+            model.addAttribute("action_wl", "addToWantlist");
+            model.addAttribute("message_wl", "Add to wantlist");
+        }
     }
 }

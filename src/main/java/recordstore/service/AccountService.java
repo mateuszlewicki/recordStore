@@ -20,5 +20,8 @@ public interface AccountService {
     VerificationToken getVerificationToken(String token);
     VerificationToken generateNewVerificationToken(String existingToken);
     void deleteUser(long id) throws IOException;
-    void addReleaseToCollection(long accountId, long releaseId);
+    void addReleaseToCollection(long id, Release release);
+    void addReleaseToWantlist(long id, Release release);
+    void removeReleaseFromCollection(long id, Release release);
+    void removeReleaseFromWantlist(long id, Release release);
 }

@@ -56,24 +56,8 @@
                                 </p>
                             </div>
                             <div class="col-4">
-                                <div class="d-flex">
-                                    <form th:action="@{/user/addToCollection}" method="post">
-                                        <input type="hidden" name="id" th:value="${release.id}"/>
-                                        <button type="submit" class="btn btn-secondary">
-                                            Add to collection
-                                        </button>
-                                    </form>
-                                    <form class="ml-3" th:action="@{/user/addToWantlist}" method="post">
-                                        <input type="hidden" name="id" th:value="${release.id}"/>
-                                        <button type="submit" class="btn btn-secondary">
-                                            Add to wantlist
-                                        </button>
-                                    </form>
-                                </div>
-                                <div>
-                                    Statistics:
-                                    <p>Have: <span th:text="${release.getAccounts().size()}"></span></p>
-                                </div>
+                                <div th:replace="client/releases/dashboard :: dashboard"></div>
+                                <div th:replace="client/releases/statistics :: statistics"></div>
                             </div>
                         </div>
                     </div>
