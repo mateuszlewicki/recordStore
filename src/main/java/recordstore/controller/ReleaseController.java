@@ -30,7 +30,7 @@ public class ReleaseController {
     @GetMapping
     public String showAllReleases(Model model, @RequestParam("page") Optional<Integer> page){
         int currentPage = page.orElse(1);
-        Page<Release> releases = service.getAllReleases(PageRequest.of(currentPage - 1 ,10, Sort.by("releaseDate").descending()));
+        Page<Release> releases = service.getAllReleases(PageRequest.of(currentPage - 1 ,30, Sort.by("releaseDate").descending()));
         model.addAttribute("releases", releases);
         getPages(model, releases);
         return "client/releases/index";
@@ -41,13 +41,13 @@ public class ReleaseController {
                                          @PathVariable long id,
                                          @RequestParam("page") Optional<Integer> page){
         int currentPage = page.orElse(1);
-        Page<Release> releases = service.getReleasesByGenre(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+        Page<Release> releases = service.getReleasesByGenre(id, PageRequest.of(currentPage - 1 ,30 , Sort.by("releaseDate").descending()));
         if (!releases.isEmpty()) {
             model.addAttribute("releases", releases);
             model.addAttribute("id", id);
             getPages(model, releases);
         } else {
-            model.addAttribute("error", "Genre not found");
+            model.addAttribute("error", "Releases not found");
         }
         return "client/releases/list";
     }

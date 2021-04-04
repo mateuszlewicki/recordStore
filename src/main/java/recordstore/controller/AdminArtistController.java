@@ -2,6 +2,7 @@ package recordstore.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +36,7 @@ public class AdminArtistController{
     @GetMapping
     public String showAllArtists(Model model, @RequestParam("page")Optional<Integer> page) {
         int currentPage = page.orElse(1);
-        Page<Artist> artists = service.getAllArtists(PageRequest.of(currentPage - 1, 10));
+        Page<Artist> artists = service.getAllArtists(PageRequest.of(currentPage - 1, 10, Sort.by("name").ascending()));
         model.addAttribute("artists", artists);
         getPages(model, artists);
         return "admin/artists/index";

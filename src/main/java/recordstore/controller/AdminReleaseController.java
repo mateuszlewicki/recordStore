@@ -2,6 +2,7 @@ package recordstore.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -50,7 +51,7 @@ public class AdminReleaseController {
     @GetMapping
     public String showAllReleases(Model model, @RequestParam("page") Optional<Integer> page){
         int currentPage = page.orElse(1);
-        Page<Release> releases = service.getAllReleases(PageRequest.of(currentPage - 1 ,10 ));
+        Page<Release> releases = service.getAllReleases(PageRequest.of(currentPage - 1 ,10, Sort.by("releaseDate").descending()));
         model.addAttribute("releases", releases);
         getPages(model, releases);
         return "admin/releases/index";

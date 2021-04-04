@@ -2,6 +2,7 @@ package recordstore.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +36,7 @@ public class AdminLabelController {
     @GetMapping
     public String showAllLabels(Model model, @RequestParam("page") Optional<Integer> page){
         int currentPage = page.orElse(1);
-        Page<Label> labels = service.getAllLabels(PageRequest.of(currentPage - 1, 10));
+        Page<Label> labels = service.getAllLabels(PageRequest.of(currentPage - 1, 10, Sort.by("title").ascending()));
         model.addAttribute("labels", labels);
         getPages(model, labels);
         return "admin/labels/index";
