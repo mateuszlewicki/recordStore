@@ -6,13 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import recordstore.entity.Artist;
 import recordstore.service.ArtistService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = {"/", "/releases", "/labels", "/genres", "/artists"})
+@RequestMapping(value = {"/", "/releases", "/labels", "/genres", "/artists", "/account"})
 public class SearchController {
 
     private final ArtistService service;
@@ -29,7 +30,8 @@ public class SearchController {
 
     @GetMapping("/search")
     public String showSearchResult(@RequestParam("search") String search, Model model) {
-        model.addAttribute("artist", service.getArtistByName(search));
-        return "client/search/index";
+        Artist artist = service.getArtistByName(search);
+        model.addAttribute("artist", artist);
+        return "redirect:/artists/" + artist.getId() ;
     }
 }

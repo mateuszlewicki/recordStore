@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import recordstore.entity.Label;
+import recordstore.entity.Release;
 import recordstore.service.LabelService;
+import recordstore.service.ReleaseService;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +24,11 @@ import java.util.stream.IntStream;
 public class LabelController {
 
     private final LabelService service;
+    private final ReleaseService releaseService;
 
-    public LabelController(LabelService service) {
+    public LabelController(LabelService service, ReleaseService releaseService) {
         this.service = service;
+        this.releaseService = releaseService;
     }
 
     @GetMapping
@@ -32,22 +36,27 @@ public class LabelController {
         int currentPage = page.orElse(1);
         Page<Label> labels = service.getAllLabels(PageRequest.of(currentPage - 1, 30, Sort.by("title").ascending()));
         model.addAttribute("labels", labels);
-        getPages(model, labels);
+        getPages(model, labels.getTotalPages());
         return "client/labels/index";
     }
 
     @GetMapping("/{id}")
-    public String showLabelInfo(@PathVariable long id, Model model){
+    public String showLabelInfo(Model model,
+                                @PathVariable long id,
+                                @RequestParam("page") Optional<Integer> page){
         if (service.isPresent(id)) {
+            int currentPage = page.orElse(1);
+            Page<Release> releases = releaseService.getReleasesByLabel(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
             model.addAttribute("label", service.getLabel(id));
+            model.addAttribute("releases", releases);
+            getPages(model, releases.getTotalPages());
         } else {
             model.addAttribute("error", "Label not found");
         }
         return "client/labels/view";
     }
 
-    private void getPages(Model model, Page<Label> labels) {
-        int pages = labels.getTotalPages();
+    private void getPages(Model model, int pages) {
         if (pages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
                     .boxed()

@@ -55,9 +55,11 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public void deleteRelease(long id) throws IOException {
         Release release = repository.getOne(id);
-        release.removeLabel(release.getLabel());
-        repository.delete(release);
-        fileService.deleteFile(release.getImg(), DIRECTORY);
+        if (release.getCollections().size() == 0 && release.getWantlists().size() == 0) {
+            release.removeLabel(release.getLabel());
+            repository.delete(release);
+            fileService.deleteFile(release.getImg(), DIRECTORY);
+        }
     }
 
     @Override
@@ -68,6 +70,26 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public Page<Release> getReleasesByGenre(long id, Pageable pageable) {
         return repository.findReleasesByGenres_id(id, pageable);
+    }
+
+    @Override
+    public Page<Release> getReleasesByArtist(long id, Pageable pageable) {
+        return repository.findReleasesByArtists_id(id, pageable);
+    }
+
+    @Override
+    public Page<Release> getReleasesByLabel(long id, Pageable pageable) {
+        return repository.findReleasesByLabel_Id(id, pageable);
+    }
+
+    @Override
+    public Page<Release> getCollectionByAccount(long id, Pageable pageable) {
+        return repository.findReleasesByCollections_id(id, pageable);
+    }
+
+    @Override
+    public Page<Release> getWantListByAccount(long id, Pageable pageable) {
+        return repository.findReleasesByWantlists_id(id, pageable);
     }
 
     @Override

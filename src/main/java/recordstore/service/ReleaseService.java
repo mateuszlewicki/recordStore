@@ -17,6 +17,10 @@ public interface ReleaseService {
 
     Page<Release> getAllReleases(Pageable pageable);
     Page<Release> getReleasesByGenre(long id, Pageable pageable);
+    Page<Release> getReleasesByArtist(long id, Pageable pageable);
+    Page<Release> getReleasesByLabel(long id, Pageable pageable);
+    Page<Release> getCollectionByAccount(long id, Pageable pageable);
+    Page<Release> getWantListByAccount(long id, Pageable pageable);
 
     List<String> search(String keyword);
     Release getReleaseByTitle(String title);
