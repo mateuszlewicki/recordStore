@@ -2,32 +2,17 @@
 <head th:replace="components/head"></head>
 <body>
 <header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
-
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-md-2 pl-0">
-            <div th:replace="components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
-        </div>
-        <div class="col-12 col-md-10">
-            <div class="main">
-
-                <div th:replace="components/search :: search" xmlns:th="http://www.thymeleaf.org"></div>
-
-                <div class="container p-0 mt-4">
-                    <div class="row release-row" th:each="genre : ${genres}">
-                        <div class="col-9 release-info">
-                            <a th:href="@{'/releases/genre/{id}'(id=${genre.id})}">
-                                <span th:text="${genre.title}"></span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <div class="main">
+        <div th:each="genre : ${genres}">
+            <div>
+                <a th:href="@{'/releases/genre/{id}'(id=${genre.id})}">
+                    <span th:text="${genre.title}"></span>
+                </a>
             </div>
         </div>
     </div>
 </div>
-
 <th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
-
 </body>
 </html>

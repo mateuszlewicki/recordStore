@@ -1,96 +1,83 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="components/head"></head>
 <body>
-
 <header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-md-2 pl-0">
-            <div th:replace="components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
-        </div>
-        <div class="col-12 col-md-10">
-            <div class="main">
-
-                <div th:replace="components/search :: search" xmlns:th="http://www.thymeleaf.org"></div>
-
-                <div th:if="${release}">
-                    <div class="main-content mx-3">
-                        <div class="row release-row">
-                            <div class="col-2 release-img">
-                                <img class="img-fluid" th:src="@{'/images/releases/'+${release.img}}" width="200" alt=""/>
-                            </div>
-                            <div class="col-6 release-info">
-                                <p>
-                                    <span class="title">Artist: </span>
-                                    <a class="breadcrumb-item" th:each="artist : ${release.artists}" th:href="@{'/artists/{id}'(id=${artist.id})}">
-                                        <span th:text="${artist.name}"></span>
-                                    </a>
-                                </p>
-                                <p>
-                                    <span class="title">Title: </span>
-                                    <span th:text="${release.title}"></span>
-                                </p>
-                                <p>
-                                    <span class="title">Label: </span>
-                                    <a th:href="@{'/labels/{id}'(id=${release.label.id})}">
-                                        <span th:text="${release.label.title}"></span>
-                                    </a>
-                                </p>
-                                <p>
-                                    <span class="title">Release Date: </span>
-                                    <span th:text="${release.releaseDate}"></span>
-                                </p>
-                                <p>
-                                    <span class="title">Code: </span>
-                                    <span th:text="${release.code}"></span>
-                                </p>
-                                <p>
-                                    <span class="title">Genre: </span>
-                                    <a class="breadcrumb-item" th:each="genre : ${release.genres}" th:href="@{'/releases/genre/{id}'(id=${genre.id})}">
-                                        <span th:text="${genre.title}"></span>
-                                    </a>
-                                </p>
-                                <p>
-                                    <span class="title">Format: </span>
-                                    <span th:text="${release.format.type}"></span>
-                                </p>
-                            </div>
-                            <div class="col-4">
-                                <div th:replace="client/releases/dashboard :: dashboard"></div>
-                                <div th:replace="client/releases/statistics :: statistics"></div>
-                            </div>
+    <div class="main">
+        <div th:if="${release}">
+            <div class="main-content">
+                <div class="row">
+                    <div class="d-flex col-12 col-lg-8">
+                        <div class="item-img pr-3">
+                            <img class="img-fluid" th:src="@{'/images/releases/'+${release.img}}" alt=""/>
+                        </div>
+                        <div class="item-info">
+                            <p>
+                                <span class="title">Artist: </span>
+                                <a class="breadcrumb-item" th:each="artist : ${release.artists}" th:href="@{'/artists/{id}'(id=${artist.id})}">
+                                    <span th:text="${artist.name}"></span>
+                                </a>
+                            </p>
+                            <p>
+                                <span class="title">Title: </span>
+                                <span th:text="${release.title}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Label: </span>
+                                <a th:href="@{'/labels/{id}'(id=${release.label.id})}">
+                                    <span th:text="${release.label.title}"></span>
+                                </a>
+                            </p>
+                            <p>
+                                <span class="title">Release Date: </span>
+                                <span th:text="${release.releaseDate}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Code: </span>
+                                <span th:text="${release.code}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Genre: </span>
+                                <a class="breadcrumb-item" th:each="genre : ${release.genres}" th:href="@{'/releases/genre/{id}'(id=${genre.id})}">
+                                    <span th:text="${genre.title}"></span>
+                                </a>
+                            </p>
+                            <p>
+                                <span class="title">Format: </span>
+                                <span th:text="${release.format.type}"></span>
+                            </p>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <div class="main-content mx-3">
-                                <div th:each="track: ${release.tracklist}">
-                                    <p>
-                                        <span class="mr-5" th:text="${track.position}"></span>
-                                        <span th:text="${track.title}"></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6 text-right" th:if="${videoIds.length()>0}">
-                            <span class="playlist" th:text="${videoIds}"></span>
-                            <div id="player"></div>
-                        </div>
-
+                    <div class="col-12 col-lg-4">
+                        <div th:replace="client/releases/dashboard :: dashboard"></div>
+                        <div th:replace="client/releases/statistics :: statistics"></div>
                     </div>
                 </div>
-                <div class="main-content mx-3" th:unless="${release}">
-                    <p th:text="${error}"></p>
+                <hr>
+                <div class="row">
+                    <div class="d-flex col-12 col-lg-8">
+                        <div>
+                            <div th:each="track: ${release.tracklist}">
+                                <p>
+                                    <span class="mr-5" th:text="${track.position}"></span>
+                                    <span th:text="${track.title}"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4" th:if="${videoIds.length()>0}">
+                        <span class="playlist" th:text="${videoIds}"></span>
+                        <div id="player"></div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="main-content mx-3" th:unless="${release}">
+            <p th:text="${error}"></p>
+        </div>
     </div>
 </div>
-
 <th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
 <script type="text/javascript" th:src="@{/js/youtube-player.js}"></script>
-
 </body>
 </html>

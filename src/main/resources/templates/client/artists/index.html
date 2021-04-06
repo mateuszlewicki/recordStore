@@ -2,57 +2,35 @@
 <head th:replace="components/head"></head>
 <body>
 <header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
-
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-md-2 pl-0">
-            <div th:replace="components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
-        </div>
-        <div class="col-12 col-md-10">
-            <div class="main">
-
-                <div th:replace="components/search :: search" xmlns:th="http://www.thymeleaf.org"></div>
-
-                <div class="container p-0 mt-4">
-                    <div class="row release-row" th:each="artist : ${artists}">
-                        <div class="col-2 release-img">
-                            <a th:href="@{'/artists/{id}'(id=${artist.id})}">
-                                <img class="img-fluid" th:src="@{'/images/artists/'+${artist.img}}" width="200" alt=""/>
-                            </a>
-                        </div>
-                        <div class="col-9 release-info">
-                            <p>
-                                <span class="title">Title: </span>
-                                <a th:href="@{'/artists/{id}'(id=${artist.id})}">
-                                    <span th:text="${artist.name}"></span>
-                                </a>
-                            </p>
-                            <p>
-                                <span class="title">Country: </span>
-                                <span th:text="${artist.country}"></span>
-                            </p>
-                            <p>
-                                <span class="title">Description: </span>
-                                <span th:text="${artist.description}"></span>
-                            </p>
-                        </div>
-                    </div>
+    <div class="main">
+        <div class="row list">
+            <div class="list-item mb-3" th:each="artist : ${artists}">
+                <div class="list-item-img text-center">
+                    <a th:href="@{'/artists/{id}'(id=${artist.id})}">
+                        <img class="img-fluid-height" th:src="@{'/images/artists/'+${artist.img}}" alt=""/>
+                    </a>
                 </div>
-                <nav aria-label="Pagination">
-                    <ul class="pagination-container">
-                        <li th:if="${artists.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
-                            <a th:href="@{/artists/(page=${pageNumber})}"
-                               th:text="${pageNumber}"
-                               th:class="${pageNumber == artists.number + 1} ? active"></a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="item-info">
+                    <p>
+                        <a th:href="@{'/artists/{id}'(id=${artist.id})}">
+                            <span th:text="${artist.name}"></span>
+                        </a>
+                    </p>
+                </div>
             </div>
         </div>
+        <nav aria-label="Pagination">
+            <ul class="pagination-container">
+                <li th:if="${artists.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/artists/(page=${pageNumber})}"
+                       th:text="${pageNumber}"
+                       th:class="${pageNumber == artists.number + 1} ? active"></a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
-
 <th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
-
 </body>
 </html>

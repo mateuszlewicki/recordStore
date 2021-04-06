@@ -1,79 +1,75 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="components/head"></head>
-
 <body>
-
 <header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-md-2 pl-0">
-            <div th:replace="components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
-        </div>
-        <div class="col-12 col-md-10">
-            <div class="main">
-
-                <div th:replace="components/search :: search" xmlns:th="http://www.thymeleaf.org"></div>
-
-                <div th:if="${label}">
-                    <div class="main-content mx-3">
-                        <div class="row release-row">
-                            <div class="col-2 release-img">
-                                <img class="img-fluid" th:src="@{'/images/labels/'+${label.img}}" width="200" alt=""/>
-                            </div>
-                            <div class="col-9 release-info">
-                                <p>
-                                    <span class="title">Label: </span>
-                                    <span th:text="${label.title}"></span>
-                                </p>
-                                <p>
-                                    <span class="title">Country: </span>
-                                    <span th:text="${label.country}"></span>
-                                </p>
-                                <p>
-                                    <span class="title">Description: </span>
-                                    <span th:text="${label.description}"></span>
-                                </p>
-                            </div>
+    <div class="main">
+        <div th:if="${label}">
+            <div class="main-content">
+                <div class="row">
+                    <div class="d-flex col-12 col-lg-8">
+                        <div class="item-img pr-3">
+                            <img class="img-fluid" th:src="@{'/images/labels/'+${label.img}}" alt=""/>
                         </div>
-
-                        <hr>
-                        <h5>Releases</h5>
-                        <div th:if="${label.releases}">
-                            <table class="table">
-                                <tbody th:each="release : ${label.releases}">
-                                <tr>
-                                    <td>
-                                        <a th:href="@{'/releases/{id}'(id=${release.id})}">
-                                            <img th:src="@{'/images/releases/'+${release.img}}" width="50" alt=""/>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="breadcrumb-item" th:each="artist : ${release.artists}" th:href="@{'/artists/{id}'(id=${artist.id})}">
-                                            <span th:text="${artist.name}"></span>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a th:href="@{'/releases/{id}'(id=${release.id})}">
-                                            <span th:text="${release.title}"></span>
-                                        </a>
-                                    </td>
-                                    <td th:text="${release.code}"></td>
-                                    <td th:text="${release.releaseDate}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div class="item-info">
+                            <p>
+                                <span class="title">Label: </span>
+                                <span th:text="${label.title}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Country: </span>
+                                <span th:text="${label.country}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Description: </span>
+                                <span th:text="${label.description}"></span>
+                            </p>
                         </div>
                     </div>
+                    <div class="col-12 col-lg-4">
+                        buttons
+                    </div>
                 </div>
-                <div class="main-content mx-3" th:unless="${label}">
-                    <p th:text="${error}"></p>
+                <div th:if="${releases}">
+                    <hr>
+                    <h5>Releases</h5>
+                    <hr>
+                    <div class="d-sm-flex justify-content-between mb-3 releases-list" th:each="release : ${releases}">
+                        <div class="releases-list-item">
+                            <a th:href="@{'/releases/{id}'(id=${release.id})}">
+                                <img class="item-img-sm" th:src="@{'/images/releases/'+${release.img}}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="releases-list-item">
+                            <a class="breadcrumb-item" th:each="artist : ${release.artists}" th:href="@{'/artists/{id}'(id=${artist.id})}">
+                                <span th:text="${artist.name}"></span>
+                            </a>
+                        </div>
+                        <div class="releases-list-item">
+                            <a th:href="@{'/releases/{id}'(id=${release.id})}">
+                                <span th:text="${release.title}"></span>
+                            </a>
+                        </div>
+                        <div class="releases-list-item" th:text="${release.code}"></div>
+                        <div class="releases-list-item" th:text="${release.releaseDate}"></div>
+                    </div>
                 </div>
             </div>
+            <nav aria-label="Pagination">
+                <ul class="pagination-container">
+                    <li th:if="${releases.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
+                        <a th:href="@{'/labels/{id}/?page={page}'(id=${label.id}, page=${pageNumber})}"
+                           th:text="${pageNumber}"
+                           th:class="${pageNumber == releases.number + 1} ? active"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main-content mx-3" th:unless="${label}">
+            <p th:text="${error}"></p>
         </div>
     </div>
 </div>
-
 <th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
 </body>
 </html>

@@ -1,48 +1,50 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-
 <head th:replace="components/head"></head>
-
 <body>
-
 <header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
-
-<div class="container-fluid main-content main-content-login">
-    <div class="row">
-        <div class="col-12 col-md-2 pl-0">
-            <div th:replace="components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
-        </div>
-
-        <div class="col-12 col-md-10">
-
-            <div th:replace="components/search :: search" xmlns:th="http://www.thymeleaf.org"></div>
-
-            <div th:if="${account}">
-                <div class="main-content mx-3">
-                    <div class="row release-row">
-                        <div class="col-2 release-img">
-                            <img class="img-fluid" th:src="@{'/images/accounts/'+${account.img}}" width="200" alt=""/>
+<div class="container-fluid">
+    <div class="main">
+        <div th:if="${account}">
+            <div class="main-content">
+                <div class="row">
+                    <div class="d-flex col-12 col-lg-8">
+                        <div class="item-img">
+                            <img class="img-fluid" th:src="@{'/images/accounts/'+${account.img}}" alt=""/>
                         </div>
-                        <div class="col-9 release-info">
+                        <div class="item-info">
                             <p>
                                 <span class="title">username: </span>
-                                <span th:text="${account.username}"></span>
+                                <a th:href="@{/account/{id}(id=${account.id})}" th:text="${account.username}"></a>
                             </p>
                             <p>
                                 <span class="title">email: </span>
                                 <span th:text="${account.email}"></span>
                             </p>
-                        </div>
-                        <div class="col-1" th:if="${dashboard}">
-                            <a th:href="@{/user/edit}"><img class="release-icon" th:src="@{/images/service/edit.svg}" alt="logo"/></a>
-                            <a th:href="@{/logout}"><img class="release-icon ml-3" th:src="@{/images/service/logout.svg}" alt="logo"/></a>
+
+                            <br>
+                            <p th:if="${!account.collection.isEmpty()}">
+                                <span class="title">In Collection: </span>
+                                <a th:href="@{'/account/{id}/collection'(id=${account.id})}" th:text="${account.collection.size()}"></a>
+                            </p>
+                            <p th:if="${!account.wantlist.isEmpty()}">
+                                <span class="title">In Wantlist: </span>
+                                <a th:href="@{'/account/{id}/wantlist'(id=${account.id})}" th:text="${account.wantlist.size()}"></a>
+                            </p>
+
                         </div>
                     </div>
+                    <div class="col-12 col-lg-4" th:if="${isAuth}">
+                        <div th:replace="client/user/dashboard :: dashboard"></div>
+                    </div>
+                </div>
+                <hr>
+                <div th:if="${releases}">
+                    <div th:replace="client/user/releases :: releases"></div>
                 </div>
             </div>
-            <div class="main-content mx-3" th:unless="${account}">
-                <p th:text="${error}"></p>
-            </div>
-
+        </div>
+        <div class="main-content mx-3" th:unless="${account}">
+            <p th:text="${error}"></p>
         </div>
     </div>
 </div>

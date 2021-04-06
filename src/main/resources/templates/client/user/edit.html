@@ -1,49 +1,30 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-
 <head th:replace="components/head"></head>
-
 <body>
-
 <header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
-
-<div class="container-fluid main-content main-content-login">
-    <div class="row">
-        <div class="col-12 col-md-2 pl-0">
-            <div th:replace="components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
-        </div>
-
-        <div class="col-12 col-md-10">
-
-            <div th:replace="components/search :: search" xmlns:th="http://www.thymeleaf.org"></div>
-
+<div class="container-fluid">
+    <div class="main">
+        <div th:if="${account}">
             <div class="main-content">
-                <div th:if="${account}">
-                    <h3>Edit account</h3>
-
-                    <form th:action="@{/user/edit}" th:object="${account}" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <input type="hidden" th:field="*{id}" th:value="${account.id}"/>
-                            <input type="hidden" th:field="*{img}" th:value="${account.img}"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="sr-only" for="data">Image</label>
-                            <img class="img-width mb-3" th:src="@{'/images/accounts/'+${account.img}}" alt="" th:id="image"/>
-                            <input type="file" class="form-control-file" th:errorclass="is-invalid" id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
-                            <p class="invalid-feedback" th:if="${#fields.hasErrors('data')}" th:errors="*{data}"></p>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input class="form-control is-valid" th:errorclass="is-invalid" type="text" id="name" th:field="*{username}" placeholder="Name" maxlength="100" th:value="${account.username}" />
-                            <p class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-                        </div>
-
-                        <button type="submit" class="btn btn-success mb-4">Submit</button>
-                    </form>
+            <p>Edit account</p>
+            <form th:action="@{/user/edit}" th:object="${account}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="hidden" th:field="*{id}" th:value="${account.id}"/>
+                    <input type="hidden" th:field="*{img}" th:value="${account.img}"/>
                 </div>
-            </div>
-
+                <div class="form-group item-img">
+                    <label class="sr-only" for="data">Image</label>
+                    <img class="mb-3" th:src="@{'/images/accounts/'+${account.img}}" alt="" th:id="image"/>
+                    <input type="file" class="form-control-file" th:errorclass="is-invalid" id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('data')}" th:errors="*{data}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control is-valid" th:errorclass="is-invalid" type="text" id="name" th:field="*{username}" placeholder="Name" maxlength="100" th:value="${account.username}" />
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                </div>
+                <button type="submit" class="btn custom-btn">Submit</button>
+            </form>
         </div>
     </div>
 </div>

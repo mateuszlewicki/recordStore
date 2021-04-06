@@ -1,13 +1,30 @@
 var search_box = $(".search_box");
 var search_btn = $( "#search-btn" );
-function closeSearch() {
+var menu_box = $('.menu-main');
+var menu_btn = $('.menu-toggle-btn');
+
+function toggleSearch() {
     search_box.toggleClass('active');
     search_btn.toggleClass('active');
 }
-$( "#search-btn" ).click(function(e) {
+search_btn.click(function(e) {
+    menu_box.removeClass('active');
+    menu_btn.removeClass('active');
     e.preventDefault();
-    closeSearch();
+    toggleSearch();
 });
+
+menu_btn.click(function (e){
+    search_box.removeClass('active');
+    search_btn.removeClass('active');
+    e.preventDefault();
+    toggleMenu();
+});
+
+function toggleMenu() {
+    menu_box.toggleClass('active');
+    menu_btn.toggleClass('active');
+}
 
 $(function() {
     $('#search').autocomplete({

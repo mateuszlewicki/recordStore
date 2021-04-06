@@ -18,6 +18,10 @@
 body{
     font-family: 'Quicksand';
 }
+.img-fluid-height{
+    width: auto;
+    height: 100%;
+}
 input#search{
     border-bottom: 1px solid var(--navbar-bg-color);
 }
@@ -39,15 +43,18 @@ footer{
 .top-navbar{
     position: relative;
     background: var(--navbar-bg-color);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
-
 }
 .top-navbar a, .top-navbar button{
     color: var(--main-text-color);
+}
+.menu-toggle-btn{
+    border: none;
+    padding: 5px;
+    background: transparent;
+    transition: transform .3s ease;
+}
+.menu-toggle-btn.active{
+    transform: rotate(90deg);
 }
 .top-navbar a:hover, .top-navbar button:hover{
     color: var(--white-color);
@@ -66,7 +73,6 @@ footer{
     left: 0;
     width: 100%;
     background: var(--white-bg-color);
-    padding: 0 1%;
     margin: 0;
     max-height: 0;
     overflow: hidden;
@@ -91,7 +97,7 @@ footer{
 .search_box input {
     width: 100%;
     font-size: 1em;
-    margin-right: 1%;
+    margin: 0 1%;
     padding:10px;
     padding-top: 25px;
     border: none;
@@ -121,31 +127,45 @@ footer{
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
-.aside-nav{
-    min-height: 100%;
-    align-items: start;
-    padding-left: 30px;
-    background: var(--aside-bg);
-    position: fixed;
-    width: 16.666%;
-    top: 0;
-    padding-top: 85px;
+.menu-main{
+    padding: 0;
+    background: var(--white-bg-color);
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition:  all 0.3s ease-in-out;
+    -ms-transition:  all 0.3s ease-in-out;
+    -o-transition:  all 0.3s ease-in-out;
+    transition:  all 0.3s ease-in-out;
 }
-.aside-nav .nav-link{
-    color: var(--aside-link-color);
-    transition: all .3s ease;
+.menu-main.active{
+    height: auto;
+    max-height: 190px;
+    padding: 0;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition:  all 0.3s ease-in-out;
+    -ms-transition:  all 0.3s ease-in-out;
+    -o-transition:  all 0.3s ease-in-out;
+    transition:  all 0.3s ease-in-out;
+    z-index: 1000;
 }
-.aside-nav .nav-link:hover{
-    text-decoration: underline;
+.menu-main ul{
+    list-style: none;
+    margin: 0;
+    padding: 1rem;
+}
+.menu-main .menu-item-link{
+    color: var(--main-text-color);
+    margin-right: 1rem;
+}
+.menu-main .menu-item-link:hover{
+    text-decoration: none;
+    color: var(--main-text-color);
 }
 .main{
-    margin-top: 70px;
-}
-.main-content{
-    margin-top: 15px;
-}
-.main-content-login{
-    margin-top: 75px;
+    padding-top: 15px;
 }
 .custom-btn{
     padding: 10px 25px;
@@ -199,30 +219,59 @@ footer{
     border: 1px solid transparent;
     box-shadow: 0 0 0 .2rem var(--custom-focus-shadow-color);
 }
-
 .signin-errors{
     color: red;
 }
-
-.release-row{
-    margin-bottom: 30px;
+.item-img{
+    flex: 0 0 calc(200px + 1rem);
 }
-.release-info p{
+.item-img img{
+    width: 200px;
+}
+.item-info{
+    flex: 0 0 calc(100% - 200px - 1rem);
+}
+.item-info p{
     margin-bottom: 0;
 }
-.release-info .title{
+.item-info .title{
     font-family: 'Quicksand-Light';
     font-size: 0.9rem;
 }
-.release-icon{
-    width: 20px;
-    opacity: 0.5;
+.item-img-sm{
+    width: 50px;
 }
-/*.main{*/
-/*    margin-top: 95px;*/
-/*}*/
-pagination-container{
+.list-item{
+    padding-left: 15px;
+    max-width: 215px;
+}
+.list-item-img{
+    display: flex;
+    justify-content: center;
+    height: 200px;
+    width: 200px;
+    overflow: hidden;
+}
+.list-item .item-info p {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+}
+.releases-list .releases-list-item:not(:first-child){
+    flex: 0 0 calc( (100% - 10%) / 4);
+    max-width: 20%;
+}
+.releases-list .releases-list-item:first-child{
+    flex: 0 0 10%;
+    max-width: 10%;
+}
+.more-btn{
+    font-size: .8rem;
+}
+.pagination-container{
     list-style: none;
+    padding: 0;
 }
 .pagination-container .pagination-item{
     display: inline-block;
@@ -247,12 +296,15 @@ pagination-container{
 .playlist{
     display: none;
 }
-
 .error-icon{
     width: 50px;
     opacity: 0.5;
 }
-
-.img-width{
-    width: 200px;
+/*dashboard*/
+.dashboard-form{
+    flex: 0 0 calc(50% - .5rem);
+}
+.dashboard-form .custom-btn{
+    width: 100%;
+    font-size: 14px;
 }
