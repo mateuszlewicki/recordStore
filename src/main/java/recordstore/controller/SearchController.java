@@ -7,31 +7,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import recordstore.entity.Artist;
-import recordstore.service.ArtistService;
+import recordstore.entity.Label;
+import recordstore.entity.Release;
+import recordstore.service.SearchService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = {"/", "/releases", "/labels", "/genres", "/artists", "/account"})
 public class SearchController {
 
-    private final ArtistService service;
+    private final SearchService service;
 
-    public SearchController(ArtistService service) {
+    public SearchController(SearchService service) {
         this.service = service;
     }
 
-    @RequestMapping(value = "autocomplete")
+    @GetMapping("/autocomplete")
     @ResponseBody
-    public List<String> artistsNamesAutocomplete(HttpServletRequest request) {
-        return service.search(request.getParameter("term"));
+    public List<String> showAutocomplete(@RequestParam("term") String term) {
+        return service.search(term);
     }
 
     @GetMapping("/search")
     public String showSearchResult(@RequestParam("search") String search, Model model) {
+        Release release = service.getReleaseByTitle(search);
+        Label label = service.getLabelByTitle(search);
         Artist artist = service.getArtistByName(search);
-        model.addAttribute("artist", artist);
-        return "redirect:/artists/" + artist.getId() ;
+
+        if (release != null) {
+            model.addAttribute("release", release);
+            return "redirect:/releases/" + release.getId();
+        }
+        if (label != null) {
+            model.addAttribute("label", label);
+            return "redirect:/labels/" + label.getId();
+        }
+        if (artist != null) {
+            model.addAttribute("artist", artist);
+            return "redirect:/artists/" + artist.getId();
+        }
+        model.addAttribute("message", "No items found");
+        return "client/search";
     }
 }
