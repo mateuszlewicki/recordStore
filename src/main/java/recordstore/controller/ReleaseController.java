@@ -57,8 +57,8 @@ public class ReleaseController {
         if (service.isPresent(id)){
             Release release = service.getRelease(id);
             model.addAttribute("release", release);
+            model.addAttribute("videoIds", getVideoIds(release));
             getButtonsAttributes(model, release, account);
-            getVideoIds(model, release);
         } else {
             model.addAttribute("error", "Release not found");
         }
@@ -75,16 +75,8 @@ public class ReleaseController {
         }
     }
 
-    private void getVideoIds(Model model, Release release){
-        StringBuilder builder = new StringBuilder();
-        for(YouTubeVideo video : release.getPlaylist()){
-            builder.append(video.getVideoId());
-            builder.append(",");
-        }
-        if (builder.length() > 0){
-            builder.deleteCharAt(builder.length()-1);
-        }
-        model.addAttribute("videoIds", builder.toString());
+    private String getVideoIds(Release release) {
+        return release.getPlaylist().stream().map(v -> v.getVideoId()).collect(Collectors.joining(","));
     }
 
     private void getButtonsAttributes(Model model, Release release, Account account) {
