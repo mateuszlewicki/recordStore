@@ -13,9 +13,6 @@ import recordstore.DTO.YouTubeVideoDTO;
 import recordstore.entity.Release;
 import recordstore.enums.Format;
 import recordstore.mapper.ReleaseMapper;
-import recordstore.service.ArtistService;
-import recordstore.service.GenreService;
-import recordstore.service.LabelService;
 import recordstore.service.ReleaseService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,21 +28,11 @@ import java.util.stream.IntStream;
 public class AdminReleaseController {
 
     private final ReleaseMapper releaseMapper;
-
     private final ReleaseService service;
-    private final ArtistService artistService;
-    private final LabelService labelService;
-    private final GenreService genreService;
 
-    public AdminReleaseController(ReleaseMapper releaseMapper, ReleaseService service,
-                                  ArtistService artistService,
-                                  LabelService labelService,
-                                  GenreService genreService) {
+    public AdminReleaseController(ReleaseMapper releaseMapper, ReleaseService service) {
         this.releaseMapper = releaseMapper;
         this.service = service;
-        this.artistService = artistService;
-        this.labelService = labelService;
-        this.genreService = genreService;
     }
 
     @GetMapping
@@ -59,9 +46,8 @@ public class AdminReleaseController {
 
     @GetMapping("/add")
     public String showAddForm(Model model){
-        ReleaseDTO releaseDTO = new ReleaseDTO();
-        model.addAttribute("release" , releaseDTO);
-        getModelAttributes(model);
+        model.addAttribute("release" , new ReleaseDTO());
+        model.addAttribute("formatTypes" , Format.values());
         return "admin/releases/add";
     }
 
@@ -69,7 +55,7 @@ public class AdminReleaseController {
     public String saveRelease(@Valid @ModelAttribute("release") ReleaseDTO releaseDTO,
                              BindingResult result, Model model) throws IOException {
         if (result.hasErrors()) {
-            getModelAttributes(model);
+            model.addAttribute("formatTypes" , Format.values());
             return "admin/releases/add";
         }
         service.saveRelease(releaseMapper.fromDTO(releaseDTO));
@@ -79,9 +65,8 @@ public class AdminReleaseController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable long id, Model model){
         if (service.isPresent(id)){
-            ReleaseDTO releaseDTO = releaseMapper.toDTO(service.getRelease(id));
-            model.addAttribute("release", releaseDTO);
-            getModelAttributes(model);
+            model.addAttribute("release", releaseMapper.toDTO(service.getRelease(id)));
+            model.addAttribute("formatTypes" , Format.values());
         } else {
             model.addAttribute("error", "Release is not found");
         }
@@ -92,7 +77,7 @@ public class AdminReleaseController {
     public String updateRecord(@Valid @ModelAttribute("release") ReleaseDTO releaseDTO,
                                BindingResult result, Model model) throws IOException {
         if(result.hasErrors()){
-            getModelAttributes(model);
+            model.addAttribute("formatTypes" , Format.values());
             return "admin/releases/edit";
         }
         service.saveRelease(releaseMapper.fromDTO(releaseDTO));
@@ -147,13 +132,6 @@ public class AdminReleaseController {
         releaseDTO.getPlaylist().remove(releaseDTO.getPlaylist().get(index));
         model.addAttribute("release", releaseDTO);
         return "admin/releases/video";
-    }
-
-    private void getModelAttributes(Model model) {
-        model.addAttribute("genres", genreService.getAllGenres());
-        model.addAttribute("artists", artistService.getAllArtistsNames());
-        model.addAttribute("labels", labelService.getAllLabelsTitles());
-        model.addAttribute("formatTypes" , Format.values());
     }
 
     private void getPages(Model model, Page<Release> releases) {

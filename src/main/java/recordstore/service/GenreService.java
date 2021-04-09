@@ -1,6 +1,7 @@
 package recordstore.service;
 
 import recordstore.entity.Genre;
+import recordstore.projections.GenreProjection;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface GenreService {
     Genre getGenre(long id);
     boolean isPresent(long id);
     List<Genre> getAllGenres();
+    List<GenreProjection> getGenresTitles(String query);
 }

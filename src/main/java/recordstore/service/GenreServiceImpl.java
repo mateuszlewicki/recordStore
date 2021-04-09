@@ -2,6 +2,7 @@ package recordstore.service;
 
 import org.springframework.stereotype.Service;
 import recordstore.entity.Genre;
+import recordstore.projections.GenreProjection;
 import recordstore.repository.GenreRepository;
 
 import java.util.List;
@@ -41,5 +42,10 @@ public class GenreServiceImpl implements GenreService{
     @Override
     public List<Genre> getAllGenres() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<GenreProjection> getGenresTitles(String query) {
+        return repository.findAllBy(query);
     }
 }

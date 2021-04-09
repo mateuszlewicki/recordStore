@@ -25,7 +25,70 @@ $(function() {
 });
 
 $(document).ready(function() {
-    $('select').select2();
+    $('#format').select2();
+
+    $('#artists_multiple').select2({
+        minimumInputLength: 2,
+        placeholder: 'Search artist',
+        ajax: {
+            url: "/artist-name",
+            dataType: 'json',
+            delay: 250,
+            processResults(data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.name,
+                            id: item.id,
+                        }
+                    })
+                }
+            },
+            cache: true
+        }
+    });
+
+    $('#label_single').select2({
+        minimumInputLength: 2,
+        placeholder: 'Search label',
+        ajax: {
+            url: "/label-title",
+            dataType: 'json',
+            delay: 250,
+            processResults(data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.title,
+                            id: item.id,
+                        }
+                    })
+                }
+            },
+            cache: true
+        }
+    });
+
+    $('#genres_multiple').select2({
+        minimumInputLength: 2,
+        placeholder: 'Search genre',
+        ajax: {
+            url: "/genre-title",
+            dataType: 'json',
+            delay: 250,
+            processResults(data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.title,
+                            id: item.id,
+                        }
+                    })
+                }
+            },
+            cache: true
+        }
+    });
 });
 
 $('.dynamic-track-rows').on('click', 'button[data-dynamic-rows-url]', function () {

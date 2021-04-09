@@ -15,7 +15,7 @@ public interface LabelService {
 
     Label getLabel(long id);
     boolean isPresent(long id);
-    List<LabelProjection> getAllLabelsTitles();
+    List<LabelProjection> getLabelsTitles(String query);
     Page<Label> getAllLabels(Pageable pageable);
 
     List<String> search(String keyword);

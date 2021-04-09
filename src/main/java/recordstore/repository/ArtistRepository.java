@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
-    List<ArtistProjection> findAllBy();
+    @Query(value = "SELECT id, name FROM artists WHERE name LIKE :keyword% LIMIT 5", nativeQuery = true)
+    List<ArtistProjection> findAllBy(@Param("keyword") String keyword);
 
     @Query(value = "SELECT name FROM artists WHERE name LIKE :keyword%", nativeQuery = true)
     List<String> search(@Param("keyword") String keyword);

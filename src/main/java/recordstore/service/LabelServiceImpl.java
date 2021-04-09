@@ -62,8 +62,8 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public List<LabelProjection> getAllLabelsTitles() {
-        return repository.findAllBy();
+    public List<LabelProjection> getLabelsTitles(String query) {
+        return repository.findAllBy(query);
     }
 
     @Override

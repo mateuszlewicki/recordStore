@@ -15,7 +15,7 @@ public interface ArtistService {
 
     Artist getArtist(long id);
     boolean isPresent(long id);
-    List<ArtistProjection> getAllArtistsNames();
+    List<ArtistProjection> getArtistsNames(String query);
     Page<Artist> getAllArtists(Pageable pageable);
 
     List<String> search(String keyword);

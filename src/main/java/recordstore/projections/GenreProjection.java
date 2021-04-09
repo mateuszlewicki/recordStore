@@ -1,6 +1,6 @@
 package recordstore.projections;
 
-public interface LabelProjection {
+public interface GenreProjection {
     long getId();
     String getTitle();
 }

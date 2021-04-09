@@ -61,8 +61,8 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public List<ArtistProjection> getAllArtistsNames() {
-        return repository.findAllBy();
+    public List<ArtistProjection> getArtistsNames(String query) {
+        return repository.findAllBy(query);
     }
 
     @Override

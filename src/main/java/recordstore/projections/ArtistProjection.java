@@ -1,6 +1,6 @@
 package recordstore.projections;
 
 public interface ArtistProjection {
-    String getId();
+    long getId();
     String getName();
 }

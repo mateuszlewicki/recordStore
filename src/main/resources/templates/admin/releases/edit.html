@@ -31,8 +31,8 @@
 
                         <div class="form-group">
                             <label for="artist">Artist</label>
-                            <select class="form-control select-multiple" th:errorclass="is-invalid" th:field="*{artists}" size="5" name="artist[]" multiple="multiple">
-                                <option th:each="artist : ${artists}" th:value="${artist.id}" th:text="${artist.name}"/>
+                            <select class="form-control select-multiple" id="artists_multiple" th:errorclass="is-invalid" th:field="*{artists}" name="artists[]" multiple="multiple">
+                                <option th:each="artist : ${release.artists}" th:value="${artist.id}" th:text="${artist.name}"/>
                             </select>
                             <p class="invalid-feedback" th:if="${#fields.hasErrors('artists')}" th:errors="*{artists}"></p>
                         </div>
@@ -51,9 +51,9 @@
 
                         <div class="form-group">
                             <label for="label">Label</label>
-                            <select class="form-control select-single" th:errorclass="is-invalid" th:field="*{label}">
+                            <select class="form-control select-single" id="label_single" th:errorclass="is-invalid" th:field="*{label}">
                                 <option value="">Choose label</option>
-                                <option th:each="label : ${labels}" th:value="${label.id}" th:text="${label.title}"/>
+                                <option th:value="${release.label.id}" th:text="${release.label.title}"/>
                             </select>
                             <p class="invalid-feedback" th:if="${#fields.hasErrors('label')}" th:errors="*{label}"></p>
                         </div>
@@ -66,8 +66,8 @@
 
                         <div class="form-group">
                             <label for="genre">Genre</label>
-                            <select class="form-control select-multiple" th:errorclass="is-invalid" th:field="*{genres}" size="5" name="genre[]" multiple="multiple">
-                                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.title}"/>
+                            <select class="form-control select-multiple" id="genres_multiple" th:errorclass="is-invalid" th:field="*{genres}" size="5" name="genre[]" multiple="multiple">
+                                <option th:each="genre : ${release.genres}" th:value="${genre.id}" th:text="${genre.title}"/>
                             </select>
                             <p class="invalid-feedback" th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}"></p>
                         </div>
