@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="admin/components/head"></head>
 <body>
 <header th:replace="admin/components/header :: header"></header>
 <div class="container-fluid">
     <div class="main">
-        <div th:each="label : ${labels}">
+        <div th:if="${label}">
             <div class="main-content">
                 <div class="row">
                     <div class="d-flex col-12 col-lg-11">
@@ -37,18 +37,11 @@
                         </form>
                     </div>
                 </div>
-                <hr>
             </div>
         </div>
-        <nav aria-label="Pagination">
-            <ul class="pagination-container">
-                <li th:if="${labels.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
-                    <a th:href="@{/admin/labels/(page=${pageNumber})}"
-                       th:text="${pageNumber}"
-                       th:class="${pageNumber == labels.number + 1} ? active"></a>
-                </li>
-            </ul>
-        </nav>
+        <div class="main-content mx-3" th:unless="${label}">
+            <p th:text="${error}"></p>
+        </div>
     </div>
 </div>
 <th:block th:replace="admin/components/assets:: assets"></th:block>

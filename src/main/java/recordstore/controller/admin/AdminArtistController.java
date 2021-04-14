@@ -1,4 +1,4 @@
-package recordstore.controller;
+package recordstore.controller.admin;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,6 +42,16 @@ public class AdminArtistController{
         return "admin/artists/index";
     }
 
+    @GetMapping("/{id}")
+    public String showArtistInfo(@PathVariable long id, Model model) {
+        if (service.isPresent(id)) {
+            model.addAttribute("artist", service.getArtist(id));
+        } else {
+            model.addAttribute("error", "Artist not found");
+        }
+        return "/admin/artists/view";
+    }
+
     @GetMapping("/add")
     public String showAddForm(Model model){
         model.addAttribute("newArtist", new ArtistDTO());
@@ -83,18 +93,6 @@ public class AdminArtistController{
             service.deleteArtist(id);
         }
         return "redirect:/admin/artists/";
-    }
-
-    @RequestMapping(value = "autocomplete")
-    @ResponseBody
-    public List<String> artistsNamesAutocomplete(HttpServletRequest request) {
-        return service.search(request.getParameter("term"));
-    }
-
-    @GetMapping("/search")
-    public String showSearchResult(@RequestParam("search") String search, Model model) {
-        model.addAttribute("artist", service.getArtistByName(search));
-        return "admin/artists/search";
     }
 
     private void getPages(Model model, Page<Artist> artists) {

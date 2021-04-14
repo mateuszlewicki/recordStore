@@ -246,8 +246,6 @@ footer{
     max-width: 215px;
 }
 .list-item-img{
-    display: flex;
-    justify-content: center;
     height: 200px;
     width: 200px;
     overflow: hidden;
@@ -261,6 +259,10 @@ footer{
 .releases-list .releases-list-item:not(:first-child){
     flex: 0 0 calc( (100% - 10%) / 4);
     max-width: 20%;
+}
+.release-icon{
+    width: 20px;
+    opacity: 0.5;
 }
 .releases-list .releases-list-item:first-child{
     flex: 0 0 10%;

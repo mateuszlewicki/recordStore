@@ -2,53 +2,42 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="admin/components/head"></head>
 <body>
-<header th:replace="admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
-
+<header th:replace="admin/components/header :: header"></header>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-md-2 pl-0">
-            <div th:replace="admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
-        </div>
-        <div class="col-12 col-md-10">
-            <div class="main">
-                <div class="container p-0 my-4">
-                    <div class="row release-row" th:each="account : ${accounts}">
-                        <div class="col-2 release-img">
-                            <img class="img-fluid" th:src="@{'/images/accounts/'+${account.img}}" width="200" alt=""/>
+    <div class="main">
+        <div th:each="account : ${accounts}">
+            <div class="main-content">
+                <div class="row">
+                    <div class="d-flex col-12 col-lg-11">
+                        <div class="item-img">
+                            <img class="img-fluid" th:src="@{'/images/accounts/'+${account.img}}" alt=""/>
                         </div>
-                        <div class="col-9 release-info">
+                        <div class="item-info">
                             <p>
-                                <span class="title">Username: </span>
-                                <span th:text="${account.username}"></span>
+                                <span class="title">username: </span>
+                                <a th:href="@{/account/{id}(id=${account.id})}" th:text="${account.username}"></a>
                             </p>
                             <p>
-                                <span class="title">Email: </span>
+                                <span class="title">email: </span>
                                 <span th:text="${account.email}"></span>
                             </p>
-                            <p>
-                                <span class="title">Status: </span>
-                                <span th:text="${account.enabled}"></span>
-                            </p>
-                            <p>
-                                <span class="title">Role: </span>
-                                <span class="breadcrumb-item" th:each="role : ${account.roles}" th:text="${role.name}"></span>
-                            </p>
-                        </div>
-                        <div class="col-1">
-                            <form th:action="@{/admin/accounts/delete}" method="post">
-                                <input type="hidden" name="id" th:value="${account.id}"/>
-                                <button type="submit" class="btn btn-sm btn-link delete">
-                                    <img class="release-icon" th:src="@{/images/service/trash.svg}" alt="logo"/>
-                                </button>
-                            </form>
                         </div>
                     </div>
+                    <div class="col-12 col-lg-1 d-flex">
+                        <form th:action="@{/admin/accounts/delete}" method="post">
+                            <input type="hidden" name="id" th:value="${account.id}"/>
+                            <button type="submit" class="btn btn-sm btn-link delete">
+                                <img class="release-icon" th:src="@{/images/service/trash.svg}" alt="logo"/>
+                            </button>
+                        </form>
+                    </div>
                 </div>
+                <hr>
             </div>
         </div>
+        <nav></nav>
     </div>
 </div>
-
-<th:block th:replace="admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+<th:block th:replace="admin/components/assets:: assets"></th:block>
 </body>
 </html>

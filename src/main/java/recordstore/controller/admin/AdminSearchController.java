@@ -1,4 +1,4 @@
-package recordstore.controller;
+package recordstore.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +14,12 @@ import recordstore.service.SearchService;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = {"/", "/releases", "/labels", "/genres", "/artists", "/account"})
-public class SearchController {
+@RequestMapping(value = {"/admin", "/admin/releases", "/admin/labels", "/admin/genres", "/admin/artists", "/admin/accounts"})
+public class AdminSearchController {
 
     private final SearchService service;
 
-    public SearchController(SearchService service) {
+    public AdminSearchController(SearchService service) {
         this.service = service;
     }
 
@@ -36,15 +36,15 @@ public class SearchController {
         Artist artist = service.getArtistByName(search);
 
         if (release != null) {
-            return "redirect:/releases/" + release.getId();
+            return "redirect:/admin/releases/" + release.getId();
         }
         if (label != null) {
-            return "redirect:/labels/" + label.getId();
+            return "redirect:/admin/labels/" + label.getId();
         }
         if (artist != null) {
-            return "redirect:/artists/" + artist.getId();
+            return "redirect:/admin/artists/" + artist.getId();
         }
         model.addAttribute("message", "No items found");
-        return "client/search";
+        return "admin/search";
     }
 }

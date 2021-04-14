@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="components/head"></head>
 <body>
-<header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+<header th:replace="components/header :: header"></header>
 <div class="container-fluid">
     <div class="main">
         <div th:if="${account}">
@@ -20,7 +21,6 @@
                                 <span class="title">email: </span>
                                 <span th:text="${account.email}"></span>
                             </p>
-
                             <br>
                             <p th:if="${!account.collection.isEmpty()}">
                                 <span class="title">In Collection: </span>
@@ -30,7 +30,6 @@
                                 <span class="title">In Wantlist: </span>
                                 <a th:href="@{'/account/{id}/wantlist'(id=${account.id})}" th:text="${account.wantlist.size()}"></a>
                             </p>
-
                         </div>
                     </div>
                     <div class="col-12 col-lg-4" th:if="${isAuth}">
@@ -48,6 +47,6 @@
         </div>
     </div>
 </div>
-<th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+<th:block th:replace="components/assets:: assets"></th:block>
 </body>
 </html>

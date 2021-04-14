@@ -1,0 +1,14 @@
+<div th:fragment="search" th:remove="tag" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="search_box">
+        <form class="get p-0 mb-0" action="/admin/search">
+            <fieldset>
+                <div class="input-group">
+                    <input name="search" id="search" placeholder="Search" type="text">
+                    <button class="btn btn-search-icon" aria-label="Search" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

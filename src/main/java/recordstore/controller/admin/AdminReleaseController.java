@@ -1,4 +1,4 @@
-package recordstore.controller;
+package recordstore.controller.admin;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +15,6 @@ import recordstore.enums.Format;
 import recordstore.mapper.ReleaseMapper;
 import recordstore.service.ReleaseService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin/releases/")
-public class AdminReleaseController {
+public class  AdminReleaseController {
 
     private final ReleaseMapper releaseMapper;
     private final ReleaseService service;
@@ -42,6 +41,16 @@ public class AdminReleaseController {
         model.addAttribute("releases", releases);
         getPages(model, releases);
         return "admin/releases/index";
+    }
+
+    @GetMapping("/{id}")
+    public String showReleaseInfo(@PathVariable long id, Model model){
+        if (service.isPresent(id)){
+            model.addAttribute("release", service.getRelease(id));
+        } else {
+            model.addAttribute("error", "Release not found");
+        }
+        return "admin/releases/view";
     }
 
     @GetMapping("/add")
@@ -90,18 +99,6 @@ public class AdminReleaseController {
             service.deleteRelease(id);
         }
         return "redirect:/admin/releases/";
-    }
-
-    @RequestMapping(value = "autocomplete")
-    @ResponseBody
-    public List<String> releaseTitlesAutocomplete(HttpServletRequest request) {
-        return service.search(request.getParameter("term"));
-    }
-
-    @GetMapping("/search")
-    public String showSearchResult(@RequestParam("search") String search, Model model) {
-        model.addAttribute("release", service.getReleaseByTitle(search));
-        return "admin/releases/search";
     }
 
     @PostMapping("/addTrack")

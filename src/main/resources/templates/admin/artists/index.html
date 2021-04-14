@@ -1,38 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="admin/components/head"></head>
-
 <body>
-<header th:replace="admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
-
+<header th:replace="admin/components/header :: header"></header>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-md-2 pl-0">
-            <div th:replace="admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
-        </div>
-        <div class="col-12 col-md-10">
-            <div class="main">
-
-                <div class="container p-0">
-                    <form th:action="@{/admin/artists/search}">
-                        <input name="search" id="search" placeholder="Search" type="text">
-                        <button class="btn btn-search-icon" aria-label="Search" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-
-                <div class="container p-0 my-4">
-                    <a href="/admin/artists/add" class="btn btn-primary" role="button">Add new artist</a>
-                </div>
-                <hr>
-                <div class="container p-0">
-                    <div class="row release-row" th:each="artist : ${artists}">
-                        <div class="col-2 release-img">
-                            <img class="img-fluid" th:src="@{'/images/artists/'+${artist.img}}" width="200" alt=""/>
+    <div class="main">
+        <div th:each="artist : ${artists}">
+            <div class="main-content">
+                <div class="row">
+                    <div class="d-flex col-12 col-lg-11">
+                        <div class="item-img pr-3">
+                            <img class="img-fluid" th:src="@{'/images/artists/'+${artist.img}}" alt=""/>
                         </div>
-                        <div class="col-9 release-info">
+                        <div class="item-info">
                             <p>
                                 <span class="title">Artist: </span>
                                 <span th:text="${artist.name}"></span>
@@ -46,31 +26,31 @@
                                 <span th:text="${artist.description}"></span>
                             </p>
                         </div>
-                        <div class="col-1">
-                            <a class="mr-2" th:href="@{'edit/{id}'(id=${artist.id})}"><img class="release-icon" th:src="@{/images/service/edit.svg}" alt="logo"/></a>
-                            <form th:action="@{/admin/artists/delete}" method="post">
-                                <input type="hidden" name="id" th:value="${artist.id}"/>
-                                <button type="submit" class="btn btn-sm btn-link delete">
-                                    <img class="release-icon" th:src="@{/images/service/trash.svg}" alt="logo"/>
-                                </button>
-                            </form>
-                        </div>
+                    </div>
+                    <div class="col-12 col-lg-1 d-flex">
+                        <a class="mr-2" th:href="@{'edit/{id}'(id=${artist.id})}"><img class="release-icon" th:src="@{/images/service/edit.svg}" alt="logo"/></a>
+                        <form th:action="@{/admin/artists/delete}" method="post">
+                            <input type="hidden" name="id" th:value="${artist.id}"/>
+                            <button type="submit" class="btn btn-sm btn-link delete">
+                                <img class="release-icon" th:src="@{/images/service/trash.svg}" alt="logo"/>
+                            </button>
+                        </form>
                     </div>
                 </div>
-                <nav aria-label="Pagination">
-                    <ul class="pagination-container">
-                        <li th:if="${artists.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
-                            <a th:href="@{/admin/artists/(page=${pageNumber})}"
-                               th:text="${pageNumber}"
-                               th:class="${pageNumber == artists.number + 1} ? active"></a>
-                        </li>
-                    </ul>
-                </nav>
+                <hr>
             </div>
         </div>
+        <nav aria-label="Pagination">
+            <ul class="pagination-container">
+                <li th:if="${artists.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/admin/artists/(page=${pageNumber})}"
+                       th:text="${pageNumber}"
+                       th:class="${pageNumber == artists.number + 1} ? active"></a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
-
-<th:block th:replace="admin/components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+<th:block th:replace="admin/components/assets:: assets"></th:block>
 </body>
 </html>

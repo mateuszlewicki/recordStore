@@ -1,4 +1,4 @@
-package recordstore.controller;
+package recordstore.controller.admin;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,6 +42,16 @@ public class AdminLabelController {
         return "admin/labels/index";
     }
 
+    @GetMapping("/{id}")
+    public String showLabelInfo(@PathVariable long id, Model model) {
+        if (service.isPresent(id)) {
+            model.addAttribute("label", service.getLabel(id));
+        } else {
+            model.addAttribute("error", "Label not found");
+        }
+        return "/admin/labels/view";
+    }
+
     @GetMapping("/add")
     public String showAddForm(Model model){
         model.addAttribute("newLabel", new LabelDTO());
@@ -83,18 +93,6 @@ public class AdminLabelController {
             service.deleteLabel(id);
         }
         return "redirect:/admin/labels/";
-    }
-
-    @RequestMapping(value = "autocomplete")
-    @ResponseBody
-    public List<String> labelsTitleAutocomplete(HttpServletRequest request) {
-        return service.search(request.getParameter("term"));
-    }
-
-    @GetMapping("/search")
-    public String showSearchResult(@RequestParam("search") String search, Model model) {
-        model.addAttribute("label", service.getLabelByTitle(search));
-        return "admin/labels/search";
     }
 
     private void getPages(Model model, Page<Label> labels) {

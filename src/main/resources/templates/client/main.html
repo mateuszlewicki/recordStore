@@ -1,11 +1,12 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="components/head"></head>
 <body>
-<header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+<header th:replace="components/header :: header"></header>
 <div>
     <canvas id="canvas"></canvas>
 </div>
-<th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+<th:block th:replace="components/assets:: assets"></th:block>
 <script type="text/javascript" th:src="@{/js/animation.js}"></script>
 </body>
 </html>

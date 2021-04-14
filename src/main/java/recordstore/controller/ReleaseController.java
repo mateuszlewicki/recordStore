@@ -76,7 +76,7 @@ public class ReleaseController {
     }
 
     private String getVideoIds(Release release) {
-        return release.getPlaylist().stream().map(v -> v.getVideoId()).collect(Collectors.joining(","));
+        return release.getPlaylist().stream().map(YouTubeVideo::getVideoId).collect(Collectors.joining(","));
     }
 
     private void getButtonsAttributes(Model model, Release release, Account account) {

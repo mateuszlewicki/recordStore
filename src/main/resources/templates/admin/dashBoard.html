@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="admin/components/head"></head>
 <body>
-<header th:replace="admin/components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+<header th:replace="admin/components/header :: header"></header>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-md-2 pl-0">
-            <div th:replace="admin/components/aside :: nav" xmlns:th="http://www.thymeleaf.org"></div>
-        </div>
-        <div class="col-12 col-md-10">
-            <div class="main">
-
+    <div class="main">
+        <div class="main-content">
+            <div class="row">
+                <div class="d-flex col-12 col-lg-10">
+                    Commons data...
+                </div>
+                <div class="col-12 col-lg-2">
+                    <div class="dashboard-form p-0 my-4">
+                        <a href="/admin/releases/add/" class="btn custom-btn">Add release</a>
+                    </div>
+                    <div class="dashboard-form p-0 my-4">
+                        <a href="/admin/labels/add/" class="btn custom-btn">Add label</a>
+                    </div>
+                    <div class="dashboard-form p-0 my-4">
+                        <a href="/admin/genres/add/" class="btn custom-btn">Add genre</a>
+                    </div>
+                    <div class="dashboard-form p-0 my-4">
+                        <a href="/admin/artists/add" class="btn custom-btn">Add artist</a>
+                    </div>
+                </div>
             </div>
+            <hr>
+            <p>Data requiring pre-moderation...</p>
         </div>
     </div>
 </div>
-
+<th:block th:replace="admin/components/assets:: assets"></th:block>
 </body>
 </html>

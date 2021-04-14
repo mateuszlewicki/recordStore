@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="components/head"></head>
-
 <body>
-<header th:replace="components/header :: header" xmlns:th="http://www.thymeleaf.org"></header>
+<header th:replace="components/header :: header"></header>
     <div class="container-fluid main-content main-content-login">
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-2">
-
                 <div class="my-3">
                     <span class="h3">Sign in</span>
                 </div>
-
                 <form th:action="@{/registration}" th:object="${user}" method="post" enctype="">
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -38,10 +34,9 @@
                     </div>
                     <button type="submit" class="btn custom-btn">Submit</button>
                 </form>
-
             </div>
         </div>
     </div>
-<th:block th:replace="components/assets:: assets" xmlns:th="http://www.thymeleaf.org"></th:block>
+<th:block th:replace="components/assets:: assets"></th:block>
 </body>
 </html>

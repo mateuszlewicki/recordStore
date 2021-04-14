@@ -5,20 +5,18 @@
 <header th:replace="admin/components/header :: header"></header>
 <div class="container-fluid">
     <div class="main">
-        <div th:each="release : ${releases}">
+        <div th:if="${release}">
             <div class="main-content">
                 <div class="row">
                     <div class="d-flex col-12 col-lg-11">
                         <div class="item-img pr-3">
-                            <a th:href="@{'/admin/releases/{id}'(id=${release.id})}">
-                                <img class="img-fluid-height" th:src="@{'/images/releases/'+${release.img}}" alt=""/>
-                            </a>
+                            <img class="img-fluid" th:src="@{'/images/releases/'+${release.img}}" alt=""/>
                         </div>
                         <div class="item-info">
                             <p>
                                 <span class="title">Artist: </span>
                                 <a class="breadcrumb-item" th:each="artist : ${release.artists}" th:href="@{'/admin/artists/{id}'(id=${artist.id})}">
-                                    <span class="breadcrumb-item" th:each="artist : ${release.artists}" th:text="${artist.name}"></span>
+                                    <span th:text="${artist.name}"></span>
                                 </a>
                             </p>
                             <p>
@@ -60,17 +58,23 @@
                     </div>
                 </div>
                 <hr>
+                <div class="row">
+                    <div class="d-flex col-12 col-lg-8">
+                        <div>
+                            <div th:each="track: ${release.tracklist}">
+                                <p>
+                                    <span class="mr-5" th:text="${track.position}"></span>
+                                    <span th:text="${track.title}"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <nav aria-label="Pagination">
-            <ul class="pagination-container">
-                <li th:if="${releases.totalPages > 1}" class="pagination-item" th:each="pageNumber : ${pageNumbers}">
-                    <a th:href="@{/admin/releases/(page=${pageNumber})}"
-                       th:text="${pageNumber}"
-                       th:class="${pageNumber == releases.number + 1} ? active"></a>
-                </li>
-            </ul>
-        </nav>
+        <div class="main-content mx-3" th:unless="${release}">
+            <p th:text="${error}"></p>
+        </div>
     </div>
 </div>
 <th:block th:replace="admin/components/assets:: assets"></th:block>
