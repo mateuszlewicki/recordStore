@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/admin/releases/")
+@RequestMapping("/admin/releases")
 public class  AdminReleaseController {
 
     private final ReleaseMapper releaseMapper;

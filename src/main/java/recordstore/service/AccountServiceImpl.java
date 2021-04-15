@@ -28,19 +28,22 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final VerificationTokenRepository tokenRepository;
 
-    private final FileService fileService;
-
+    private FileService fileService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AccountServiceImpl(AccountRepository accountRepository, VerificationTokenRepository tokenRepository, FileService fileService) {
+    public AccountServiceImpl(AccountRepository accountRepository, VerificationTokenRepository tokenRepository) {
         this.accountRepository = accountRepository;
         this.tokenRepository = tokenRepository;
-        this.fileService = fileService;
     }
 
     @Autowired
     public void setBCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    @Autowired
+    public void setFileService(FileService fileService) {
+        this.fileService = fileService;
     }
 
     @Override

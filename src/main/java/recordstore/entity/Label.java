@@ -38,6 +38,6 @@ public class Label {
     @Transient
     private MultipartFile data;
 
-    @OneToMany(mappedBy = "label", orphanRemoval = false)
+    @OneToMany(mappedBy = "label")
     private List<Release> releases = new ArrayList<>();
 }

@@ -45,6 +45,6 @@ public class AdminSearchController {
             return "redirect:/admin/artists/" + artist.getId();
         }
         model.addAttribute("message", "No items found");
-        return "admin/search";
+        return "/admin/search";
     }
 }

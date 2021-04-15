@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.*;
 
-import recordstore.entity.Account;
 import recordstore.mapper.AccountMapper;
 import recordstore.service.AccountService;
 

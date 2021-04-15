@@ -18,7 +18,7 @@
                             <p>
                                 <span class="title">Artist: </span>
                                 <a class="breadcrumb-item" th:each="artist : ${release.artists}" th:href="@{'/admin/artists/{id}'(id=${artist.id})}">
-                                    <span class="breadcrumb-item" th:each="artist : ${release.artists}" th:text="${artist.name}"></span>
+                                    <span th:text="${artist.name}"></span>
                                 </a>
                             </p>
                             <p>

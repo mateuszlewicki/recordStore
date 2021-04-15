@@ -25,11 +25,18 @@ import recordstore.service.FacebookSignInAdapter;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private AccountDetailsService detailsService;
+    private FacebookConnectionSignup facebookConnectionSignup;
 
     @Autowired
-    private FacebookConnectionSignup facebookConnectionSignup;
+    public void setDetailsService(AccountDetailsService detailsService) {
+        this.detailsService = detailsService;
+    }
+
+    @Autowired
+    public void setFacebookConnectionSignup(FacebookConnectionSignup facebookConnectionSignup) {
+        this.facebookConnectionSignup = facebookConnectionSignup;
+    }
 
     @Value("${spring.social.facebook.appSecret}")
     String appSecret;

@@ -1,9 +1,5 @@
 package recordstore.validation;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import recordstore.entity.Release;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.format.DateTimeFormatter;

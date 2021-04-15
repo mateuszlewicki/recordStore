@@ -26,17 +26,17 @@ public class VerificationToken {
     @OneToOne(targetEntity = Account.class, fetch = FetchType.EAGER)
     private Account account;
 
-    private Date expiryDate = calculateExpiryDate(EXPIRATION);
+    private Date expiryDate = calculateExpiryDate();
 
     public void updateToken() {
         this.token = generateToken();
-        this.expiryDate = calculateExpiryDate(EXPIRATION);
+        this.expiryDate = calculateExpiryDate();
     }
 
-    private Date calculateExpiryDate(final int expiryTimeInMinutes) {
+    private Date calculateExpiryDate() {
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(new Date().getTime());
-        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+        cal.add(Calendar.MINUTE, VerificationToken.EXPIRATION);
         return new Date(cal.getTime().getTime());
     }
 

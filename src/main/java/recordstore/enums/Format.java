@@ -9,7 +9,7 @@ public enum Format {
     SEVEN("7\""),
     LP("LP");
 
-    private String type;
+    private final String type;
 
     Format(String type) {
         this.type = type;

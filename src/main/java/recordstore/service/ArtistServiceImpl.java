@@ -44,7 +44,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public void deleteArtist(long id) throws IOException {
         Artist artist = repository.getOne(id);
-        if (artist.getReleases().size() == 0) {
+        if (artist.getReleases().isEmpty()) {
             repository.deleteById(id);
             fileService.deleteFile(artist.getImg(), DIRECTORY);
         }

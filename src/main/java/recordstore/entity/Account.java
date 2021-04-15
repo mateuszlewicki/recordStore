@@ -96,12 +96,8 @@ public class Account implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Account account = (Account) o;
-
-        if (getId() != account.getId()) return false;
-
-        return true;
+        return getId() == account.getId();
     }
 
     @Override

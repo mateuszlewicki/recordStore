@@ -16,6 +16,7 @@ public class Role implements GrantedAuthority {
     @Id
     private long id;
 
+    @Column(name = "name")
     private String name;
 
     @Transient
@@ -23,10 +24,6 @@ public class Role implements GrantedAuthority {
     private Set<Account> accounts;
 
     public Role() {
-    }
-
-    public Role(long id) {
-        this.id = id;
     }
 
     public Role(long id, String name) {

@@ -1,6 +1,6 @@
 package recordstore.validation;
 
-import recordstore.DTO.AccountDTO;
+import recordstore.DTO.CreateAccountDTO;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -9,7 +9,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-        AccountDTO accountDTO = (AccountDTO) o;
+        CreateAccountDTO accountDTO = (CreateAccountDTO) o;
         return accountDTO.getPassword().equals(accountDTO.getPasswordConfirm());
     }
 }

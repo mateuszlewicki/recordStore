@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import recordstore.entity.Genre;
 import recordstore.entity.Release;
 import recordstore.repository.ReleaseRepository;
 import recordstore.utils.FileService;
@@ -55,7 +54,7 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public void deleteRelease(long id) throws IOException {
         Release release = repository.getOne(id);
-        if (release.getCollections().size() == 0 && release.getWantlists().size() == 0) {
+        if (release.getCollections().isEmpty() && release.getWantlists().isEmpty()) {
             release.removeLabel(release.getLabel());
             repository.delete(release);
             fileService.deleteFile(release.getImg(), DIRECTORY);

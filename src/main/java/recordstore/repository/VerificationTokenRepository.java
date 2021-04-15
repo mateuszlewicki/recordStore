@@ -1,6 +1,5 @@
 package recordstore.repository;
 
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import recordstore.entity.VerificationToken;
 

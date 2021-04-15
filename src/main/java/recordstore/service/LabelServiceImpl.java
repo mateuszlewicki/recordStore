@@ -45,7 +45,7 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public void deleteLabel(long id) throws IOException {
         Label label = repository.getOne(id);
-        if (label.getReleases().size() == 0) {
+        if (label.getReleases().isEmpty()) {
             repository.deleteById(id);
             fileService.deleteFile(label.getImg(), DIRECTORY);
         }

@@ -12,7 +12,6 @@ import recordstore.entity.Artist;
 import recordstore.mapper.ArtistMapper;
 import recordstore.service.ArtistService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/admin/artists/")
+@RequestMapping("/admin/artists")
 public class AdminArtistController{
 
     private final ArtistMapper artistMapper;

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @PasswordMatches
-public class AccountDTO {
+public class CreateAccountDTO {
 
     @NotBlank(message = "Field is mandatory")
     private String username;

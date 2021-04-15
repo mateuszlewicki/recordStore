@@ -1,14 +1,14 @@
 package recordstore.mapper;
 
 import org.springframework.stereotype.Component;
-import recordstore.DTO.AccountDTO;
+import recordstore.DTO.CreateAccountDTO;
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
 
 @Component
 public class AccountMapper {
 
-    public Account fromDTO(AccountDTO accountDTO) {
+    public Account fromDTO(CreateAccountDTO accountDTO) {
         Account account = new Account();
         account.setUsername(accountDTO.getUsername());
         account.setPassword(accountDTO.getPassword());

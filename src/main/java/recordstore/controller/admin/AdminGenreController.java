@@ -8,11 +8,10 @@ import recordstore.entity.Genre;
 import recordstore.service.GenreService;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/genres")
+@RequestMapping("/admin/genres/")
 public class AdminGenreController {
 
     private final GenreService service;
@@ -63,7 +62,7 @@ public class AdminGenreController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("id") long id) throws IOException {
+    public String delete(@RequestParam("id") long id) {
         if (service.isPresent(id)){
             service.deleteGenre(id);
         }

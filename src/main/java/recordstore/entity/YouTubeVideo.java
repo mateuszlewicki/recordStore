@@ -18,7 +18,7 @@ public class YouTubeVideo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "videoId")
+    @Column(name = "video_id")
     String videoId;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -12,7 +12,6 @@ import recordstore.entity.Label;
 import recordstore.mapper.LabelMapper;
 import recordstore.service.LabelService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;

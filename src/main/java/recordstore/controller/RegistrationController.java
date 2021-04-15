@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import recordstore.DTO.AccountDTO;
+import recordstore.DTO.CreateAccountDTO;
 import recordstore.entity.Account;
 import recordstore.entity.VerificationToken;
 import recordstore.error.AccountAlreadyExistException;
@@ -31,25 +31,32 @@ public class RegistrationController {
     private final AccountMapper accountMapper;
     private final AccountService accountService;
 
-    @Autowired
-    ApplicationEventPublisher eventPublisher;
-
-    @Autowired
-    EmailService emailService;
+    private ApplicationEventPublisher eventPublisher;
+    private EmailService emailService;
 
     public RegistrationController(AccountMapper accountMapper, AccountService accountService) {
         this.accountMapper = accountMapper;
         this.accountService = accountService;
     }
 
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    @Autowired
+    public void setEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
     @GetMapping("/registration")
     public String showSignUpForm(Model model) {
-        model.addAttribute("user", new AccountDTO());
+        model.addAttribute("user", new CreateAccountDTO());
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String registerNewAccount(@ModelAttribute("user") @Valid AccountDTO accountDTO, BindingResult result,
+    public String registerNewAccount(@ModelAttribute("user") @Valid CreateAccountDTO accountDTO, BindingResult result,
                                      HttpServletRequest request, Model model) {
         if (result.hasErrors()){
             return "registration";
@@ -67,8 +74,7 @@ public class RegistrationController {
             model.addAttribute("message", e.getMessage());
             return "/errorPages/badUser";
         }
-        model.addAttribute("message", "We have sent you an email to confirm your registration");
-        return "login";
+        return "redirect:/login";
     }
 
     @GetMapping("/registrationConfirm")
@@ -78,7 +84,7 @@ public class RegistrationController {
             model.addAttribute("message", "Invalid token.");
             return "/errorPages/badUser";
         }
-        if (isDateExpired(verificationToken) && verificationToken.getAccount().isEnabled() == false) {
+        if (isDateExpired(verificationToken) && !verificationToken.getAccount().isEnabled()) {
             model.addAttribute("message", "Your registration token has expired.");
             model.addAttribute("expired", true);
             model.addAttribute("token", verificationToken.getToken());
@@ -101,9 +107,6 @@ public class RegistrationController {
         } catch (MailAuthenticationException e) {
             model.addAttribute("message", "Error in java mail configuration.");
             return "/errorPages/emailError";
-        } catch (RuntimeException e) {
-            model.addAttribute("message", e.getMessage());
-            return "/errorPages/badUser";
         }
         return "redirect:/login";
     }

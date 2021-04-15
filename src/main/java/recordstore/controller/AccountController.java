@@ -37,7 +37,7 @@ public class AccountController {
         if (accountService.isPresent(id)) {
             Account account = accountService.getAccount(id);
             model.addAttribute("account", account);
-            model.addAttribute("isAuth", isAuth(authAccount, id));
+            model.addAttribute("isAuth", account.equals(authAccount));
         } else {
             model.addAttribute("error", "Account not found");
         }
@@ -54,9 +54,10 @@ public class AccountController {
             return "client/user/view_collection";
         }
         int currentPage = page.orElse(1);
+        Account account = accountService.getAccount(id);
         Page<Release> releases = releaseService.getCollectionByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
-        model.addAttribute("account", accountService.getAccount(id));
-        model.addAttribute("isAuth", isAuth(authAccount, id));
+        model.addAttribute("account", account);
+        model.addAttribute("isAuth", account.equals(authAccount));
         if (!releases.isEmpty()) {
             model.addAttribute("releases", releases);
             getPages(model, releases);
@@ -74,18 +75,15 @@ public class AccountController {
             return "client/user/view_wantlist";
         }
         int currentPage = page.orElse(1);
+        Account account = accountService.getAccount(id);
         Page<Release> releases = releaseService.getWantListByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
-        model.addAttribute("account", accountService.getAccount(id));
-        model.addAttribute("isAuth", isAuth(authAccount, id));
+        model.addAttribute("account", account);
+        model.addAttribute("isAuth", account.equals(authAccount));
         if (!releases.isEmpty()) {
             model.addAttribute("releases", releases);
             getPages(model, releases);
         }
         return "client/user/view_wantlist";
-    }
-
-    private boolean isAuth(Account authAccount, long id) {
-        return authAccount != null && authAccount.getId() == id ? true : false;
     }
 
     private void getPages(Model model, Page<Release> releases) {
