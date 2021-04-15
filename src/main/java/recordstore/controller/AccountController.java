@@ -38,11 +38,10 @@ public class AccountController {
             Account account = accountService.getAccount(id);
             model.addAttribute("account", account);
             model.addAttribute("isAuth", isAuth(authAccount, id));
-
         } else {
             model.addAttribute("error", "Account not found");
         }
-        return "client/user/profile";
+        return "client/user/view";
     }
 
     @GetMapping("/{id}/collection")
@@ -50,20 +49,19 @@ public class AccountController {
                                         @PathVariable long id,
                                         @RequestParam("page") Optional<Integer> page,
                                         @AuthenticationPrincipal Account authAccount) {
-        if (accountService.isPresent(id)) {
-            int currentPage = page.orElse(1);
-            Page<Release> releases = releaseService.getCollectionByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
-            model.addAttribute("account", accountService.getAccount(id));
-            model.addAttribute("isAuth", isAuth(authAccount, id));
-            if (!releases.isEmpty()){
-                model.addAttribute("releases", releases);
-                model.addAttribute("q", "collection");
-                getPages(model, releases);
-            }
-        } else {
+        if (!accountService.isPresent(id)) {
             model.addAttribute("error", "Account not found");
+            return "client/user/view_collection";
         }
-        return "client/user/profile";
+        int currentPage = page.orElse(1);
+        Page<Release> releases = releaseService.getCollectionByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+        model.addAttribute("account", accountService.getAccount(id));
+        model.addAttribute("isAuth", isAuth(authAccount, id));
+        if (!releases.isEmpty()) {
+            model.addAttribute("releases", releases);
+            getPages(model, releases);
+        }
+        return "client/user/view_collection";
     }
 
     @GetMapping("/{id}/wantlist")
@@ -71,20 +69,19 @@ public class AccountController {
                                         @PathVariable long id,
                                         @RequestParam("page") Optional<Integer> page,
                                         @AuthenticationPrincipal Account authAccount) {
-        if (accountService.isPresent(id)) {
-            int currentPage = page.orElse(1);
-            Page<Release> releases = releaseService.getWantListByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
-            model.addAttribute("account", accountService.getAccount(id));
-            model.addAttribute("isAuth", isAuth(authAccount, id));
-            if (!releases.isEmpty()){
-                model.addAttribute("releases", releases);
-                model.addAttribute("q", "wantlist");
-                getPages(model, releases);
-            }
-        } else {
+        if (!accountService.isPresent(id)) {
             model.addAttribute("error", "Account not found");
+            return "client/user/view_wantlist";
         }
-        return "client/user/profile";
+        int currentPage = page.orElse(1);
+        Page<Release> releases = releaseService.getWantListByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+        model.addAttribute("account", accountService.getAccount(id));
+        model.addAttribute("isAuth", isAuth(authAccount, id));
+        if (!releases.isEmpty()) {
+            model.addAttribute("releases", releases);
+            getPages(model, releases);
+        }
+        return "client/user/view_wantlist";
     }
 
     private boolean isAuth(Account authAccount, long id) {
