@@ -58,7 +58,8 @@ public class ReleaseController {
             Release release = service.getRelease(id);
             model.addAttribute("release", release);
             model.addAttribute("videoIds", getVideoIds(release));
-            getButtonsAttributes(model, release, account);
+            model.addAttribute("inCollection", release.getCollections().contains(account));
+            model.addAttribute("inWantlist", release.getWantlists().contains(account));
         } else {
             model.addAttribute("error", "Release not found");
         }
@@ -77,22 +78,5 @@ public class ReleaseController {
 
     private String getVideoIds(Release release) {
         return release.getPlaylist().stream().map(YouTubeVideo::getVideoId).collect(Collectors.joining(","));
-    }
-
-    private void getButtonsAttributes(Model model, Release release, Account account) {
-        if (release.getCollections().contains(account)) {
-            model.addAttribute("action_coll", "removeFromCollection");
-            model.addAttribute("message_coll", "Remove from collection");
-        } else {
-            model.addAttribute("action_coll", "addToCollection");
-            model.addAttribute("message_coll", "Add to collection");
-        }
-        if (release.getWantlists().contains(account)) {
-            model.addAttribute("action_wl", "removeFromWantlist");
-            model.addAttribute("message_wl", "Remove from wantlist");
-        } else {
-            model.addAttribute("action_wl", "addToWantlist");
-            model.addAttribute("message_wl", "Add to wantlist");
-        }
     }
 }

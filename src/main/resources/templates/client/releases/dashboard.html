@@ -1,10 +1,18 @@
 <div class="d-flex" th:fragment="dashboard" xmlns:th="http://www.w3.org/1999/xhtml">
-    <form class="dashboard-form" th:action="@{'/user/releases/{action}'(action=${action_coll})}" method="post">
+    <form th:if="${inCollection}" class="dashboard-form" th:action="@{/user/releases/removeFromCollection}" method="post">
         <input type="hidden" name="id" th:value="${release.id}"/>
-        <button class="btn custom-btn" type="submit" th:text="${message_coll}"></button>
+        <button class="btn custom-btn" type="submit">Remove from collection</button>
     </form>
-    <form class="dashboard-form ml-3" th:action="@{'/user/releases/{action}'(action=${action_wl})}" method="post">
+    <form th:unless="${inCollection}" class="dashboard-form" th:action="@{/user/releases/addToCollection}" method="post">
         <input type="hidden" name="id" th:value="${release.id}"/>
-        <button class="btn custom-btn" type="submit" th:text="${message_wl}"></button>
+        <button class="btn custom-btn" type="submit">Add to collection</button>
+    </form>
+    <form th:if="${inWantlist}" class="dashboard-form ml-3" th:action="@{/user/releases/removeFromWantlist}" method="post">
+        <input type="hidden" name="id" th:value="${release.id}"/>
+        <button class="btn custom-btn" type="submit">Remove from wantlist</button>
+    </form>
+    <form th:unless="${inWantlist}" class="dashboard-form ml-3" th:action="@{/user/releases/addToWantlist}" method="post">
+        <input type="hidden" name="id" th:value="${release.id}"/>
+        <button class="btn custom-btn" type="submit">Add to wantlist</button>
     </form>
 </div>
