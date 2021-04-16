@@ -1,17 +1,18 @@
 package recordstore.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
 import recordstore.entity.Release;
 import recordstore.entity.VerificationToken;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface AccountService {
 
     Account getAccount(long id);
-    List<Account> getAllUsers();
+    Page<Account> getAllUsers(Pageable pageable);
     boolean isPresent(long id);
     Account createNewAccount(Account account);
     void saveRegisterUser(Account account);
