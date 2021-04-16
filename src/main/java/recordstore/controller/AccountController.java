@@ -60,7 +60,7 @@ public class AccountController {
         model.addAttribute("isAuth", account.equals(authAccount));
         if (!releases.isEmpty()) {
             model.addAttribute("releases", releases);
-            getPages(model, releases);
+            getPages(model, releases.getTotalPages());
         }
         return "client/user/view_collection";
     }
@@ -81,17 +81,14 @@ public class AccountController {
         model.addAttribute("isAuth", account.equals(authAccount));
         if (!releases.isEmpty()) {
             model.addAttribute("releases", releases);
-            getPages(model, releases);
+            getPages(model, releases.getTotalPages());
         }
         return "client/user/view_wantlist";
     }
 
-    private void getPages(Model model, Page<Release> releases) {
-        int pages = releases.getTotalPages();
+    private void getPages(Model model, int pages) {
         if (pages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
-                    .boxed()
-                    .collect(Collectors.toList());
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages).boxed().collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
     }

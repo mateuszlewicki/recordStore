@@ -37,7 +37,7 @@ public class AdminArtistController{
         int currentPage = page.orElse(1);
         Page<Artist> artists = service.getAllArtists(PageRequest.of(currentPage - 1, 10, Sort.by("name").ascending()));
         model.addAttribute("artists", artists);
-        getPages(model, artists);
+        getPages(model, artists.getTotalPages());
         return "admin/artists/index";
     }
 
@@ -94,12 +94,9 @@ public class AdminArtistController{
         return "redirect:/admin/artists/";
     }
 
-    private void getPages(Model model, Page<Artist> artists) {
-        int pages = artists.getTotalPages();
+    private void getPages(Model model, int pages) {
         if (pages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
-                    .boxed()
-                    .collect(Collectors.toList());
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages).boxed().collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
     }

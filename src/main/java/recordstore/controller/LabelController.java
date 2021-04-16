@@ -58,9 +58,7 @@ public class LabelController {
 
     private void getPages(Model model, int pages) {
         if (pages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
-                    .boxed()
-                    .collect(Collectors.toList());
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages).boxed().collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
     }

@@ -37,7 +37,7 @@ public class AdminLabelController {
         int currentPage = page.orElse(1);
         Page<Label> labels = service.getAllLabels(PageRequest.of(currentPage - 1, 10, Sort.by("title").ascending()));
         model.addAttribute("labels", labels);
-        getPages(model, labels);
+        getPages(model, labels.getTotalPages());
         return "admin/labels/index";
     }
 
@@ -94,12 +94,9 @@ public class AdminLabelController {
         return "redirect:/admin/labels/";
     }
 
-    private void getPages(Model model, Page<Label> labels) {
-        int pages = labels.getTotalPages();
+    private void getPages(Model model, int pages) {
         if (pages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
-                    .boxed()
-                    .collect(Collectors.toList());
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages).boxed().collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
     }

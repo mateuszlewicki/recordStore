@@ -32,7 +32,7 @@ public class ReleaseController {
         int currentPage = page.orElse(1);
         Page<Release> releases = service.getAllReleases(PageRequest.of(currentPage - 1 ,30, Sort.by("releaseDate").descending()));
         model.addAttribute("releases", releases);
-        getPages(model, releases);
+        getPages(model, releases.getTotalPages());
         return "client/releases/index";
     }
 
@@ -45,7 +45,7 @@ public class ReleaseController {
         if (!releases.isEmpty()) {
             model.addAttribute("releases", releases);
             model.addAttribute("id", id);
-            getPages(model, releases);
+            getPages(model, releases.getTotalPages());
         } else {
             model.addAttribute("error", "Releases not found");
         }
@@ -66,12 +66,9 @@ public class ReleaseController {
         return "client/releases/view";
     }
 
-    private void getPages(Model model, Page<Release> releases) {
-        int pages = releases.getTotalPages();
+    private void getPages(Model model, int pages) {
         if (pages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages)
-                    .boxed()
-                    .collect(Collectors.toList());
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, pages).boxed().collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
     }
