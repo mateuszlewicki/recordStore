@@ -36,13 +36,16 @@ public class AdminSearchController {
         Artist artist = service.getArtistByName(search);
 
         if (release != null) {
-            return "redirect:/admin/releases/" + release.getId();
+            model.addAttribute("releaseId", release.getId());
+            return "redirect:/admin/releases/{releaseId}";
         }
         if (label != null) {
-            return "redirect:/admin/labels/" + label.getId();
+            model.addAttribute("labelId", label.getId());
+            return "redirect:/admin/labels/{labelId}";
         }
         if (artist != null) {
-            return "redirect:/admin/artists/" + artist.getId();
+            model.addAttribute("artistId", artist.getId());
+            return "redirect:/admin/artists/{artistId}";
         }
         model.addAttribute("message", "No items found");
         return "/admin/search";

@@ -21,6 +21,14 @@
                                 <span class="title">email: </span>
                                 <span th:text="${account.email}"></span>
                             </p>
+                            <p>
+                                <span class="title">Status: </span>
+                                <span th:text="${account.enabled}"></span>
+                            </p>
+                            <p>
+                                <span class="title">Role: </span>
+                                <span class="breadcrumb-item" th:each="role : ${account.roles}" th:text="${role.name}"></span>
+                            </p>
                         </div>
                     </div>
                     <div class="col-12 col-lg-1 d-flex">

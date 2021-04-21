@@ -36,13 +36,16 @@ public class SearchController {
         Artist artist = service.getArtistByName(search);
 
         if (release != null) {
-            return "redirect:/releases/" + release.getId();
+            model.addAttribute("releaseId", release.getId());
+            return "redirect:/releases/{releaseId}";
         }
         if (label != null) {
-            return "redirect:/labels/" + label.getId();
+            model.addAttribute("labelId", label.getId());
+            return "redirect:/labels/{labelId}";
         }
         if (artist != null) {
-            return "redirect:/artists/" + artist.getId();
+            model.addAttribute("artistId", artist.getId());
+            return "redirect:/artists/{artistId}";
         }
         model.addAttribute("message", "No items found");
         return "client/search";
