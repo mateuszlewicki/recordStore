@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>RecordStore</title>
+</head>
+<body>
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="text-center">
+        <img class="error-icon" th:src="@{/images/service/error.svg}" alt="logo"/>
+        <h3 th:text="${message}"></h3>
+        <div th:if="${token}">
+            <form th:action="@{/resendRegistrationToken}" method="post">
+                <input type="hidden" name="token" th:value="${token}"/>
+                <button type="submit" class="btn custom-btn mt-4">
+                    Resend registration token
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

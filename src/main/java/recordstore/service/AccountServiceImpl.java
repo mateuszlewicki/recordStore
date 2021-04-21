@@ -11,6 +11,7 @@ import recordstore.entity.Account;
 import recordstore.entity.Release;
 import recordstore.entity.VerificationToken;
 import recordstore.error.AccountAlreadyExistException;
+import recordstore.error.TokenExpiredException;
 import recordstore.error.TokenNotFoundException;
 import recordstore.repository.AccountRepository;
 import recordstore.repository.VerificationTokenRepository;
@@ -18,6 +19,7 @@ import recordstore.utils.FileService;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.UUID;
 
 @Service
@@ -148,22 +150,33 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public VerificationToken getVerificationToken(String token) {
-        return tokenRepository.findByToken(token);
+        VerificationToken verificationToken = tokenRepository.findByToken(token);
+        if (verificationToken == null) {
+            throw new TokenNotFoundException("Token not found");
+        }
+        if (tokenExpired(verificationToken) && !verificationToken.getAccount().isEnabled()) {
+            throw new TokenExpiredException(verificationToken.getToken());
+        }
+        return verificationToken;
     }
 
     @Override
     public VerificationToken generateNewVerificationToken(String existingToken) {
-        if (tokenRepository.existsVerificationTokenByToken(existingToken)) {
-            VerificationToken token = tokenRepository.findByToken(existingToken);
-            token.updateToken();
-            return tokenRepository.save(token);
-        } else {
+        VerificationToken token = tokenRepository.findByToken(existingToken);
+        if (token == null) {
             throw new TokenNotFoundException("Token not found");
         }
+        token.updateToken();
+        return tokenRepository.save(token);
     }
 
     private boolean emailExists(final String email) {
         return accountRepository.existsAccountByEmail(email);
+    }
+
+    private boolean tokenExpired(VerificationToken token) {
+        Calendar calendar = Calendar.getInstance();
+        return token.getExpiryDate().getTime() - calendar.getTime().getTime() <= 0;
     }
 
     private String createUniqueName (MultipartFile file) {

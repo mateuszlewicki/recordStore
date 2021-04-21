@@ -5,15 +5,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import recordstore.DTO.CreateAccountDTO;
 import recordstore.entity.Account;
 import recordstore.entity.VerificationToken;
 import recordstore.error.AccountAlreadyExistException;
-import recordstore.error.MailAuthenticationException;
+import recordstore.error.TokenExpiredException;
 import recordstore.error.TokenNotFoundException;
 import recordstore.mapper.AccountMapper;
 import recordstore.registration.OnRegistrationCompleteEvent;
@@ -23,7 +21,6 @@ import recordstore.utils.EmailService;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Calendar;
 
 @Controller
 public class RegistrationController {
@@ -67,12 +64,6 @@ public class RegistrationController {
         } catch (AccountAlreadyExistException e) {
             model.addAttribute("emailError", e.getMessage());
             return "registration";
-        } catch (MailAuthenticationException e){
-            model.addAttribute("message", "Error in java mail configuration.");
-            return "/errorPages/emailError";
-        } catch (RuntimeException e){
-            model.addAttribute("message", e.getMessage());
-            return "/errorPages/badUser";
         }
         return "redirect:/login";
     }
@@ -80,39 +71,38 @@ public class RegistrationController {
     @GetMapping("/registrationConfirm")
     public String confirmRegistration(Model model, @RequestParam("token") String token) {
         VerificationToken verificationToken = accountService.getVerificationToken(token);
-        if (verificationToken == null) {
-            model.addAttribute("message", "Invalid token.");
-            return "/errorPages/badUser";
-        }
-        if (isDateExpired(verificationToken) && !verificationToken.getAccount().isEnabled()) {
-            model.addAttribute("message", "Your registration token has expired.");
-            model.addAttribute("expired", true);
-            model.addAttribute("token", verificationToken.getToken());
-            return "/errorPages/badUser";
-        }
         accountService.saveRegisterUser(verificationToken.getAccount());
         return "redirect:/login";
     }
 
-    @GetMapping("/resendRegistrationToken")
+    @PostMapping("/resendRegistrationToken")
     public String resendRegistrationToken(HttpServletRequest request,
                                           @RequestParam("token") String existingToken, Model model) throws MessagingException {
-        try {
-            VerificationToken token = accountService.generateNewVerificationToken(existingToken);
-            Account account = token.getAccount();
-            emailService.sendEmailWithVerificationToken(request.getContextPath(), account.getEmail(), token.getToken());
-        } catch (TokenNotFoundException e) {
-            model.addAttribute("message", e.getMessage());
-            return "/errorPages/badUser";
-        } catch (MailAuthenticationException e) {
-            model.addAttribute("message", "Error in java mail configuration.");
-            return "/errorPages/emailError";
-        }
+        VerificationToken token = accountService.generateNewVerificationToken(existingToken);
+        Account account = token.getAccount();
+        emailService.sendEmailWithVerificationToken(request.getContextPath(), account.getEmail(), token.getToken());
         return "redirect:/login";
     }
 
-    private boolean isDateExpired(VerificationToken token) {
-        Calendar calendar = Calendar.getInstance();
-        return token.getExpiryDate().getTime() - calendar.getTime().getTime() <= 0;
+    @ExceptionHandler(TokenNotFoundException.class)
+    public ModelAndView tokenNotFoundHandler(TokenNotFoundException ex) {
+        ModelAndView modelAndView = new ModelAndView("/errorPages/tokenNotFoundError");
+        modelAndView.getModel().put("message", ex.getMessage());
+        return modelAndView;
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ModelAndView mailAuthenticationHandler() {
+        ModelAndView modelAndView = new ModelAndView("/errorPages/emailError");
+        modelAndView.getModel().put("message", "Error in mail configuration.");
+        return modelAndView;
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ModelAndView tokenExpiredHandler(TokenExpiredException ex) {
+        ModelAndView modelAndView = new ModelAndView("/errorPages/tokenExpiredError");
+        modelAndView.getModel().put("message", "Your registration token has expired.");
+        modelAndView.getModel().put("token", ex.getMessage());
+        return modelAndView;
     }
 }
