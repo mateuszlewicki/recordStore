@@ -21,7 +21,7 @@ public class EmailService {
         String confirmationUrl = contextPath + "/registrationConfirm?token=" + token;
         String message = "You registered successfully. To confirm your registration, please click on the ";
 
-        helper.setText(message + "<a href='http://localhost:8080" + confirmationUrl + "'>link</a>", true);
+        helper.setText(message + "<a href='https://thebeststore.herokuapp.com" + confirmationUrl + "'>link</a>", true);
 
         helper.setSubject("Registration confirmation");
         helper.setTo(recipientAddress);
