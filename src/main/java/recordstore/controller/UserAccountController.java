@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
+import recordstore.error.WrongIdException;
 import recordstore.mapper.AccountMapper;
 import recordstore.service.AccountService;
 
@@ -39,5 +41,12 @@ public class UserAccountController {
         }
         accountService.updateAccount(accountDTO);
         return "redirect:/account/" + accountDTO.getId();
+    }
+
+    @ExceptionHandler(WrongIdException.class)
+    public ModelAndView wrongIdHandler(WrongIdException ex) {
+        ModelAndView modelAndView = new ModelAndView("/errorPages/pageNotFound");
+        modelAndView.getModel().put("message", ex.getMessage());
+        return modelAndView;
     }
 }
