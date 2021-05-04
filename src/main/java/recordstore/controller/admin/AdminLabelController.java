@@ -48,7 +48,7 @@ public class AdminLabelController {
         } else {
             model.addAttribute("error", "Label not found");
         }
-        return "/admin/labels/view";
+        return "admin/labels/view";
     }
 
     @GetMapping("/add")

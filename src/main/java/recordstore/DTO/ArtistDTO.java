@@ -8,6 +8,7 @@ import recordstore.entity.Release;
 import recordstore.validation.MultipartFileSize;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ public class ArtistDTO {
 
     private String country;
 
+    @Size(max = 2000, message = "Description too long, max size 2000")
     private String description;
 
     private String img = "noImageAvailable.png";
