@@ -6,7 +6,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import recordstore.entity.Account;
+import recordstore.error.AccountNotFoundException;
 import recordstore.service.AccountService;
 
 import java.io.IOException;
@@ -35,11 +37,16 @@ public class AdminAccountController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("id") long id) throws IOException {
-        if (accountService.isPresent(id)) {
-            accountService.deleteUser(id);
-        }
-    return "redirect:/admin/accounts/";
+    public String deleteAccount(@RequestParam("id") long id) throws IOException {
+        accountService.deleteAccount(id);
+        return "redirect:/admin/accounts/";
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ModelAndView accountNotFoundHandler(AccountNotFoundException ex) {
+        ModelAndView modelAndView = new ModelAndView("/errorPages/pageNotFound");
+        modelAndView.getModel().put("message", ex.getMessage());
+        return modelAndView;
     }
 
     private void getPages(Model model, int pages) {

@@ -3,6 +3,7 @@ package recordstore.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,9 +11,7 @@ import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
 import recordstore.entity.Release;
 import recordstore.entity.VerificationToken;
-import recordstore.error.AccountAlreadyExistException;
-import recordstore.error.TokenExpiredException;
-import recordstore.error.TokenNotFoundException;
+import recordstore.error.*;
 import recordstore.repository.AccountRepository;
 import recordstore.repository.VerificationTokenRepository;
 import recordstore.utils.FileService;
@@ -51,17 +50,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getAccount(long id) {
+        if (!accountRepository.existsById(id)){
+            throw new AccountNotFoundException("Account not found");
+        }
         return accountRepository.getOne(id);
     }
 
     @Override
     public Page<Account> getAllUsers(Pageable pageable) {
         return accountRepository.findAll(pageable);
-    }
-
-    @Override
-    public boolean isPresent(long id) {
-        return accountRepository.existsById(id);
     }
 
     @Override
@@ -81,8 +78,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateAccount(UpdateAccountDTO accountDTO) throws IOException {
+        if(getPrincipalId() != accountDTO.getId()) {
+            throw new WrongIdException("Something went wrong");
+        }
         Account account = accountRepository.getOne(accountDTO.getId());
-
         if(!accountDTO.getData().isEmpty()) {
             String filename = createUniqueName(accountDTO.getData());
             String removePicture = account.getImg();
@@ -95,14 +94,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteUser(long id) throws IOException {
-        if (accountRepository.findById(id).isPresent()) {
-            VerificationToken token = tokenRepository.findByAccount_Id(id);
-            String removePicture = accountRepository.getOne(id).getImg();
-            tokenRepository.delete(token);
-            accountRepository.deleteById(id);
-            fileService.deleteFile(removePicture, DIRECTORY);
+    public void deleteAccount(long id) throws IOException {
+        if (!accountRepository.existsById(id)){
+            throw new AccountNotFoundException("Account not found");
         }
+        VerificationToken token = tokenRepository.findByAccount_Id(id);
+        String removePicture = accountRepository.getOne(id).getImg();
+        tokenRepository.delete(token);
+        accountRepository.deleteById(id);
+        fileService.deleteFile(removePicture, DIRECTORY);
     }
 
     @Override
@@ -182,5 +182,9 @@ public class AccountServiceImpl implements AccountService {
     private String createUniqueName (MultipartFile file) {
         String uuid = UUID.randomUUID().toString();
         return uuid + "." + file.getOriginalFilename();
+    }
+
+    private long getPrincipalId() {
+        return ((Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
     }
 }
