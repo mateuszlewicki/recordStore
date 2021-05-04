@@ -27,7 +27,7 @@ public class Artist {
     @Column(name = "country")
     private String country;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 2000)
     private String description;
 
     @Column(name = "img")

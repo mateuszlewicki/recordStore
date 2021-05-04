@@ -48,7 +48,7 @@ public class AdminArtistController{
         } else {
             model.addAttribute("error", "Artist not found");
         }
-        return "/admin/artists/view";
+        return "admin/artists/view";
     }
 
     @GetMapping("/add")
