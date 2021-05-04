@@ -13,14 +13,13 @@ public interface AccountService {
 
     Account getAccount(long id);
     Page<Account> getAllUsers(Pageable pageable);
-    boolean isPresent(long id);
     Account createNewAccount(Account account);
     void saveRegisterUser(Account account);
     void updateAccount(UpdateAccountDTO dto) throws IOException;
     VerificationToken createVerificationToken(Account account);
     VerificationToken getVerificationToken(String token);
     VerificationToken generateNewVerificationToken(String existingToken);
-    void deleteUser(long id) throws IOException;
+    void deleteAccount(long id) throws IOException;
     void addReleaseToCollection(long id, Release release);
     void addReleaseToWantlist(long id, Release release);
     void removeReleaseFromCollection(long id, Release release);

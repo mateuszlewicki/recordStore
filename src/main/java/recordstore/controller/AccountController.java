@@ -6,12 +6,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import recordstore.entity.Account;
 import recordstore.entity.Release;
+import recordstore.error.AccountNotFoundException;
 import recordstore.service.AccountService;
 import recordstore.service.ReleaseService;
 
@@ -34,13 +33,9 @@ public class AccountController {
 
     @GetMapping("/{id}")
     public String showAccountInfo(@PathVariable long id, Model model, @AuthenticationPrincipal Account authAccount) {
-        if (accountService.isPresent(id)) {
-            Account account = accountService.getAccount(id);
-            model.addAttribute("account", account);
-            model.addAttribute("isAuth", account.equals(authAccount));
-        } else {
-            model.addAttribute("error", "Account not found");
-        }
+        Account account = accountService.getAccount(id);
+        model.addAttribute("account", account);
+        model.addAttribute("isAuth", account.equals(authAccount));
         return "client/user/view";
     }
 
@@ -49,10 +44,6 @@ public class AccountController {
                                         @PathVariable long id,
                                         @RequestParam("page") Optional<Integer> page,
                                         @AuthenticationPrincipal Account authAccount) {
-        if (!accountService.isPresent(id)) {
-            model.addAttribute("error", "Account not found");
-            return "client/user/view_collection";
-        }
         int currentPage = page.orElse(1);
         Account account = accountService.getAccount(id);
         Page<Release> releases = releaseService.getCollectionByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
@@ -70,10 +61,6 @@ public class AccountController {
                                         @PathVariable long id,
                                         @RequestParam("page") Optional<Integer> page,
                                         @AuthenticationPrincipal Account authAccount) {
-        if (!accountService.isPresent(id)) {
-            model.addAttribute("error", "Account not found");
-            return "client/user/view_wantlist";
-        }
         int currentPage = page.orElse(1);
         Account account = accountService.getAccount(id);
         Page<Release> releases = releaseService.getWantListByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
@@ -84,6 +71,13 @@ public class AccountController {
             getPages(model, releases.getTotalPages());
         }
         return "client/user/view_wantlist";
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ModelAndView accountNotFoundHandler(AccountNotFoundException ex) {
+        ModelAndView modelAndView = new ModelAndView("/errorPages/pageNotFound");
+        modelAndView.getModel().put("message", ex.getMessage());
+        return modelAndView;
     }
 
     private void getPages(Model model, int pages) {
