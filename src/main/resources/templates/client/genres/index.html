@@ -7,7 +7,7 @@
     <div class="main">
         <div th:each="genre : ${genres}">
             <div>
-                <a th:href="@{'/releases/genre/{id}'(id=${genre.id})}">
+                <a th:href="@{'/genres/{id}'(id=${genre.id})}">
                     <span th:text="${genre.title}"></span>
                 </a>
             </div>

@@ -39,7 +39,7 @@
                             </p>
                             <p>
                                 <span class="title">Genre: </span>
-                                <a class="breadcrumb-item" th:each="genre : ${release.genres}" th:href="@{'/releases/genre/{id}'(id=${genre.id})}">
+                                <a class="breadcrumb-item" th:each="genre : ${release.genres}" th:href="@{'/genres/{id}'(id=${genre.id})}">
                                     <span th:text="${genre.title}"></span>
                                 </a>
                             </p>
