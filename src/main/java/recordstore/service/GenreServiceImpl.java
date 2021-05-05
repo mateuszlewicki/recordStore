@@ -5,6 +5,7 @@ import recordstore.entity.Genre;
 import recordstore.projections.GenreProjection;
 import recordstore.repository.GenreRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -23,6 +24,9 @@ public class GenreServiceImpl implements GenreService{
 
     @Override
     public void deleteGenre(long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Genre not found");
+        }
         Genre genre = repository.getOne(id);
         if (genre.getReleases().isEmpty()) {
             repository.deleteById(id);
@@ -31,12 +35,10 @@ public class GenreServiceImpl implements GenreService{
 
     @Override
     public Genre getGenre(long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Genre not found");
+        }
         return repository.getOne(id);
-    }
-
-    @Override
-    public boolean isPresent(long id) {
-        return repository.existsById(id);
     }
 
     @Override

@@ -8,6 +8,7 @@ import recordstore.entity.Release;
 import recordstore.repository.ReleaseRepository;
 import recordstore.utils.FileService;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -28,12 +29,10 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     @Override
     public Release getRelease(long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Release not found");
+        }
         return repository.getOne(id);
-    }
-
-    @Override
-    public boolean isPresent(long id) {
-        return repository.existsById(id);
     }
 
     @Override
@@ -53,6 +52,9 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     @Override
     public void deleteRelease(long id) throws IOException {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Release not found");
+        }
         Release release = repository.getOne(id);
         if (release.getCollections().isEmpty() && release.getWantlists().isEmpty()) {
             release.removeLabel(release.getLabel());

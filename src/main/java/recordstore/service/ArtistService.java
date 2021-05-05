@@ -14,7 +14,6 @@ public interface ArtistService {
     void deleteArtist(long id) throws IOException;
 
     Artist getArtist(long id);
-    boolean isPresent(long id);
     List<ArtistProjection> getArtistsNames(String query);
     Page<Artist> getAllArtists(Pageable pageable);
 

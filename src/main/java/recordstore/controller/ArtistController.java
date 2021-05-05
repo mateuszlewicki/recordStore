@@ -5,10 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import recordstore.entity.Artist;
 import recordstore.entity.Release;
 import recordstore.service.ArtistService;
@@ -44,15 +41,12 @@ public class ArtistController {
     public String showArtistInfo(Model model,
                                  @PathVariable long id,
                                  @RequestParam("page") Optional<Integer> page){
-        if (service.isPresent(id)){
-            int currentPage = page.orElse(1);
-            Page<Release> releases = releaseService.getReleasesByArtist(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
-            model.addAttribute("artist", service.getArtist(id));
-            model.addAttribute("releases", releases);
-            getPages(model,releases.getTotalPages());
-        } else {
-            model.addAttribute("error", "Artist not found");
-        }
+        int currentPage = page.orElse(1);
+        Artist artist = service.getArtist(id);
+        Page<Release> releases = releaseService.getReleasesByArtist(artist.getId(), PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+        model.addAttribute("artist", artist);
+        model.addAttribute("releases", releases);
+        getPages(model,releases.getTotalPages());
         return "client/artists/view";
     }
 

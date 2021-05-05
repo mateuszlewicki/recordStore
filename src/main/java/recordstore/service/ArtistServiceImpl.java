@@ -9,6 +9,7 @@ import recordstore.projections.ArtistProjection;
 import recordstore.repository.ArtistRepository;
 import recordstore.utils.FileService;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -43,6 +44,9 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public void deleteArtist(long id) throws IOException {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Artist not found");
+        }
         Artist artist = repository.getOne(id);
         if (artist.getReleases().isEmpty()) {
             repository.deleteById(id);
@@ -52,12 +56,10 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Artist getArtist(long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Artist not found");
+        }
         return repository.getOne(id);
-    }
-
-    @Override
-    public boolean isPresent(long id) {
-        return repository.existsById(id);
     }
 
     @Override

@@ -24,36 +24,28 @@ public class UserReleaseController {
     @PostMapping("/addToCollection")
     public String addReleaseToCollection(@RequestParam("id") long id,
                                          @AuthenticationPrincipal Account account) {
-        if (releaseService.isPresent(id)) {
-            accountService.addReleaseToCollection(account.getId(), releaseService.getRelease(id));
-        }
+        accountService.addReleaseToCollection(account.getId(), releaseService.getRelease(id));
         return "redirect:/releases/" + id;
     }
 
     @PostMapping("/addToWantlist")
     public String addReleaseToWantlist(@RequestParam("id") long id,
                                        @AuthenticationPrincipal Account account) {
-        if (releaseService.isPresent(id)) {
-            accountService.addReleaseToWantlist(account.getId(), releaseService.getRelease(id));
-        }
+        accountService.addReleaseToWantlist(account.getId(), releaseService.getRelease(id));
         return "redirect:/releases/" + id;
     }
 
     @PostMapping("/removeFromCollection")
     public String removeReleaseFromCollection(@RequestParam("id") long id,
                                          @AuthenticationPrincipal Account account) {
-        if (releaseService.isPresent(id)) {
-            accountService.removeReleaseFromCollection(account.getId(), releaseService.getRelease(id));
-        }
+        accountService.removeReleaseFromCollection(account.getId(), releaseService.getRelease(id));
         return "redirect:/releases/" + id;
     }
 
     @PostMapping("/removeFromWantlist")
     public String removeReleaseFromWantlist(@RequestParam("id") long id,
                                        @AuthenticationPrincipal Account account) {
-        if (releaseService.isPresent(id)) {
-            accountService.removeReleaseFromWantlist(account.getId(), releaseService.getRelease(id));
-        }
+        accountService.removeReleaseFromWantlist(account.getId(), releaseService.getRelease(id));
         return "redirect:/releases/" + id;
     }
 }

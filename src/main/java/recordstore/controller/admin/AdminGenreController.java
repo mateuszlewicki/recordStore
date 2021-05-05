@@ -43,12 +43,7 @@ public class AdminGenreController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable long id, Model model) {
-        if (service.isPresent(id)) {
-            Genre genre = service.getGenre(id);
-            model.addAttribute("genre", genre);
-        } else {
-            model.addAttribute("error", "Genre is not found");
-        }
+        model.addAttribute("genre", service.getGenre(id));
         return "admin/genres/edit";
     }
 
@@ -63,9 +58,7 @@ public class AdminGenreController {
 
     @PostMapping("/delete")
     public String delete(@RequestParam("id") long id) {
-        if (service.isPresent(id)){
-            service.deleteGenre(id);
-        }
+        service.deleteGenre(id);
         return "redirect:/admin/genres/";
     }
 }

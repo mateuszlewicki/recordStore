@@ -45,7 +45,7 @@ public class UserAccountController {
 
     @ExceptionHandler(WrongIdException.class)
     public ModelAndView wrongIdHandler(WrongIdException ex) {
-        ModelAndView modelAndView = new ModelAndView("/errorPages/pageNotFound");
+        ModelAndView modelAndView = new ModelAndView("/errorPages/error");
         modelAndView.getModel().put("message", ex.getMessage());
         return modelAndView;
     }

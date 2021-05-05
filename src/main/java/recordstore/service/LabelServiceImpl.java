@@ -9,6 +9,7 @@ import recordstore.projections.LabelProjection;
 import recordstore.repository.LabelRepository;
 import recordstore.utils.FileService;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +45,9 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public void deleteLabel(long id) throws IOException {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Label not found");
+        }
         Label label = repository.getOne(id);
         if (label.getReleases().isEmpty()) {
             repository.deleteById(id);
@@ -53,12 +57,10 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label getLabel(long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Label not found");
+        }
         return repository.getOne(id);
-    }
-
-    @Override
-    public boolean isPresent(long id) {
-        return repository.existsById(id);
     }
 
     @Override

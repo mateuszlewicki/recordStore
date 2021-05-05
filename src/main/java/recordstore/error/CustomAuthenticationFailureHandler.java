@@ -25,7 +25,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         if (exception.getMessage().equalsIgnoreCase("User is disabled")) {
             errorMessage = "Your account is disabled, please check your email and click on the confirmation link";
         } else if(exception.getMessage().equalsIgnoreCase("User account has expired")) {
-            errorMessage = "Your registration token has expired. Please register again";
+            errorMessage = "Your registration token has expired";
         }
         request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
     }

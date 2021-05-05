@@ -43,11 +43,7 @@ public class AdminArtistController{
 
     @GetMapping("/{id}")
     public String showArtistInfo(@PathVariable long id, Model model) {
-        if (service.isPresent(id)) {
-            model.addAttribute("artist", service.getArtist(id));
-        } else {
-            model.addAttribute("error", "Artist not found");
-        }
+        model.addAttribute("artist", service.getArtist(id));
         return "admin/artists/view";
     }
 
@@ -68,12 +64,7 @@ public class AdminArtistController{
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable long id, Model model) {
-        if (service.isPresent(id)) {
-            ArtistDTO artistDTO = artistMapper.toDTO(service.getArtist(id));
-            model.addAttribute("artist", artistDTO);
-        } else {
-            model.addAttribute("error", "Artist is not found");
-        }
+        model.addAttribute("artist", artistMapper.toDTO(service.getArtist(id)));
         return "admin/artists/edit";
     }
 
@@ -88,9 +79,7 @@ public class AdminArtistController{
 
     @PostMapping("/delete")
     public String delete(@RequestParam("id") long id) throws IOException {
-        if (service.isPresent(id)){
-            service.deleteArtist(id);
-        }
+        service.deleteArtist(id);
         return "redirect:/admin/artists/";
     }
 

@@ -5,10 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import recordstore.entity.Label;
 import recordstore.entity.Release;
 import recordstore.service.LabelService;
@@ -44,15 +41,12 @@ public class LabelController {
     public String showLabelInfo(Model model,
                                 @PathVariable long id,
                                 @RequestParam("page") Optional<Integer> page){
-        if (service.isPresent(id)) {
-            int currentPage = page.orElse(1);
-            Page<Release> releases = releaseService.getReleasesByLabel(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
-            model.addAttribute("label", service.getLabel(id));
-            model.addAttribute("releases", releases);
-            getPages(model, releases.getTotalPages());
-        } else {
-            model.addAttribute("error", "Label not found");
-        }
+        int currentPage = page.orElse(1);
+        Label label = service.getLabel(id);
+        Page<Release> releases = releaseService.getReleasesByLabel(label.getId(), PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+        model.addAttribute("label", label);
+        model.addAttribute("releases", releases);
+        getPages(model, releases.getTotalPages());
         return "client/labels/view";
     }
 

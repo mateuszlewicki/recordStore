@@ -45,11 +45,7 @@ public class  AdminReleaseController {
 
     @GetMapping("/{id}")
     public String showReleaseInfo(@PathVariable long id, Model model){
-        if (service.isPresent(id)){
-            model.addAttribute("release", service.getRelease(id));
-        } else {
-            model.addAttribute("error", "Release not found");
-        }
+        model.addAttribute("release", service.getRelease(id));
         return "admin/releases/view";
     }
 
@@ -73,12 +69,8 @@ public class  AdminReleaseController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable long id, Model model){
-        if (service.isPresent(id)){
-            model.addAttribute("release", releaseMapper.toDTO(service.getRelease(id)));
-            model.addAttribute("formatTypes" , Format.values());
-        } else {
-            model.addAttribute("error", "Release is not found");
-        }
+        model.addAttribute("release", releaseMapper.toDTO(service.getRelease(id)));
+        model.addAttribute("formatTypes" , Format.values());
         return "admin/releases/edit";
     }
 
@@ -95,9 +87,7 @@ public class  AdminReleaseController {
 
     @PostMapping("/delete")
     public String delete(@RequestParam("id") long id) throws IOException {
-        if (service.isPresent(id)){
-            service.deleteRelease(id);
-        }
+        service.deleteRelease(id);
         return "redirect:/admin/releases/";
     }
 

@@ -23,6 +23,7 @@ public class ReleaseController {
 
     private final ReleaseService service;
 
+
     public ReleaseController(ReleaseService service) {
         this.service = service;
     }
@@ -36,33 +37,13 @@ public class ReleaseController {
         return "client/releases/index";
     }
 
-    @GetMapping("/genre/{id}")
-    public String showAllReleasesByGenre(Model model,
-                                         @PathVariable long id,
-                                         @RequestParam("page") Optional<Integer> page){
-        int currentPage = page.orElse(1);
-        Page<Release> releases = service.getReleasesByGenre(id, PageRequest.of(currentPage - 1 ,30 , Sort.by("releaseDate").descending()));
-        if (!releases.isEmpty()) {
-            model.addAttribute("releases", releases);
-            model.addAttribute("id", id);
-            getPages(model, releases.getTotalPages());
-        } else {
-            model.addAttribute("error", "Releases not found");
-        }
-        return "client/releases/list";
-    }
-
     @GetMapping("/{id}")
     public String showReleaseInfo(@PathVariable long id, Model model, @AuthenticationPrincipal Account account){
-        if (service.isPresent(id)){
-            Release release = service.getRelease(id);
-            model.addAttribute("release", release);
-            model.addAttribute("videoIds", getVideoIds(release));
-            model.addAttribute("inCollection", release.getCollections().contains(account));
-            model.addAttribute("inWantlist", release.getWantlists().contains(account));
-        } else {
-            model.addAttribute("error", "Release not found");
-        }
+        Release release = service.getRelease(id);
+        model.addAttribute("release", release);
+        model.addAttribute("videoIds", getVideoIds(release));
+        model.addAttribute("inCollection", release.getCollections().contains(account));
+        model.addAttribute("inWantlist", release.getWantlists().contains(account));
         return "client/releases/view";
     }
 

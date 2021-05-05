@@ -16,6 +16,7 @@ import recordstore.repository.AccountRepository;
 import recordstore.repository.VerificationTokenRepository;
 import recordstore.utils.FileService;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Calendar;
@@ -51,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccount(long id) {
         if (!accountRepository.existsById(id)){
-            throw new AccountNotFoundException("Account not found");
+            throw new EntityNotFoundException("Account not found");
         }
         return accountRepository.getOne(id);
     }
@@ -79,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void updateAccount(UpdateAccountDTO accountDTO) throws IOException {
         if(getPrincipalId() != accountDTO.getId()) {
-            throw new WrongIdException("Something went wrong");
+            throw new WrongIdException("You tried to update your account with wrong id");
         }
         Account account = accountRepository.getOne(accountDTO.getId());
         if(!accountDTO.getData().isEmpty()) {
@@ -96,7 +97,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(long id) throws IOException {
         if (!accountRepository.existsById(id)){
-            throw new AccountNotFoundException("Account not found");
+            throw new EntityNotFoundException("Account not found");
         }
         VerificationToken token = tokenRepository.findByAccount_Id(id);
         String removePicture = accountRepository.getOne(id).getImg();
@@ -152,7 +153,7 @@ public class AccountServiceImpl implements AccountService {
     public VerificationToken getVerificationToken(String token) {
         VerificationToken verificationToken = tokenRepository.findByToken(token);
         if (verificationToken == null) {
-            throw new TokenNotFoundException("Token not found");
+            throw new EntityNotFoundException("Token not found");
         }
         if (tokenExpired(verificationToken) && !verificationToken.getAccount().isEnabled()) {
             throw new TokenExpiredException(verificationToken.getToken());
@@ -164,7 +165,7 @@ public class AccountServiceImpl implements AccountService {
     public VerificationToken generateNewVerificationToken(String existingToken) {
         VerificationToken token = tokenRepository.findByToken(existingToken);
         if (token == null) {
-            throw new TokenNotFoundException("Token not found");
+            throw new EntityNotFoundException("Token not found");
         }
         token.updateToken();
         return tokenRepository.save(token);

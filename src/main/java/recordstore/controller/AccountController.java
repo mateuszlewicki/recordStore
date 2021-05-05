@@ -7,10 +7,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import recordstore.entity.Account;
 import recordstore.entity.Release;
-import recordstore.error.AccountNotFoundException;
 import recordstore.service.AccountService;
 import recordstore.service.ReleaseService;
 
@@ -46,7 +44,7 @@ public class AccountController {
                                         @AuthenticationPrincipal Account authAccount) {
         int currentPage = page.orElse(1);
         Account account = accountService.getAccount(id);
-        Page<Release> releases = releaseService.getCollectionByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+        Page<Release> releases = releaseService.getCollectionByAccount(account.getId(), PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
         model.addAttribute("account", account);
         model.addAttribute("isAuth", account.equals(authAccount));
         if (!releases.isEmpty()) {
@@ -63,7 +61,7 @@ public class AccountController {
                                         @AuthenticationPrincipal Account authAccount) {
         int currentPage = page.orElse(1);
         Account account = accountService.getAccount(id);
-        Page<Release> releases = releaseService.getWantListByAccount(id, PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
+        Page<Release> releases = releaseService.getWantListByAccount(account.getId(), PageRequest.of(currentPage - 1 ,10 , Sort.by("releaseDate").descending()));
         model.addAttribute("account", account);
         model.addAttribute("isAuth", account.equals(authAccount));
         if (!releases.isEmpty()) {
@@ -71,13 +69,6 @@ public class AccountController {
             getPages(model, releases.getTotalPages());
         }
         return "client/user/view_wantlist";
-    }
-
-    @ExceptionHandler(AccountNotFoundException.class)
-    public ModelAndView accountNotFoundHandler(AccountNotFoundException ex) {
-        ModelAndView modelAndView = new ModelAndView("/errorPages/pageNotFound");
-        modelAndView.getModel().put("message", ex.getMessage());
-        return modelAndView;
     }
 
     private void getPages(Model model, int pages) {

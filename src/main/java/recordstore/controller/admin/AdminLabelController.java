@@ -43,11 +43,7 @@ public class AdminLabelController {
 
     @GetMapping("/{id}")
     public String showLabelInfo(@PathVariable long id, Model model) {
-        if (service.isPresent(id)) {
-            model.addAttribute("label", service.getLabel(id));
-        } else {
-            model.addAttribute("error", "Label not found");
-        }
+        model.addAttribute("label", service.getLabel(id));
         return "admin/labels/view";
     }
 
@@ -68,12 +64,7 @@ public class AdminLabelController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm (@PathVariable long id, Model model) {
-        if (service.isPresent(id)) {
-            LabelDTO labelDTO = labelMapper.toDTO(service.getLabel(id));
-            model.addAttribute("label", labelDTO);
-        } else {
-            model.addAttribute("error", "Label is not found");
-        }
+        model.addAttribute("label", labelMapper.toDTO(service.getLabel(id)));
         return "admin/labels/edit";
     }
 
@@ -88,9 +79,7 @@ public class AdminLabelController {
 
     @PostMapping("/delete")
     public String delete(@RequestParam("id") long id) throws IOException {
-        if (service.isPresent(id)){
-            service.deleteLabel(id);
-        }
+        service.deleteLabel(id);
         return "redirect:/admin/labels/";
     }
 

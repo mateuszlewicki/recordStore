@@ -12,7 +12,6 @@ import recordstore.entity.Account;
 import recordstore.entity.VerificationToken;
 import recordstore.error.AccountAlreadyExistException;
 import recordstore.error.TokenExpiredException;
-import recordstore.error.TokenNotFoundException;
 import recordstore.mapper.AccountMapper;
 import recordstore.registration.OnRegistrationCompleteEvent;
 import recordstore.service.AccountService;
@@ -84,16 +83,9 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
-    @ExceptionHandler(TokenNotFoundException.class)
-    public ModelAndView tokenNotFoundHandler(TokenNotFoundException ex) {
-        ModelAndView modelAndView = new ModelAndView("/errorPages/tokenNotFoundError");
-        modelAndView.getModel().put("message", ex.getMessage());
-        return modelAndView;
-    }
-
     @ExceptionHandler(MessagingException.class)
     public ModelAndView mailAuthenticationHandler() {
-        ModelAndView modelAndView = new ModelAndView("/errorPages/emailError");
+        ModelAndView modelAndView = new ModelAndView("/errorPages/error");
         modelAndView.getModel().put("message", "Error in mail configuration.");
         return modelAndView;
     }
