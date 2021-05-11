@@ -9,7 +9,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import recordstore.utils.EmailService;
+import recordstore.utils.EmailServiceImpl;
 import recordstore.utils.FileService;
+import recordstore.utils.FileServiceImpl;
 
 @Configuration
 @EnableWebMvc
@@ -43,11 +45,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public FileService fileService(){
-        return new FileService();
+        return new FileServiceImpl();
     }
 
     @Bean
     public EmailService emailService(JavaMailSender javaMailSender){
-        return new EmailService(javaMailSender);
+        return new EmailServiceImpl(javaMailSender);
     }
 }
