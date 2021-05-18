@@ -2,6 +2,7 @@ package recordstore.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,30 +23,34 @@ public class UserReleaseController {
     }
 
     @PostMapping("/addToCollection")
-    public String addReleaseToCollection(@RequestParam("id") long id,
+    public String addReleaseToCollection(@RequestParam("id") long id, Model model,
                                          @AuthenticationPrincipal Account account) {
         accountService.addReleaseToCollection(account.getId(), releaseService.getRelease(id));
-        return "redirect:/releases/" + id;
+        model.addAttribute("releaseId", id);
+        return "redirect:/releases/{releaseId}";
     }
 
     @PostMapping("/addToWantlist")
-    public String addReleaseToWantlist(@RequestParam("id") long id,
+    public String addReleaseToWantlist(@RequestParam("id") long id, Model model,
                                        @AuthenticationPrincipal Account account) {
         accountService.addReleaseToWantlist(account.getId(), releaseService.getRelease(id));
-        return "redirect:/releases/" + id;
+        model.addAttribute("releaseId", id);
+        return "redirect:/releases/{releaseId}";
     }
 
     @PostMapping("/removeFromCollection")
-    public String removeReleaseFromCollection(@RequestParam("id") long id,
+    public String removeReleaseFromCollection(@RequestParam("id") long id, Model model,
                                          @AuthenticationPrincipal Account account) {
         accountService.removeReleaseFromCollection(account.getId(), releaseService.getRelease(id));
-        return "redirect:/releases/" + id;
+        model.addAttribute("releaseId", id);
+        return "redirect:/releases/{releaseId}";
     }
 
     @PostMapping("/removeFromWantlist")
-    public String removeReleaseFromWantlist(@RequestParam("id") long id,
+    public String removeReleaseFromWantlist(@RequestParam("id") long id, Model model,
                                        @AuthenticationPrincipal Account account) {
         accountService.removeReleaseFromWantlist(account.getId(), releaseService.getRelease(id));
-        return "redirect:/releases/" + id;
+        model.addAttribute("releaseId", id);
+        return "redirect:/releases/{releaseId}";
     }
 }

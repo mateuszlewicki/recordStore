@@ -35,12 +35,13 @@ public class UserAccountController {
 
     @PostMapping("/edit")
     public String updateAccount(@Valid @ModelAttribute("account") UpdateAccountDTO accountDTO,
-                                BindingResult result) throws IOException {
+                                BindingResult result, Model model) throws IOException {
         if (result.hasErrors()) {
             return "client/user/edit";
         }
         accountService.updateAccount(accountDTO);
-        return "redirect:/account/" + accountDTO.getId();
+        model.addAttribute("accountId", accountDTO.getId());
+        return "redirect:/account/{accountId}";
     }
 
     @ExceptionHandler(WrongIdException.class)
