@@ -8,10 +8,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import recordstore.utils.EmailService;
-import recordstore.utils.EmailServiceImpl;
-import recordstore.utils.FileService;
-import recordstore.utils.FileServiceImpl;
+import recordstore.utils.*;
 
 @Configuration
 @EnableWebMvc
@@ -45,7 +42,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public FileService fileService(){
-        return new FileServiceImpl();
+        return new FTPFileServiceImpl();
     }
 
     @Bean
