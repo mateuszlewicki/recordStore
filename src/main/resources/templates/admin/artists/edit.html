@@ -14,7 +14,7 @@
                 </div>
                 <div class="form-group item-img">
                     <label class="sr-only" for="data">Image</label>
-                    <img class="mb-3" th:src="@{'/images/artists/'+${artist.img}}" alt="" th:id="image"/>
+                    <img class="mb-3" th:src="@{'/images/'+${artist.img}}" alt="" th:id="image"/>
                     <input type="file" class="form-control-file" th:errorclass="is-invalid" id="data" accept="image/png, image/jpeg" th:name="data" placeholder="Image"/>
                     <p class="invalid-feedback" th:if="${#fields.hasErrors('data')}" th:errors="*{data}"></p>
                 </div>

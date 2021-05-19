@@ -9,7 +9,7 @@
             <div class="list-item mb-3" th:each="release : ${releases}">
                 <div class="list-item-img text-center">
                     <a th:href="@{'/releases/{id}'(id=${release.id})}">
-                        <img class="img-fluid-height" th:src="@{'/images/releases/'+${release.img}}" alt=""/>
+                        <img class="img-fluid-height" th:src="@{'/images/'+${release.img}}" alt=""/>
                     </a>
                 </div>
                 <div class="item-info">

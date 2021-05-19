@@ -10,7 +10,8 @@
                 <div class="row">
                     <div class="d-flex col-12 col-lg-8">
                         <div class="item-img pr-3">
-                            <img class="img-fluid" th:src="@{'/images/labels/'+${label.img}}" alt=""/>
+<!--                            <img class="img-fluid" th:src="@{'/images/labels/'+${label.img}}" alt=""/>-->
+                            <img class="img-fluid-height" th:src="@{'/images/'+${label.img}}" alt=""/>
                         </div>
                         <div class="item-info">
                             <p>
@@ -38,7 +39,7 @@
                     <div class="d-sm-flex justify-content-between mb-3 releases-list" th:each="release : ${releases}">
                         <div class="releases-list-item">
                             <a th:href="@{'/releases/{id}'(id=${release.id})}">
-                                <img class="item-img-sm" th:src="@{'/images/releases/'+${release.img}}" alt=""/>
+                                <img class="item-img-sm" th:src="@{'/images/'+${release.img}}" alt=""/>
                             </a>
                         </div>
                         <div class="releases-list-item">
