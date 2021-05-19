@@ -26,8 +26,6 @@ import java.util.UUID;
 @Transactional
 public class AccountServiceImpl implements AccountService {
 
-    private final String DIRECTORY ="accounts/";
-
     private final AccountRepository accountRepository;
     private final VerificationTokenRepository tokenRepository;
 
@@ -86,8 +84,8 @@ public class AccountServiceImpl implements AccountService {
         if(!accountDTO.getData().isEmpty()) {
             String filename = createUniqueName(accountDTO.getData());
             String removePicture = account.getImg();
-            fileService.saveFile(filename, DIRECTORY, accountDTO.getData());
-            fileService.deleteFile(removePicture, DIRECTORY);
+            fileService.saveFile(filename, accountDTO.getData());
+            fileService.deleteFile(removePicture);
             account.setImg(filename);
         }
         account.setUsername(accountDTO.getUsername());
@@ -103,7 +101,7 @@ public class AccountServiceImpl implements AccountService {
         String removePicture = accountRepository.getOne(id).getImg();
         tokenRepository.delete(token);
         accountRepository.deleteById(id);
-        fileService.deleteFile(removePicture, DIRECTORY);
+        fileService.deleteFile(removePicture);
     }
 
     @Override

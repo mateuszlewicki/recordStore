@@ -17,8 +17,6 @@ import java.util.UUID;
 @Service
 public class LabelServiceImpl implements LabelService {
 
-    private final String DIRECTORY ="labels/";
-
     private final LabelRepository repository;
 
     private final FileService fileService;
@@ -38,8 +36,8 @@ public class LabelServiceImpl implements LabelService {
         }
         repository.save(label);
         if(!label.getData().isEmpty()) {
-            fileService.saveFile(filename, DIRECTORY, label.getData());
-            fileService.deleteFile(removePicture, DIRECTORY);
+            fileService.saveFile(filename, label.getData());
+            fileService.deleteFile(removePicture);
         }
     }
 
@@ -51,7 +49,7 @@ public class LabelServiceImpl implements LabelService {
         Label label = repository.getOne(id);
         if (label.getReleases().isEmpty()) {
             repository.deleteById(id);
-            fileService.deleteFile(label.getImg(), DIRECTORY);
+            fileService.deleteFile(label.getImg());
         }
     }
 
