@@ -42,7 +42,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public FileService fileService(){
-        return new FTPFileServiceImpl();
+        return new FileServiceImpl();
     }
 
     @Bean
