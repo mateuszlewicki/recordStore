@@ -1,6 +1,10 @@
 package recordstore.entity;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.enums.Format;
 import recordstore.validation.ValidDateFormat;
@@ -45,32 +49,39 @@ public class Release {
     @Transient
     private MultipartFile data;
 
+    @JsonIgnoreProperties(value = {"releases", "hibernateLazyInitializer"})
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "releases_artists",
             joinColumns = @JoinColumn(name = "release_id"),
             inverseJoinColumns = @JoinColumn(name = "artist_id"))
     private Set<Artist> artists = new HashSet<>();
 
+    @JsonIgnoreProperties(value = {"releases", "hibernateLazyInitializer"})
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "releases_genres",
             joinColumns = @JoinColumn(name = "release_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres = new HashSet<>();
 
+    @JsonIgnoreProperties(value = {"releases", "hibernateLazyInitializer"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Label label;
 
     @Valid
+    @JsonIgnoreProperties(value = {"release", "hibernateLazyInitializer"})
     @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Track> tracklist = new ArrayList<>();
 
     @Valid
+    @JsonIgnoreProperties(value = {"release", "hibernateLazyInitializer"})
     @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<YouTubeVideo> playlist = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private Set<Account> collections = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "wantlist", fetch = FetchType.LAZY)
     private Set<Account> wantlists = new HashSet<>();
 

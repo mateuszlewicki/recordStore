@@ -1,5 +1,6 @@
 package recordstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +19,6 @@ import java.util.List;
 public class Label {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -38,6 +38,7 @@ public class Label {
     @Transient
     private MultipartFile data;
 
+    @JsonIgnoreProperties(value = {"artists", "hibernateLazyInitializer"})
     @OneToMany(mappedBy = "label")
     private List<Release> releases = new ArrayList<>();
 }

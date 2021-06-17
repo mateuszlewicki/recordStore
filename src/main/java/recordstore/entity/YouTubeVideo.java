@@ -1,5 +1,6 @@
 package recordstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class YouTubeVideo {
     @Column(name = "video_id")
     String videoId;
 
+    @JsonIgnoreProperties("playlist")
     @ManyToOne(fetch = FetchType.LAZY)
     private Release release;
 }

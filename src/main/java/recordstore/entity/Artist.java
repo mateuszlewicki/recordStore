@@ -1,8 +1,8 @@
 package recordstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -36,6 +36,7 @@ public class Artist {
     @Transient
     private MultipartFile data;
 
+    @JsonIgnoreProperties(value = {"artists", "hibernateLazyInitializer"})
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     private Set<Release> releases = new HashSet<>();
 }

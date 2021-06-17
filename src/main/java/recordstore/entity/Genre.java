@@ -1,7 +1,7 @@
 package recordstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -16,7 +16,6 @@ import java.util.Set;
 public class Genre {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -24,6 +23,7 @@ public class Genre {
     @NotBlank(message = "Field is mandatory")
     private String title;
 
+    @JsonIgnoreProperties(value = {"genres", "hibernateLazyInitializer"})
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Set<Release> releases = new HashSet<>();
 }
