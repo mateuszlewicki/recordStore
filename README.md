@@ -8,7 +8,5 @@
 - Java 8
 - Spring Framework
 - MySQL
-- JavaScript
-- Thymeleaf
-- CSS
+
 ---

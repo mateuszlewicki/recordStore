@@ -2,9 +2,4 @@
 
 target/
 
-/src/main/resources/images/
-
-!/src/main/resources/images/noImageAvailable.png
-!/src/main/resources/images/service/
-
 /src/main/resources/application.yml
