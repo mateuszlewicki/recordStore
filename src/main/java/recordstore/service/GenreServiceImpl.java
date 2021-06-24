@@ -1,5 +1,7 @@
 package recordstore.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import recordstore.entity.Genre;
 import recordstore.projections.GenreProjection;
@@ -42,8 +44,8 @@ public class GenreServiceImpl implements GenreService{
     }
 
     @Override
-    public List<Genre> getAllGenres() {
-        return repository.findAll();
+    public Page<Genre> getAllGenres(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override

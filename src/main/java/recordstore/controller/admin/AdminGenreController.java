@@ -1,5 +1,6 @@
 package recordstore.controller.admin;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,7 +9,6 @@ import recordstore.entity.Genre;
 import recordstore.service.GenreService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin/genres/")
@@ -21,9 +21,8 @@ public class AdminGenreController {
     }
 
     @GetMapping
-    public String showAllGenres(Model model){
-        List<Genre> genres = service.getAllGenres();
-        model.addAttribute("genres", genres);
+    public String showAllGenres(Model model , Pageable pageable){
+        model.addAttribute("genres", service.getAllGenres(pageable));
         return "admin/genres/index";
     }
 

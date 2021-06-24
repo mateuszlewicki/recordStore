@@ -1,6 +1,8 @@
 package recordstore.mapper;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+import recordstore.DTO.LabelDTO;
 import recordstore.DTO.ReleaseDTO;
 import recordstore.DTO.TrackDTO;
 import recordstore.DTO.YouTubeVideoDTO;
@@ -21,7 +23,8 @@ public class ReleaseMapper {
         releaseDTO.setImg(release.getImg());
         releaseDTO.setArtists(release.getArtists());
         releaseDTO.setGenres(release.getGenres());
-        releaseDTO.setLabel(release.getLabel());
+        releaseDTO.setLabel(get(release.getLabel()));
+        //releaseDTO.setLabel(release.getLabel());
         releaseDTO.setTracklist(release.getTracklist().stream().map(this::trackToDTO).collect(Collectors.toList()));
         releaseDTO.setPlaylist(release.getPlaylist().stream().map(this::videoToDTO).collect(Collectors.toList()));
         return releaseDTO;
@@ -57,6 +60,10 @@ public class ReleaseMapper {
         return release;
     }
 
+    public Page<ReleaseDTO> toDTOs(Page<Release> releases) {
+        return releases.map(this::toDTO);
+    }
+
     private TrackDTO trackToDTO(Track track) {
         TrackDTO trackDTO = new TrackDTO();
         trackDTO.setId(track.getId());
@@ -85,5 +92,14 @@ public class ReleaseMapper {
         video.setId(videoDTO.getId());
         video.setVideoId(videoDTO.getVideoId());
         return video;
+    }
+
+    private Label get(Label label) {
+        Label l = new Label();
+        l.setId(label.getId());
+        l.setTitle(label.getTitle());
+        l.setCountry(label.getCountry());
+        l.setDescription(label.getDescription());
+        return l;
     }
 }

@@ -1,5 +1,6 @@
 package recordstore.mapper;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import recordstore.DTO.LabelDTO;
 import recordstore.entity.Label;
@@ -28,5 +29,9 @@ public class LabelMapper {
         label.setData(labelDTO.getData());
         label.setReleases(label.getReleases());
         return label;
+    }
+
+    public Page<LabelDTO> toDTOs(Page<Label> labels) {
+        return labels.map(this::toDTO);
     }
 }

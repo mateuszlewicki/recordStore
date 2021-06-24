@@ -1,5 +1,7 @@
 package recordstore.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import recordstore.entity.Genre;
 import recordstore.projections.GenreProjection;
 
@@ -11,6 +13,6 @@ public interface GenreService {
     void deleteGenre(long id);
 
     Genre getGenre(long id);
-    List<Genre> getAllGenres();
+    Page<Genre> getAllGenres(Pageable pageable);
     List<GenreProjection> getGenresTitles(String query);
 }
