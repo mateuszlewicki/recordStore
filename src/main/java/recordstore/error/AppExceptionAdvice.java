@@ -47,4 +47,10 @@ public class AppExceptionAdvice extends ResponseEntityExceptionHandler {
         final GenericResponse bodyOfResponse = new GenericResponse(ex.getMessage(), "TokenExpired");
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
+
+    @ExceptionHandler(WrongIdException.class)
+    public ResponseEntity<Object> wrongIdHandler(WrongIdException ex, final WebRequest request) {
+        final GenericResponse bodyOfResponse = new GenericResponse(ex.getMessage(), "WrongId");
+        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
 }
