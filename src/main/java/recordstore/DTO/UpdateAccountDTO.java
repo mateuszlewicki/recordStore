@@ -11,8 +11,6 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class UpdateAccountDTO {
 
-    private long id;
-
     @NotBlank(message = "Field is mandatory")
     private String username;
 

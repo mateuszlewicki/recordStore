@@ -49,12 +49,6 @@ public class AppExceptionAdvice extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
-    @ExceptionHandler(WrongIdException.class)
-    public ResponseEntity<Object> wrongIdHandler(WrongIdException ex, final WebRequest request) {
-        final GenericResponse bodyOfResponse = new GenericResponse(ex.getMessage(), "WrongId");
-        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
-
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<Object> handleMaxSizeException(MaxUploadSizeExceededException ex, final WebRequest request) {
         final GenericResponse bodyOfResponse = new GenericResponse("The file is too large to upload!", "FileSizeError");

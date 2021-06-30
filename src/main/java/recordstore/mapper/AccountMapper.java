@@ -3,11 +3,8 @@ package recordstore.mapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import recordstore.DTO.AccountDTO;
-import recordstore.DTO.ArtistDTO;
 import recordstore.DTO.CreateAccountDTO;
-import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
-import recordstore.entity.Artist;
 
 @Component
 public class AccountMapper {
@@ -19,14 +16,6 @@ public class AccountMapper {
         account.setEmail(accountDTO.getEmail());
         account.setImg(accountDTO.getImg());
         return account;
-    }
-
-    public UpdateAccountDTO toDTO(Account account) {
-        UpdateAccountDTO dto = new UpdateAccountDTO();
-        dto.setId(account.getId());
-        dto.setUsername(account.getUsername());
-        dto.setImg(account.getImg());
-        return dto;
     }
 
     public AccountDTO accountToDTO(Account account) {

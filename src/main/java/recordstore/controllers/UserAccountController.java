@@ -1,7 +1,9 @@
 package recordstore.controllers;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import recordstore.DTO.UpdateAccountDTO;
+import recordstore.entity.Account;
 import recordstore.service.AccountService;
 import recordstore.utils.GenericResponse;
 
@@ -19,8 +21,9 @@ public class UserAccountController {
     }
 
     @PostMapping("/edit")
-    public GenericResponse updateAccount(@Valid UpdateAccountDTO accountDTO) throws IOException {
-        service.updateAccount(accountDTO);
+    public GenericResponse updateAccount(@Valid UpdateAccountDTO accountDTO,
+                                         @AuthenticationPrincipal Account account) throws IOException {
+        service.updateAccount(account.getId(), accountDTO);
         return new GenericResponse("success");
     }
 }

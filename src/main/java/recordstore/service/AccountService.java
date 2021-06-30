@@ -15,7 +15,7 @@ public interface AccountService {
     Page<Account> getAllUsers(Pageable pageable);
     Account createNewAccount(Account account);
     void saveRegisterUser(Account account);
-    void updateAccount(UpdateAccountDTO dto) throws IOException;
+    void updateAccount(long id, UpdateAccountDTO dto) throws IOException;
     VerificationToken createVerificationToken(Account account);
     VerificationToken getVerificationToken(String token);
     VerificationToken generateNewVerificationToken(String existingToken);

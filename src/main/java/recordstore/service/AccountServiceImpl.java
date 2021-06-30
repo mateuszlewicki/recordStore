@@ -3,7 +3,6 @@ package recordstore.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,11 +75,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void updateAccount(UpdateAccountDTO accountDTO) throws IOException {
-        if(getPrincipalId() != accountDTO.getId()) {
-            throw new WrongIdException("You tried to update your account with wrong id");
-        }
-        Account account = accountRepository.getOne(accountDTO.getId());
+    public void updateAccount(long id, UpdateAccountDTO accountDTO) throws IOException {
+        Account account = accountRepository.getOne(id);
         if(!accountDTO.getData().isEmpty()) {
             String filename = createUniqueName(accountDTO.getData());
             String removePicture = account.getImg();
@@ -181,9 +177,5 @@ public class AccountServiceImpl implements AccountService {
     private String createUniqueName (MultipartFile file) {
         String uuid = UUID.randomUUID().toString();
         return uuid + "." + file.getOriginalFilename();
-    }
-
-    private long getPrincipalId() {
-        return ((Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
     }
 }
