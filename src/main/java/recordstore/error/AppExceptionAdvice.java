@@ -54,4 +54,10 @@ public class AppExceptionAdvice extends ResponseEntityExceptionHandler {
         final GenericResponse bodyOfResponse = new GenericResponse("The file is too large to upload!", "FileSizeError");
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
+
+    @ExceptionHandler(AccountAlreadyActivatedException.class)
+    public ResponseEntity<Object> accountAlreadyActivatedHandler(AccountAlreadyActivatedException ex, final WebRequest request) {
+        final GenericResponse bodyOfResponse = new GenericResponse(ex.getMessage(), "ResendTokenError");
+        return new ResponseEntity<>(bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT);
+    }
 }

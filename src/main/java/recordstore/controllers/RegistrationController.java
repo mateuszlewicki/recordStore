@@ -14,6 +14,7 @@ import recordstore.utils.GenericResponse;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 public class RegistrationController {
@@ -49,8 +50,8 @@ public class RegistrationController {
 
     @PostMapping("/resendRegistrationToken")
     public GenericResponse resendRegistrationToken(HttpServletRequest request,
-                                          @RequestParam("token") String existingToken) throws MessagingException {
-        VerificationToken token = service.generateNewVerificationToken(existingToken);
+                                                   @RequestBody Map<String, String> requestParams) throws MessagingException {
+        VerificationToken token = service.generateNewVerificationToken(requestParams.get("token"));
         Account account = token.getAccount();
         emailService.sendEmailWithVerificationToken(getAppUrl(request), account.getEmail(), token.getToken());
         return new GenericResponse("success");

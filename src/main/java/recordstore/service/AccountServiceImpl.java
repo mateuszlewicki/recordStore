@@ -161,6 +161,9 @@ public class AccountServiceImpl implements AccountService {
         if (token == null) {
             throw new EntityNotFoundException("Token not found");
         }
+        if (token.getAccount().isEnabled()) {
+            throw new AccountAlreadyActivatedException("Account already activated");
+        }
         token.updateToken();
         return tokenRepository.save(token);
     }
