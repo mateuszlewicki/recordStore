@@ -2,7 +2,6 @@ package recordstore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -31,10 +30,7 @@ public class Artist {
     private String description;
 
     @Column(name = "img")
-    private String img;
-
-    @Transient
-    private MultipartFile data;
+    private String img = "noImageAvailable.png";
 
     @JsonIgnoreProperties(value = {"artists", "hibernateLazyInitializer"})
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)

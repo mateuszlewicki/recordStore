@@ -27,7 +27,7 @@ public class ArtistDTO {
     @Size(max = 2000, message = "Description too long, max size 2000")
     private String description;
 
-    private String img = "noImageAvailable.png";
+    private String img;
 
     @MultipartFileSize
     private MultipartFile data;

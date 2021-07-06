@@ -19,18 +19,6 @@ public class ArtistMapper {
         return artistDTO;
     }
 
-    public Artist fromDTO(ArtistDTO artistDTO) {
-        Artist artist = new Artist();
-        artist.setId(artistDTO.getId());
-        artist.setName(artistDTO.getName());
-        artist.setCountry(artistDTO.getCountry());
-        artist.setDescription(artistDTO.getDescription());
-        artist.setImg(artistDTO.getImg());
-        artist.setData(artistDTO.getData());
-        artist.setReleases(artistDTO.getReleases());
-        return artist;
-    }
-
     public Page<ArtistDTO> toDTOs(Page<Artist> artists) {
         return  artists.map(this::toDTO);
     }

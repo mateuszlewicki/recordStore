@@ -3,16 +3,14 @@ package recordstore.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import recordstore.DTO.ArtistDTO;
 import recordstore.entity.Artist;
 import recordstore.projections.ArtistProjection;
 import recordstore.repository.ArtistRepository;
 import recordstore.utils.FileService;
-
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ArtistServiceImpl implements ArtistService {
@@ -27,17 +25,28 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public void saveArtist(Artist artist) throws IOException {
-        String filename = createUniqueName(artist.getData());
-        String removeImg = artist.getImg();
-        if (!artist.getData().isEmpty()) {
-            artist.setImg(filename);
+    public Artist createArtist(ArtistDTO artistDTO) throws IOException {
+        Artist artist = new Artist();
+        artist.setName(artistDTO.getName());
+        artist.setCountry(artistDTO.getCountry());
+        artist.setDescription(artistDTO.getDescription());
+        if (!artistDTO.getData().isEmpty()) {
+            artist.setImg(fileService.saveFile(artistDTO.getData()));
         }
-        repository.save(artist);
-        if(!artist.getData().isEmpty()) {
-            fileService.saveFile(filename, artist.getData());
-            fileService.deleteFile(removeImg);
+        return repository.save(artist);
+    }
+
+    @Override
+    public Artist updateArtist(ArtistDTO artistDTO, long id) throws IOException {
+        Artist artist = repository.getOne(id);
+        artist.setName(artistDTO.getName());
+        artist.setCountry(artistDTO.getCountry());
+        artist.setDescription(artistDTO.getDescription());
+        if (!artistDTO.getData().isEmpty()) {
+            fileService.deleteFile(artist.getImg());
+            artist.setImg(fileService.saveFile(artistDTO.getData()));
         }
+        return repository.save(artist);
     }
 
     @Override
@@ -78,10 +87,5 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Artist getArtistByName(String name) {
         return repository.findArtistByName(name);
-    }
-
-    private String createUniqueName (MultipartFile file) {
-        String uuid = UUID.randomUUID().toString();
-        return uuid + "." + file.getOriginalFilename();
     }
 }
