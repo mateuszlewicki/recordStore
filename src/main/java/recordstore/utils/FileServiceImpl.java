@@ -9,13 +9,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 public class FileServiceImpl implements FileService {
 
     @Value("${upload.path}")
     String path;
 
-    public void saveFile(String filename, MultipartFile multipartFile) throws IOException {
+    public String saveFile(MultipartFile multipartFile) throws IOException {
+        String filename = createUniqueName(multipartFile);
         Path uploadPath = Paths.get(path);
         if (!Files.exists(uploadPath)) {
             Files.createDirectory(uploadPath);
@@ -23,6 +25,7 @@ public class FileServiceImpl implements FileService {
         try(InputStream inputStream = multipartFile.getInputStream()) {
             Path filePath = uploadPath.resolve(filename);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            return filename;
         } catch (IOException ioe) {
             throw new IOException("Couldn't save image file" + filename, ioe);
         }
@@ -35,5 +38,10 @@ public class FileServiceImpl implements FileService {
                 Files.delete(path1);
             }
         }
+    }
+
+    private String createUniqueName(MultipartFile file) {
+        String uuid = UUID.randomUUID().toString();
+        return uuid + "." + file.getOriginalFilename();
     }
 }

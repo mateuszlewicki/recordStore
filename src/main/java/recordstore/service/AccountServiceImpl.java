@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
 import recordstore.entity.Release;
@@ -19,7 +18,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -78,11 +76,8 @@ public class AccountServiceImpl implements AccountService {
     public void updateAccount(long id, UpdateAccountDTO accountDTO) throws IOException {
         Account account = accountRepository.getOne(id);
         if(!accountDTO.getData().isEmpty()) {
-            String filename = createUniqueName(accountDTO.getData());
-            String removePicture = account.getImg();
-            fileService.saveFile(filename, accountDTO.getData());
-            fileService.deleteFile(removePicture);
-            account.setImg(filename);
+            fileService.deleteFile(account.getImg());
+            account.setImg(fileService.saveFile(accountDTO.getData()));
         }
         account.setUsername(accountDTO.getUsername());
         accountRepository.save(account);
@@ -175,10 +170,5 @@ public class AccountServiceImpl implements AccountService {
     private boolean tokenExpired(VerificationToken token) {
         Calendar calendar = Calendar.getInstance();
         return token.getExpiryDate().getTime() - calendar.getTime().getTime() <= 0;
-    }
-
-    private String createUniqueName (MultipartFile file) {
-        String uuid = UUID.randomUUID().toString();
-        return uuid + "." + file.getOriginalFilename();
     }
 }
