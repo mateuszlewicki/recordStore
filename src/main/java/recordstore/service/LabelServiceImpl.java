@@ -3,16 +3,14 @@ package recordstore.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import recordstore.DTO.LabelDTO;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 import recordstore.repository.LabelRepository;
 import recordstore.utils.FileService;
-
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class LabelServiceImpl implements LabelService {
@@ -27,18 +25,31 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public void saveLabel(Label label) throws IOException {
-        String filename = createUniqueName(label.getData());
-        String removePicture = label.getImg();
-
-        if(!label.getData().isEmpty()) {
-            label.setImg(filename);
+    public void createLabel(LabelDTO labelDTO) throws IOException {
+        Label label = new Label();
+        label.setTitle(labelDTO.getTitle());
+        label.setCountry(labelDTO.getCountry());
+        label.setDescription(labelDTO.getDescription());
+        if(!labelDTO.getData().isEmpty()) {
+            label.setImg(fileService.saveFile(labelDTO.getData()));
         }
         repository.save(label);
-        if(!label.getData().isEmpty()) {
-            fileService.saveFile(filename, label.getData());
-            fileService.deleteFile(removePicture);
+    }
+
+    @Override
+    public void updateLabel(LabelDTO labelDTO, long id) throws IOException {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Label not found");
         }
+        Label label = repository.getOne(id);
+        label.setTitle(labelDTO.getTitle());
+        label.setCountry(labelDTO.getCountry());
+        label.setDescription(labelDTO.getDescription());
+        if(!labelDTO.getData().isEmpty()) {
+            fileService.deleteFile(label.getImg());
+            label.setImg(fileService.saveFile(labelDTO.getData()));
+        }
+        repository.save(label);
     }
 
     @Override
@@ -79,10 +90,5 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public Label getLabelByTitle(String title) {
         return repository.findLabelByTitle(title);
-    }
-
-    private String createUniqueName (MultipartFile file) {
-        String uuid = UUID.randomUUID().toString();
-        return uuid + "." + file.getOriginalFilename();
     }
 }

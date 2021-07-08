@@ -19,18 +19,6 @@ public class LabelMapper {
         return labelDTO;
     }
 
-    public Label fromDTO(LabelDTO labelDTO) {
-        Label label = new Label();
-        label.setId(labelDTO.getId());
-        label.setTitle(labelDTO.getTitle());
-        label.setCountry(labelDTO.getCountry());
-        label.setDescription(labelDTO.getDescription());
-        label.setImg(labelDTO.getImg());
-        label.setData(labelDTO.getData());
-        label.setReleases(label.getReleases());
-        return label;
-    }
-
     public Page<LabelDTO> toDTOs(Page<Label> labels) {
         return labels.map(this::toDTO);
     }

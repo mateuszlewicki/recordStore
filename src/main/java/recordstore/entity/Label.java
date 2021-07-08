@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -33,10 +32,7 @@ public class Label {
     private String description;
 
     @Column(name = "img")
-    private String img;
-
-    @Transient
-    private MultipartFile data;
+    private String img = "noImageAvailable.png";
 
     @JsonIgnoreProperties(value = {"artists", "hibernateLazyInitializer"})
     @OneToMany(mappedBy = "label")

@@ -22,7 +22,7 @@ public class LabelController {
         this.mapper = mapper;
     }
 
-    @GetMapping
+    @GetMapping()
     public Page<LabelDTO> showAllLabels(Pageable pageable) {
         return mapper.toDTOs(service.getAllLabels(pageable));
     }
