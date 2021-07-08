@@ -22,7 +22,7 @@ public class GenreController {
         this.mapper = mapper;
     }
 
-    @GetMapping
+    @GetMapping()
     public Page<GenreDTO> showAllGenres(Pageable pageable){
         return mapper.toDTOs(service.getAllGenres(pageable));
     }

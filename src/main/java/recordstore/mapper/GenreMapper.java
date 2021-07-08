@@ -16,14 +16,6 @@ public class GenreMapper {
         return genreDTO;
     }
 
-    public Genre fromDTO(GenreDTO genreDTO) {
-        Genre genre = new Genre();
-        genre.setId(genreDTO.getId());
-        genre.setTitle(genreDTO.getTitle());
-        genre.setReleases(genreDTO.getReleases());
-        return genre;
-    }
-
     public Page<GenreDTO> toDTOs(Page<Genre> genres) {
         return genres.map(this::toDTO);
     }

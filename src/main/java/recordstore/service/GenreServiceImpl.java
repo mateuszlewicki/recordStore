@@ -3,6 +3,7 @@ package recordstore.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import recordstore.DTO.GenreDTO;
 import recordstore.entity.Genre;
 import recordstore.projections.GenreProjection;
 import recordstore.repository.GenreRepository;
@@ -20,7 +21,16 @@ public class GenreServiceImpl implements GenreService{
     }
 
     @Override
-    public void saveGenre(Genre genre) {
+    public void createGenre(GenreDTO genreDTO) {
+        Genre genre = new Genre();
+        genre.setTitle(genreDTO.getTitle());
+        repository.save(genre);
+    }
+
+    @Override
+    public void updateGenre(GenreDTO genreDTO, long id) {
+        Genre genre = repository.getOne(id);
+        genre.setTitle(genreDTO.getTitle());
         repository.save(genre);
     }
 
