@@ -1,6 +1,5 @@
 package recordstore.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,7 +33,6 @@ public class Label {
     @Column(name = "img")
     private String img = "noImageAvailable.png";
 
-    @JsonIgnoreProperties(value = {"artists", "hibernateLazyInitializer"})
     @OneToMany(mappedBy = "label")
     private List<Release> releases = new ArrayList<>();
 }

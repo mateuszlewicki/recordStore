@@ -16,7 +16,7 @@ public interface MapStructMapper {
     //ArtistDTO artistToDTO(Artist artist);
     ArtistSlimDTO artistToArtistSLimDTO(Artist artist);
 
-    //LabelDTO labelToLabelDTO(Label label);
+    LabelDTO labelToLabelDTO(Label label);
     LabelSlimDTO labelTOSlimDTO(Label label);
 
     //ReleaseDTO releaseToReleaseDTO(Release release);

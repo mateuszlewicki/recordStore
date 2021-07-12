@@ -39,8 +39,8 @@ public class AdminGenresController {
 
     @PutMapping("/{id}")
     public ResponseEntity<GenreDTO> updateGenre(@Valid @RequestBody GenreFormDTO genreDTO, @PathVariable long id) {
-        GenreDTO updateGenreDTO = mapStructMapper.genreToGenreDTO(service.updateGenre(id, genreDTO));
-        return ResponseEntity.ok(updateGenreDTO);
+        GenreDTO updatedGenreDTO = mapStructMapper.genreToGenreDTO(service.updateGenre(id, genreDTO));
+        return ResponseEntity.ok(updatedGenreDTO);
     }
 
     @DeleteMapping("/{id}")

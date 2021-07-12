@@ -2,7 +2,7 @@ package recordstore.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import recordstore.DTO.LabelDTO;
+import recordstore.DTO.LabelFormDTO;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 
@@ -11,14 +11,17 @@ import java.util.List;
 
 public interface LabelService {
 
-    void createLabel(LabelDTO labelDTO) throws IOException;
-    void updateLabel(LabelDTO labelDTO, long id) throws IOException;
-    void deleteLabel(long id) throws IOException;
-
     Label getLabel(long id);
-    List<LabelProjection> getLabelsTitles(String query);
     Page<Label> getAllLabels(Pageable pageable);
 
+    Label createLabel(LabelFormDTO labelDTO) throws IOException;
+    Label updateLabel(LabelFormDTO labelDTO, long id) throws IOException;
+    void deleteLabel(long id) throws IOException;
+
+    // search
     List<String> search(String keyword);
+    // find label by title
     Label getLabelByTitle(String title);
+    // autocomplete
+    List<LabelProjection> getLabelsTitles(String query);
 }
