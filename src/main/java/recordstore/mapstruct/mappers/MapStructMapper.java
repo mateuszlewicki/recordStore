@@ -2,10 +2,7 @@ package recordstore.mapstruct.mappers;
 
 import org.mapstruct.Mapper;
 import recordstore.DTO.*;
-import recordstore.entity.Artist;
-import recordstore.entity.Genre;
-import recordstore.entity.Label;
-import recordstore.entity.Release;
+import recordstore.entity.*;
 
 @Mapper(componentModel = "spring")
 public interface MapStructMapper {
@@ -18,6 +15,8 @@ public interface MapStructMapper {
 
     LabelDTO labelToLabelDTO(Label label);
     LabelSlimDTO labelTOSlimDTO(Label label);
+
+    AccountDTO accountToAccountDTO(Account account);
 
     //ReleaseDTO releaseToReleaseDTO(Release release);
     ReleaseSlimDTO releaseToReleaseSlimDTO(Release release);

@@ -2,7 +2,6 @@ package recordstore.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
-import recordstore.entity.Release;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +15,7 @@ public class AccountDTO {
 
     private String img;
 
-    private Set<Release> collection = new HashSet<>();
+    private Set<ReleaseSlimDTO> collection = new HashSet<>();
 
-    private Set<Release> wantlist = new HashSet<>();
+    private Set<ReleaseSlimDTO> wantlist = new HashSet<>();
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import recordstore.DTO.CreateAccountDTO;
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
 import recordstore.entity.Release;
@@ -58,11 +59,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account createNewAccount(Account account) {
-        if (emailExists(account.getEmail())){
+    public Account createNewAccount(CreateAccountDTO accountDTO) {
+        if (emailExists(accountDTO.getEmail())){
             throw new AccountAlreadyExistException("User with the same email already exists.");
         }
-        account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+        Account account = new Account();
+        account.setUsername(accountDTO.getUsername());
+        account.setPassword(bCryptPasswordEncoder.encode(accountDTO.getPassword()));
+        account.setEmail(accountDTO.getEmail());
         return accountRepository.save(account);
     }
 
@@ -74,6 +78,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateAccount(long id, UpdateAccountDTO accountDTO) throws IOException {
+        if (!accountRepository.existsById(id)){
+            throw new EntityNotFoundException("Account not found");
+        }
         Account account = accountRepository.getOne(id);
         if(!accountDTO.getData().isEmpty()) {
             fileService.deleteFile(account.getImg());
@@ -95,6 +102,40 @@ public class AccountServiceImpl implements AccountService {
         fileService.deleteFile(removePicture);
     }
 
+    @Override
+    public VerificationToken createVerificationToken(Account account) {
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setAccount(account);
+        return tokenRepository.save(verificationToken);
+    }
+
+    @Override
+    public VerificationToken getVerificationToken(String token) {
+        VerificationToken verificationToken = tokenRepository.findByToken(token);
+        if (verificationToken == null) {
+            throw new EntityNotFoundException("Token not found");
+        }
+        if (tokenExpired(verificationToken) && !verificationToken.getAccount().isEnabled()) {
+            throw new TokenExpiredException(verificationToken.getToken());
+        }
+        return verificationToken;
+    }
+
+    @Override
+    public VerificationToken generateNewVerificationToken(String existingToken) {
+        VerificationToken token = tokenRepository.findByToken(existingToken);
+        if (token == null) {
+            throw new EntityNotFoundException("Token not found");
+        }
+        if (token.getAccount().isEnabled()) {
+            throw new AccountAlreadyActivatedException("Account already activated");
+        }
+        token.updateToken();
+        return tokenRepository.save(token);
+    }
+
+
+    // managing user collections
     @Override
     public void addReleaseToCollection(long id, Release release) {
         Account account = accountRepository.getOne(id);
@@ -129,38 +170,6 @@ public class AccountServiceImpl implements AccountService {
             account.removeFromWantlist(release);
             accountRepository.save(account);
         }
-    }
-
-    @Override
-    public VerificationToken createVerificationToken(Account account) {
-        VerificationToken verificationToken = new VerificationToken();
-        verificationToken.setAccount(account);
-        return tokenRepository.save(verificationToken);
-    }
-
-    @Override
-    public VerificationToken getVerificationToken(String token) {
-        VerificationToken verificationToken = tokenRepository.findByToken(token);
-        if (verificationToken == null) {
-            throw new EntityNotFoundException("Token not found");
-        }
-        if (tokenExpired(verificationToken) && !verificationToken.getAccount().isEnabled()) {
-            throw new TokenExpiredException(verificationToken.getToken());
-        }
-        return verificationToken;
-    }
-
-    @Override
-    public VerificationToken generateNewVerificationToken(String existingToken) {
-        VerificationToken token = tokenRepository.findByToken(existingToken);
-        if (token == null) {
-            throw new EntityNotFoundException("Token not found");
-        }
-        if (token.getAccount().isEnabled()) {
-            throw new AccountAlreadyActivatedException("Account already activated");
-        }
-        token.updateToken();
-        return tokenRepository.save(token);
     }
 
     private boolean emailExists(final String email) {

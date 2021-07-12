@@ -13,12 +13,12 @@ import recordstore.service.AccountService;
 
 @RestController
 @RequestMapping("/accounts")
-public class AccountController {
+public class AccountsController {
 
     private final AccountService service;
     private final MapStructMapper mapStructMapper;
 
-    public AccountController(AccountService service, MapStructMapper mapStructMapper) {
+    public AccountsController(AccountService service, MapStructMapper mapStructMapper) {
         this.service = service;
         this.mapStructMapper = mapStructMapper;
     }
