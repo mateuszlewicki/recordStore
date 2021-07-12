@@ -3,7 +3,7 @@ package recordstore.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import recordstore.DTO.GenreDTO;
+import recordstore.DTO.GenreFormDTO;
 import recordstore.entity.Genre;
 import recordstore.projections.GenreProjection;
 import recordstore.repository.GenreRepository;
@@ -21,17 +21,33 @@ public class GenreServiceImpl implements GenreService{
     }
 
     @Override
-    public void createGenre(GenreDTO genreDTO) {
-        Genre genre = new Genre();
-        genre.setTitle(genreDTO.getTitle());
-        repository.save(genre);
+    public Page<Genre> getAllGenres(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override
-    public void updateGenre(GenreDTO genreDTO, long id) {
+    public Genre getGenre(long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Genre not found");
+        }
+        return repository.getOne(id);
+    }
+
+    @Override
+    public Genre createGenre(GenreFormDTO genreDTO) {
+        Genre genre = new Genre();
+        genre.setTitle(genreDTO.getTitle());
+        return repository.save(genre);
+    }
+
+    @Override
+    public Genre updateGenre( long id, GenreFormDTO genreDTO) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Genre not found");
+        }
         Genre genre = repository.getOne(id);
         genre.setTitle(genreDTO.getTitle());
-        repository.save(genre);
+        return repository.save(genre);
     }
 
     @Override
@@ -45,19 +61,7 @@ public class GenreServiceImpl implements GenreService{
         }
     }
 
-    @Override
-    public Genre getGenre(long id) {
-        if (!repository.existsById(id)) {
-            throw new EntityNotFoundException("Genre not found");
-        }
-        return repository.getOne(id);
-    }
-
-    @Override
-    public Page<Genre> getAllGenres(Pageable pageable) {
-        return repository.findAll(pageable);
-    }
-
+    // autocomplete
     @Override
     public List<GenreProjection> getGenresTitles(String query) {
         return repository.findAllBy(query);

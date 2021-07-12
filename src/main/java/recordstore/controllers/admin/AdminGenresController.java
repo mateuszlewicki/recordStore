@@ -2,46 +2,50 @@ package recordstore.controllers.admin;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import recordstore.DTO.GenreDTO;
-import recordstore.mapper.GenreMapper;
+import recordstore.DTO.GenreFormDTO;
+import recordstore.mapstruct.mappers.MapStructMapper;
 import recordstore.service.GenreService;
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/admin/genres")
 public class AdminGenresController {
 
     private final GenreService service;
-    private final GenreMapper mapper;
+    private final MapStructMapper mapStructMapper;
 
-    public AdminGenresController(GenreService service, GenreMapper mapper) {
+    public AdminGenresController(GenreService service,  MapStructMapper mapStructMapper) {
         this.service = service;
-        this.mapper = mapper;
+        this.mapStructMapper = mapStructMapper;
     }
 
     @GetMapping()
     public Page<GenreDTO> showAllGenres(Pageable pageable){
-        return mapper.toDTOs(service.getAllGenres(pageable));
+        return service.getAllGenres(pageable).map(mapStructMapper::genreToGenreDTO);
     }
 
     @PostMapping()
-    public ResponseEntity<String> addGenre(@Valid @RequestBody GenreDTO genreDTO) {
-        service.createGenre(genreDTO);
-        return ResponseEntity.ok("Genre has been created");
+    public ResponseEntity<GenreDTO> addGenre(@Valid @RequestBody GenreFormDTO genreDTO) {
+        GenreDTO createdGenreDTO = mapStructMapper.genreToGenreDTO(service.createGenre(genreDTO));
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(createdGenreDTO.getId()).toUri();
+        return ResponseEntity.ok(createdGenreDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateGenre(@Valid @RequestBody GenreDTO genreDTO, @PathVariable long id) {
-        service.updateGenre(genreDTO, id);
-        return ResponseEntity.ok("Genre has been updated");
+    public ResponseEntity<GenreDTO> updateGenre(@Valid @RequestBody GenreFormDTO genreDTO, @PathVariable long id) {
+        GenreDTO updateGenreDTO = mapStructMapper.genreToGenreDTO(service.updateGenre(id, genreDTO));
+        return ResponseEntity.ok(updateGenreDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteGenre(@PathVariable long id) {
+    public ResponseEntity<Object> deleteGenre(@PathVariable long id) {
         service.deleteGenre(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }

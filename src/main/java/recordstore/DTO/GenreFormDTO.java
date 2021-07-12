@@ -3,18 +3,16 @@ package recordstore.DTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.HashSet;
-import java.util.Set;
 
+import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class GenreDTO {
+public class GenreFormDTO {
 
     private long id;
 
+    @NotBlank(message = "Field is mandatory")
     private String title;
-
-    private Set<ReleaseSlimDTO> releases = new HashSet<>();
 }
