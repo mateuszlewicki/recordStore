@@ -2,12 +2,13 @@ package recordstore.controllers;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import recordstore.DTO.AccountDTO;
-import recordstore.mapper.AccountMapper;
+import recordstore.mapstruct.mappers.MapStructMapper;
 import recordstore.service.AccountService;
 
 @RestController
@@ -15,20 +16,21 @@ import recordstore.service.AccountService;
 public class AccountController {
 
     private final AccountService service;
-    private final AccountMapper mapper;
+    private final MapStructMapper mapStructMapper;
 
-    public AccountController(AccountService service, AccountMapper mapper) {
+    public AccountController(AccountService service, MapStructMapper mapStructMapper) {
         this.service = service;
-        this.mapper = mapper;
+        this.mapStructMapper = mapStructMapper;
     }
 
     @GetMapping()
     public Page<AccountDTO> showAllAccounts(Pageable pageable) {
-        return  mapper.toDTOs(service.getAllUsers(pageable));
+        return  service.getAllUsers(pageable).map(mapStructMapper::accountToAccountDTO);
     }
 
     @GetMapping("/{id}")
-    public AccountDTO showAccountInfo(@PathVariable long id) {
-        return mapper.accountToDTO(service.getAccount(id));
+    public ResponseEntity<AccountDTO> showAccountInfo(@PathVariable long id) {
+        AccountDTO accountDTO = mapStructMapper.accountToAccountDTO(service.getAccount(id));
+        return ResponseEntity.ok(accountDTO);
     }
 }

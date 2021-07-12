@@ -2,7 +2,6 @@ package recordstore.controllers.admin;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -47,8 +46,8 @@ public class AdminLabelsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteLabel(@PathVariable long id) throws IOException {
+    public ResponseEntity<Object> deleteLabel(@PathVariable long id) throws IOException {
         service.deleteLabel(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }
