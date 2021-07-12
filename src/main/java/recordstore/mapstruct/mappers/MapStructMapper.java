@@ -13,7 +13,7 @@ public interface MapStructMapper {
     GenreDTO genreToGenreDTO(Genre genre);
     GenreSlimDTO genreToSLimDTO(Genre genre);
 
-    //ArtistDTO artistToDTO(Artist artist);
+    ArtistDTO artistToArtistDTO(Artist artist);
     ArtistSlimDTO artistToArtistSLimDTO(Artist artist);
 
     LabelDTO labelToLabelDTO(Label label);

@@ -1,6 +1,5 @@
 package recordstore.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -32,7 +31,6 @@ public class Artist {
     @Column(name = "img")
     private String img = "noImageAvailable.png";
 
-    @JsonIgnoreProperties(value = {"artists", "hibernateLazyInitializer"})
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     private Set<Release> releases = new HashSet<>();
 }

@@ -3,7 +3,7 @@ package recordstore.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import recordstore.DTO.ArtistDTO;
+import recordstore.DTO.ArtistFormDTO;
 import recordstore.entity.Artist;
 import recordstore.projections.ArtistProjection;
 import recordstore.repository.ArtistRepository;
@@ -16,7 +16,6 @@ import java.util.List;
 public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository repository;
-
     private final FileService fileService;
 
     public ArtistServiceImpl(ArtistRepository repository, FileService fileService) {
@@ -25,7 +24,20 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Artist createArtist(ArtistDTO artistDTO) throws IOException {
+    public Artist getArtist(long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Artist not found");
+        }
+        return repository.getOne(id);
+    }
+
+    @Override
+    public Page<Artist> getAllArtists(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Artist createArtist(ArtistFormDTO artistDTO) throws IOException {
         Artist artist = new Artist();
         artist.setName(artistDTO.getName());
         artist.setCountry(artistDTO.getCountry());
@@ -37,7 +49,10 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Artist updateArtist(ArtistDTO artistDTO, long id) throws IOException {
+    public Artist updateArtist(ArtistFormDTO artistDTO, long id) throws IOException {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Artist not found");
+        }
         Artist artist = repository.getOne(id);
         artist.setName(artistDTO.getName());
         artist.setCountry(artistDTO.getCountry());
@@ -61,31 +76,21 @@ public class ArtistServiceImpl implements ArtistService {
         }
     }
 
-    @Override
-    public Artist getArtist(long id) {
-        if (!repository.existsById(id)) {
-            throw new EntityNotFoundException("Artist not found");
-        }
-        return repository.getOne(id);
-    }
-
-    @Override
-    public List<ArtistProjection> getArtistsNames(String query) {
-        return repository.findAllBy(query);
-    }
-
-    @Override
-    public Page<Artist> getAllArtists(Pageable pageable) {
-        return repository.findAll(pageable);
-    }
-
+    // search
     @Override
     public List<String> search(String keyword) {
         return repository.search(keyword);
     }
 
+    // find artist by name
     @Override
     public Artist getArtistByName(String name) {
         return repository.findArtistByName(name);
+    }
+
+    // autocomplete
+    @Override
+    public List<ArtistProjection> getArtistsNames(String query) {
+        return repository.findAllBy(query);
     }
 }

@@ -2,7 +2,7 @@ package recordstore.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import recordstore.DTO.ArtistDTO;
+import recordstore.DTO.ArtistFormDTO;
 import recordstore.entity.Artist;
 import recordstore.projections.ArtistProjection;
 
@@ -11,14 +11,17 @@ import java.util.List;
 
 public interface ArtistService {
 
-    Artist createArtist(ArtistDTO artistDTO) throws IOException;
-    Artist updateArtist(ArtistDTO artistDTO, long id) throws IOException;
-    void deleteArtist(long id) throws IOException;
-
     Artist getArtist(long id);
-    List<ArtistProjection> getArtistsNames(String query);
     Page<Artist> getAllArtists(Pageable pageable);
 
+    Artist createArtist(ArtistFormDTO artistDTO) throws IOException;
+    Artist updateArtist(ArtistFormDTO artistDTO, long id) throws IOException;
+    void deleteArtist(long id) throws IOException;
+
+    // search
     List<String> search(String keyword);
+    // find artist by name
     Artist getArtistByName(String name);
+    // autocomplete
+    List<ArtistProjection> getArtistsNames(String query);
 }
