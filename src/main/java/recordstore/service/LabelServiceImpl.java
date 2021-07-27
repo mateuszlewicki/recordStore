@@ -37,6 +37,11 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
+    public Page<Label> search(String keyword, Pageable pageable) {
+        return repository.search(keyword, pageable);
+    }
+
+    @Override
     public Label createLabel(LabelFormDTO labelDTO) throws IOException {
         Label label = new Label();
         label.setTitle(labelDTO.getTitle());
@@ -74,18 +79,6 @@ public class LabelServiceImpl implements LabelService {
             repository.deleteById(id);
             fileService.deleteFile(label.getImg());
         }
-    }
-
-    // search
-    @Override
-    public List<String> search(String keyword) {
-        return repository.search(keyword);
-    }
-
-    // find label by title
-    @Override
-    public Label getLabelByTitle(String title) {
-        return repository.findLabelByTitle(title);
     }
 
     // autocomplete

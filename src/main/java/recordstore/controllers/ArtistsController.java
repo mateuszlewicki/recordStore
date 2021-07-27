@@ -30,4 +30,9 @@ public class ArtistsController {
         ArtistDTO artistDTO =  mapStructMapper.artistToArtistDTO(service.getArtist(id));
         return ResponseEntity.ok(artistDTO);
     }
+
+    @GetMapping("/search")
+    public Page<ArtistDTO> showASearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable).map(mapStructMapper::artistToArtistDTO);
+    }
 }

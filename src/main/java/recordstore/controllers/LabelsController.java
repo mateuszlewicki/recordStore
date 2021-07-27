@@ -3,10 +3,7 @@ package recordstore.controllers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import recordstore.DTO.LabelDTO;
 import recordstore.mapstruct.mappers.MapStructMapper;
 import recordstore.service.LabelService;
@@ -32,5 +29,10 @@ public class LabelsController {
     public ResponseEntity<LabelDTO> showLabelInfo(@PathVariable long id){
         LabelDTO labelDTO = mapStructMapper.labelToLabelDTO(service.getLabel(id));
         return ResponseEntity.ok(labelDTO);
+    }
+
+    @GetMapping("/search")
+    public Page<LabelDTO> showAutocomplete(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable).map(mapStructMapper::labelToLabelDTO);
     }
 }

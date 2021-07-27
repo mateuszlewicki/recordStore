@@ -9,7 +9,6 @@ import recordstore.DTO.ArtistDTO;
 import recordstore.DTO.ArtistFormDTO;
 import recordstore.mapstruct.mappers.MapStructMapper;
 import recordstore.service.ArtistService;
-
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
@@ -29,6 +28,11 @@ public class AdminArtistsController {
     @GetMapping
     public Page<ArtistDTO> showAllArtists(Pageable pageable) {
         return service.getAllArtists(pageable).map(mapStructMapper::artistToArtistDTO);
+    }
+
+    @GetMapping("/search")
+    public Page<ArtistDTO> showASearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable).map(mapStructMapper::artistToArtistDTO);
     }
 
     @PostMapping()

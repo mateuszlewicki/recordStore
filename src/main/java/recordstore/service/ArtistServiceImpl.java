@@ -37,6 +37,11 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    public Page<Artist> search(String keyword, Pageable pageable) {
+        return repository.search(keyword, pageable);
+    }
+
+    @Override
     public Artist createArtist(ArtistFormDTO artistDTO) throws IOException {
         Artist artist = new Artist();
         artist.setName(artistDTO.getName());
@@ -74,18 +79,6 @@ public class ArtistServiceImpl implements ArtistService {
             repository.deleteById(id);
             fileService.deleteFile(artist.getImg());
         }
-    }
-
-    // search
-    @Override
-    public List<String> search(String keyword) {
-        return repository.search(keyword);
-    }
-
-    // find artist by name
-    @Override
-    public Artist getArtistByName(String name) {
-        return repository.findArtistByName(name);
     }
 
     // autocomplete

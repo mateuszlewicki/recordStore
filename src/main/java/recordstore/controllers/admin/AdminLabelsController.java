@@ -9,7 +9,6 @@ import recordstore.DTO.LabelDTO;
 import recordstore.DTO.LabelFormDTO;
 import recordstore.mapstruct.mappers.MapStructMapper;
 import recordstore.service.LabelService;
-
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
@@ -29,6 +28,11 @@ public class AdminLabelsController {
     @GetMapping()
     public Page<LabelDTO> showAllLabels(Pageable pageable) {
         return service.getAllLabels(pageable).map(mapStructMapper::labelToLabelDTO);
+    }
+
+    @GetMapping("/search")
+    public Page<LabelDTO> showAutocomplete(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable).map(mapStructMapper::labelToLabelDTO);
     }
 
     @PostMapping()
