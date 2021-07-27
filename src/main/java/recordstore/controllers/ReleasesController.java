@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import recordstore.DTO.ReleaseDTO;
-import recordstore.mapper.ReleaseMapper;
 import recordstore.service.ReleaseService;
 
 @RestController
@@ -12,20 +11,18 @@ import recordstore.service.ReleaseService;
 public class ReleaseController {
 
     private final ReleaseService service;
-    private final ReleaseMapper mapper;
 
-    public ReleaseController(ReleaseService service, ReleaseMapper mapper) {
+    public ReleaseController(ReleaseService service) {
         this.service = service;
-        this.mapper = mapper;
     }
 
-    @GetMapping
+    @GetMapping()
     public Page<ReleaseDTO> showAllReleases(Pageable pageable){
-        return mapper.toDTOs(service.getAllReleases(pageable));
+        return service.getAllReleases(pageable);
     }
 
     @GetMapping("/{id}")
     public ReleaseDTO showReleaseInfo(@PathVariable long id){
-        return mapper.toDTO(service.getRelease(id));
+        return service.getRelease(id);
     }
 }
