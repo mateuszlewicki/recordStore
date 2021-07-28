@@ -1,11 +1,8 @@
 package recordstore.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 import recordstore.enums.Format;
 import recordstore.validation.ValidDateFormat;
 
@@ -44,91 +41,100 @@ public class Release {
     private Format format;
 
     @Column(name = "img")
-    private String img;
+    private String img = "noImageAvailable.png";
 
-    @Transient
-    private MultipartFile data;
-
-    @JsonIgnoreProperties(value = {"releases", "hibernateLazyInitializer"})
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "releases_artists",
             joinColumns = @JoinColumn(name = "release_id"),
             inverseJoinColumns = @JoinColumn(name = "artist_id"))
     private Set<Artist> artists = new HashSet<>();
 
-    @JsonIgnoreProperties(value = {"releases", "hibernateLazyInitializer"})
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "releases_genres",
             joinColumns = @JoinColumn(name = "release_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres = new HashSet<>();
 
-    @JsonIgnoreProperties(value = {"releases", "hibernateLazyInitializer"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Label label;
 
     @Valid
-    @JsonIgnoreProperties(value = {"release", "hibernateLazyInitializer"})
-    @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "release_id")
     private List<Track> tracklist = new ArrayList<>();
 
     @Valid
-    @JsonIgnoreProperties(value = {"release", "hibernateLazyInitializer"})
-    @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "release_id")
     private List<YouTubeVideo> playlist = new ArrayList<>();
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private Set<Account> collections = new HashSet<>();
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "wantlist", fetch = FetchType.LAZY)
     private Set<Account> wantlists = new HashSet<>();
 
     public void addArtist(Artist artist){
-        this.artists.add(artist);
-        artist.getReleases().add(this);
+        if (artist != null) {
+            this.artists.add(artist);
+            artist.getReleases().add(this);
+        }
     }
+
     public void removeArtist(Artist artist){
-        this.artists.remove(artist);
-        artist.getReleases().remove(this);
+        if (artist != null) {
+            this.artists.remove(artist);
+            artist.getReleases().remove(this);
+        }
     }
 
     public void addGenre(Genre genre){
-        this.genres.add(genre);
-        genre.getReleases().add(this);
+        if (genre != null) {
+            this.genres.add(genre);
+            genre.getReleases().add(this);
+        }
     }
     public void removeGenre(Genre genre){
-        this.genres.remove(genre);
-        genre.getReleases().remove(this);
+        if(genre != null) {
+            this.genres.remove(genre);
+            genre.getReleases().remove(this);
+        }
     }
 
     public void addLabel(Label label){
-        this.setLabel(label);
-        label.getReleases().add(this);
+        if (label != null) {
+            this.setLabel(label);
+            label.getReleases().add(this);
+        }
     }
     public void removeLabel(Label label){
-        this.setLabel(null);
-        label.getReleases().remove(this);
+        if (label != null) {
+            this.setLabel(null);
+            label.getReleases().remove(this);
+        }
     }
 
     public void addTrack(Track track) {
-        this.tracklist.add(track);
-        track.setRelease(this);
+        if (track != null) {
+            this.tracklist.add(track);
+        }
     }
 
     public void removeTrack(Track track) {
-        this.tracklist.remove(track);
-        track.setRelease(null);
+        if (track != null) {
+            this.tracklist.remove(track);
+        }
     }
 
     public void addVideo(YouTubeVideo video) {
-        this.playlist.add(video);
-        video.setRelease(this);
+        if (video != null) {
+            this.playlist.add(video);
+        }
     }
 
     public void removeVideo(YouTubeVideo video) {
-        this.playlist.remove(video);
-        video.setRelease(null);
+        if (video != null) {
+            this.playlist.remove(video);
+        }
     }
 }

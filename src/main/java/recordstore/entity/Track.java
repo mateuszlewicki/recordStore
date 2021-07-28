@@ -1,6 +1,5 @@
 package recordstore.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,8 +25,4 @@ public class Track {
     @Column(name = "title")
     @NotBlank(message = "Field is mandatory")
     String title;
-
-    @JsonIgnoreProperties("tracklist")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Release release;
 }

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TrackDTO {
+public class TrackFormDTO {
 
     private long id;
 

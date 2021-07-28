@@ -4,15 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import recordstore.enums.Format;
-import java.util.ArrayList;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class ReleaseDTO {
+public class ReleaseSlimDTO {
 
     private long id;
 
@@ -31,8 +30,4 @@ public class ReleaseDTO {
     private Set<GenreSlimDTO> genres = new HashSet<>();
 
     private LabelSlimDTO label;
-
-    private List<TrackDTO> tracklist = new ArrayList<>();
-
-    private List<YouTubeVideoDTO> playlist = new ArrayList<>();
 }

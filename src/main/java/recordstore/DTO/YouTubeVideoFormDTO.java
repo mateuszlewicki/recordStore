@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @Getter
 @Setter
-public class YouTubeVideoDTO {
+public class YouTubeVideoFormDTO {
 
     private long id;
 
