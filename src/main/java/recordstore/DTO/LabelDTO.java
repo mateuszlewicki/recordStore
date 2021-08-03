@@ -3,8 +3,6 @@ package recordstore.DTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -20,6 +18,4 @@ public class LabelDTO {
     private String description;
 
     private String img;
-
-    private List<ReleaseSlimDTO> releases = new ArrayList<>();
 }

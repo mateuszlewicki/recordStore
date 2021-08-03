@@ -2,8 +2,10 @@ package recordstore.controllers.admin;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import recordstore.DTO.LabelDTO;
 import recordstore.DTO.LabelFormDTO;
@@ -36,7 +38,7 @@ public class AdminLabelsController {
     }
 
     @PostMapping()
-    public ResponseEntity<LabelDTO> addLabel(@Valid LabelFormDTO labelDTO) throws IOException {
+    public ResponseEntity<LabelDTO> addLabel(@Valid @RequestBody LabelFormDTO labelDTO) throws IOException {
         LabelDTO createdLabelDTO = mapStructMapper.labelToLabelDTO(service.createLabel(labelDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(createdLabelDTO.getId()).toUri();
@@ -44,7 +46,7 @@ public class AdminLabelsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LabelDTO> updateLabel(@Valid LabelFormDTO labelDTO, @PathVariable long id) throws IOException {
+    public ResponseEntity<LabelDTO> updateLabel(@Valid @RequestBody LabelFormDTO labelDTO, @PathVariable long id) throws IOException {
         LabelDTO updatedLabelDTO = mapStructMapper.labelToLabelDTO(service.updateLabel(labelDTO, id));
         return ResponseEntity.ok(updatedLabelDTO);
     }
@@ -53,5 +55,19 @@ public class AdminLabelsController {
     public ResponseEntity<Object> deleteLabel(@PathVariable long id) throws IOException {
         service.deleteLabel(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(path = "/{id}/image/upload",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<LabelDTO> uploadImage(@PathVariable("id") long id,
+                            @RequestParam("file") MultipartFile file) {
+        LabelDTO labelDTO = mapStructMapper.labelToLabelDTO(service.uploadImage(id, file));
+        return ResponseEntity.ok(labelDTO);
+    }
+
+    @GetMapping("/{id}/image/download")
+    public byte[] downloadImage(@PathVariable("id") long id) {
+        return service.downloadImage(id);
     }
 }

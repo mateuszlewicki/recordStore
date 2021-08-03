@@ -3,24 +3,24 @@ package recordstore.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.LabelFormDTO;
 import recordstore.entity.Label;
-import recordstore.projections.LabelProjection;
 import recordstore.repository.LabelRepository;
-import recordstore.utils.FileService;
+import recordstore.utils.FileStore;
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
-import java.util.List;
 
 @Service
 public class LabelServiceImpl implements LabelService {
 
     private final LabelRepository repository;
-    private final FileService fileService;
+    private final FileStore fileStore;
+    private final ReleaseService releaseService;
 
-    public LabelServiceImpl(LabelRepository repository, FileService fileService) {
+    public LabelServiceImpl(LabelRepository repository, FileStore fileStore, ReleaseService releaseService) {
         this.repository = repository;
-        this.fileService = fileService;
+        this.fileStore = fileStore;
+        this.releaseService = releaseService;
     }
 
     @Override
@@ -42,19 +42,16 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public Label createLabel(LabelFormDTO labelDTO) throws IOException {
+    public Label createLabel(LabelFormDTO labelDTO) {
         Label label = new Label();
         label.setTitle(labelDTO.getTitle());
         label.setCountry(labelDTO.getCountry());
         label.setDescription(labelDTO.getDescription());
-        if(!labelDTO.getData().isEmpty()) {
-            label.setImg(fileService.saveFile(labelDTO.getData()));
-        }
         return repository.save(label);
     }
 
     @Override
-    public Label updateLabel(LabelFormDTO labelDTO, long id) throws IOException {
+    public Label updateLabel(LabelFormDTO labelDTO, long id) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Label not found");
         }
@@ -62,28 +59,42 @@ public class LabelServiceImpl implements LabelService {
         label.setTitle(labelDTO.getTitle());
         label.setCountry(labelDTO.getCountry());
         label.setDescription(labelDTO.getDescription());
-        if(!labelDTO.getData().isEmpty()) {
-            fileService.deleteFile(label.getImg());
-            label.setImg(fileService.saveFile(labelDTO.getData()));
-        }
         return repository.save(label);
     }
 
     @Override
-    public void deleteLabel(long id) throws IOException {
+    public void deleteLabel(long id) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Label not found");
         }
         Label label = repository.getOne(id);
-        if (label.getReleases().isEmpty()) {
+        if (releaseService.countReleasesByLabel(label) == 0) {
             repository.deleteById(id);
-            fileService.deleteFile(label.getImg());
+            fileStore.deleteFile(label.getImg());
         }
     }
 
-    // autocomplete
     @Override
-    public List<LabelProjection> getLabelsTitles(String query) {
-        return repository.findAllBy(query);
+    public Label uploadImage(long id, MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalStateException("Cannot upload file:(");
+        }
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Label not found");
+        }
+        Label label = repository.getOne(id);
+        String fileName = fileStore.save(file);
+        fileStore.deleteFile(label.getImg());
+        label.setImg(fileName);
+        return repository.save(label);
+    }
+
+    @Override
+    public byte[] downloadImage(long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Label not found");
+        }
+        Label label = repository.getOne(id);
+        return fileStore.download(label.getImg());
     }
 }

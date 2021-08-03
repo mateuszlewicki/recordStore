@@ -5,19 +5,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import recordstore.DTO.GenreFormDTO;
 import recordstore.entity.Genre;
-import recordstore.projections.GenreProjection;
 import recordstore.repository.GenreRepository;
-
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 @Service
 public class GenreServiceImpl implements GenreService{
 
     private final GenreRepository repository;
+    private final ReleaseService releaseService;
 
-    public GenreServiceImpl(GenreRepository repository) {
+    public GenreServiceImpl(GenreRepository repository, ReleaseService releaseService) {
         this.repository = repository;
+        this.releaseService = releaseService;
     }
 
     @Override
@@ -56,14 +55,8 @@ public class GenreServiceImpl implements GenreService{
             throw new EntityNotFoundException("Genre not found");
         }
         Genre genre = repository.getOne(id);
-        if (genre.getReleases().isEmpty()) {
+        if (releaseService.countReleasesByGenre(genre) == 0) {
             repository.deleteById(id);
         }
-    }
-
-    // autocomplete
-    @Override
-    public List<GenreProjection> getGenresTitles(String query) {
-        return repository.findAllBy(query);
     }
 }

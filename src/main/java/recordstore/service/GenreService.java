@@ -4,9 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import recordstore.DTO.GenreFormDTO;
 import recordstore.entity.Genre;
-import recordstore.projections.GenreProjection;
-
-import java.util.List;
 
 public interface GenreService {
 
@@ -16,7 +13,4 @@ public interface GenreService {
     Genre createGenre(GenreFormDTO genreDTO);
     Genre updateGenre(long id, GenreFormDTO genreDTO);
     void deleteGenre(long id);
-
-    // autocomplete
-    List<GenreProjection> getGenresTitles(String query);
 }

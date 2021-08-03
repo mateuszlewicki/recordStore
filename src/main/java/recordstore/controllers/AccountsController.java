@@ -33,4 +33,9 @@ public class AccountsController {
         AccountDTO accountDTO = mapStructMapper.accountToAccountDTO(service.getAccount(id));
         return ResponseEntity.ok(accountDTO);
     }
+
+    @GetMapping("/{id}/image/download")
+    public byte[] downloadImage(@PathVariable("id") long id) {
+        return service.downloadImage(id);
+    }
 }

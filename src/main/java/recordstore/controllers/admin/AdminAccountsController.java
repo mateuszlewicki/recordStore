@@ -32,4 +32,9 @@ public class AdminAccountsController {
         service.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/image/download")
+    public byte[] downloadImage(@PathVariable("id") long id) {
+        return service.downloadImage(id);
+    }
 }

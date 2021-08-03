@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import recordstore.validation.ValidEmail;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.*;
@@ -34,7 +33,7 @@ public class Account implements UserDetails {
     private String email;
 
     @Column(name = "img")
-    private String img;
+    private String img = "noImageAvailable.png";
 
     @Column(name = "enabled")
     private boolean enabled = false;
@@ -50,12 +49,6 @@ public class Account implements UserDetails {
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "release_id"))
     private Set<Release> collection = new HashSet<>();
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "wantlists",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "release_id"))
-    private Set<Release> wantlist = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -113,15 +106,5 @@ public class Account implements UserDetails {
     public void removeFromCollection(Release release) {
         this.collection.remove(release);
         release.getCollections().remove(this);
-    }
-
-    public void addToWantlist(Release release) {
-        this.wantlist.add(release);
-        release.getWantlists().add(this);
-    }
-
-    public void removeFromWantlist(Release release) {
-        this.wantlist.remove(release);
-        release.getWantlists().remove(this);
     }
 }

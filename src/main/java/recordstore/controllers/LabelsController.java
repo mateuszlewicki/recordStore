@@ -35,4 +35,9 @@ public class LabelsController {
     public Page<LabelDTO> showAutocomplete(@RequestParam("keyword") String keyword, Pageable pageable) {
         return service.search(keyword, pageable).map(mapStructMapper::labelToLabelDTO);
     }
+
+    @GetMapping("/{id}/image/download")
+    public byte[] downloadImage(@PathVariable("id") long id) {
+        return service.downloadImage(id);
+    }
 }

@@ -18,6 +18,5 @@ public interface MapStructMapper {
 
     AccountDTO accountToAccountDTO(Account account);
 
-    //ReleaseDTO releaseToReleaseDTO(Release release);
-    ReleaseSlimDTO releaseToReleaseSlimDTO(Release release);
+    ReleaseDTO releaseToReleaseDTO(Release release);
 }

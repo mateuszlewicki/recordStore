@@ -3,11 +3,8 @@ package recordstore.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -32,7 +29,4 @@ public class Label {
 
     @Column(name = "img")
     private String img = "noImageAvailable.png";
-
-    @OneToMany(mappedBy = "label")
-    private List<Release> releases = new ArrayList<>();
 }

@@ -2,7 +2,6 @@ package recordstore.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;

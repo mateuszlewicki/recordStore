@@ -15,7 +15,5 @@ public class AccountDTO {
 
     private String img;
 
-    private Set<ReleaseSlimDTO> collection = new HashSet<>();
-
-    private Set<ReleaseSlimDTO> wantlist = new HashSet<>();
+    private Set<ReleaseDTO> collection = new HashSet<>();
 }

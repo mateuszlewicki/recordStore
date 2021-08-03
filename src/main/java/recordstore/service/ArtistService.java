@@ -2,11 +2,10 @@ package recordstore.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.ArtistFormDTO;
 import recordstore.entity.Artist;
-import recordstore.projections.ArtistProjection;
 import java.io.IOException;
-import java.util.List;
 
 public interface ArtistService {
 
@@ -18,6 +17,6 @@ public interface ArtistService {
     Artist updateArtist(ArtistFormDTO artistDTO, long id) throws IOException;
     void deleteArtist(long id) throws IOException;
 
-    // autocomplete
-    List<ArtistProjection> getArtistsNames(String query);
+    Artist uploadImage(long id, MultipartFile file);
+    byte[] downloadImage(long id);
 }

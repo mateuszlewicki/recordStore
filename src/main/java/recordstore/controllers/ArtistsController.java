@@ -35,4 +35,9 @@ public class ArtistsController {
     public Page<ArtistDTO> showASearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
         return service.search(keyword, pageable).map(mapStructMapper::artistToArtistDTO);
     }
+
+    @GetMapping("/{id}/image/download")
+    public byte[] downloadImage(@PathVariable("id") long id) {
+        return service.downloadImage(id);
+    }
 }

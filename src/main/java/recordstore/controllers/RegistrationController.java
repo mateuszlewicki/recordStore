@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import recordstore.DTO.CreateAccountDTO;
 import recordstore.entity.Account;
 import recordstore.entity.VerificationToken;
-import recordstore.mapper.AccountMapper;
 import recordstore.registration.OnRegistrationCompleteEvent;
 import recordstore.service.AccountService;
 import recordstore.utils.EmailService;
@@ -20,23 +19,20 @@ import java.util.Map;
 public class RegistrationController {
 
     private final AccountService service;
-    private final AccountMapper mapper;
     private final ApplicationEventPublisher eventPublisher;
     private final EmailService emailService;
 
     public RegistrationController(AccountService service,
-                                  AccountMapper mapper,
                                   ApplicationEventPublisher eventPublisher,
                                   EmailService emailService) {
         this.service = service;
-        this.mapper = mapper;
         this.eventPublisher = eventPublisher;
         this.emailService = emailService;
     }
 
     @PostMapping("/registration")
     public GenericResponse registerNewAccount(@Valid CreateAccountDTO accountDTO, HttpServletRequest request) {
-        Account account = service.createNewAccount(mapper.fromDTO(accountDTO));
+        Account account = service.createNewAccount(accountDTO);
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(account, getAppUrl(request)));
         return new GenericResponse("success");
     }

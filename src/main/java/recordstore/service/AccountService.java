@@ -2,10 +2,10 @@ package recordstore.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.CreateAccountDTO;
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
-import recordstore.entity.Release;
 import recordstore.entity.VerificationToken;
 
 import java.io.IOException;
@@ -17,16 +17,16 @@ public interface AccountService {
 
     Account createNewAccount(CreateAccountDTO account);
     void saveRegisterUser(Account account);
-    void updateAccount(long id, UpdateAccountDTO dto) throws IOException;
+    Account updateAccount(long id, UpdateAccountDTO dto) throws IOException;
     void deleteAccount(long id) throws IOException;
+
+    Account uploadImage(long id, MultipartFile file);
+    byte[] downloadImage(long id);
 
     VerificationToken createVerificationToken(Account account);
     VerificationToken getVerificationToken(String token);
     VerificationToken generateNewVerificationToken(String existingToken);
 
-    // managing user collections
-    void addReleaseToCollection(long id, Release release);
-    void addReleaseToWantlist(long id, Release release);
-    void removeReleaseFromCollection(long id, Release release);
-    void removeReleaseFromWantlist(long id, Release release);
+    Account addReleaseToCollection(long userId, long releaseId);
+    Account removeReleaseFromCollection(long userId, long releaseId);
 }

@@ -3,21 +3,21 @@ package recordstore.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.CreateAccountDTO;
 import recordstore.DTO.UpdateAccountDTO;
 import recordstore.entity.Account;
-import recordstore.entity.Release;
 import recordstore.entity.VerificationToken;
 import recordstore.error.*;
 import recordstore.repository.AccountRepository;
+import recordstore.repository.ReleaseRepository;
 import recordstore.repository.VerificationTokenRepository;
-import recordstore.utils.FileService;
-
+import recordstore.utils.FileStore;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.Calendar;
 
 @Service
@@ -26,13 +26,15 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final VerificationTokenRepository tokenRepository;
+    private final ReleaseRepository releaseRepository;
 
-    private FileService fileService;
+    private FileStore fileStore;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AccountServiceImpl(AccountRepository accountRepository, VerificationTokenRepository tokenRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, VerificationTokenRepository tokenRepository, ReleaseRepository releaseRepository) {
         this.accountRepository = accountRepository;
         this.tokenRepository = tokenRepository;
+        this.releaseRepository = releaseRepository;
     }
 
     @Autowired
@@ -41,8 +43,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Autowired
-    public void setFileService(FileService fileService) {
-        this.fileService = fileService;
+    public void setFileStore(FileStore fileStore) {
+        this.fileStore = fileStore;
     }
 
     @Override
@@ -77,21 +79,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void updateAccount(long id, UpdateAccountDTO accountDTO) throws IOException {
+    public Account updateAccount(long id, UpdateAccountDTO accountDTO) {
+        if(getPrincipalId() != id) {
+            throw new RuntimeException("You tried to update your account with wrong id");
+        }
         if (!accountRepository.existsById(id)){
             throw new EntityNotFoundException("Account not found");
         }
         Account account = accountRepository.getOne(id);
-        if(!accountDTO.getData().isEmpty()) {
-            fileService.deleteFile(account.getImg());
-            account.setImg(fileService.saveFile(accountDTO.getData()));
-        }
         account.setUsername(accountDTO.getUsername());
-        accountRepository.save(account);
+        return accountRepository.save(account);
     }
 
     @Override
-    public void deleteAccount(long id) throws IOException {
+    public void deleteAccount(long id) {
         if (!accountRepository.existsById(id)){
             throw new EntityNotFoundException("Account not found");
         }
@@ -99,7 +100,34 @@ public class AccountServiceImpl implements AccountService {
         String removePicture = accountRepository.getOne(id).getImg();
         tokenRepository.delete(token);
         accountRepository.deleteById(id);
-        fileService.deleteFile(removePicture);
+        fileStore.deleteFile(removePicture);
+    }
+
+    @Override
+    public Account uploadImage(long id, MultipartFile file) {
+        if(getPrincipalId() != id) {
+            throw new RuntimeException("You tried to update your account with wrong id");
+        }
+        if (file.isEmpty()) {
+            throw new IllegalStateException("Cannot upload file:(");
+        }
+        if (!accountRepository.existsById(id)) {
+            throw new EntityNotFoundException("Account not found");
+        }
+        Account account = accountRepository.getOne(id);
+        String fileName = fileStore.save(file);
+        fileStore.deleteFile(account.getImg());
+        account.setImg(fileName);
+        return accountRepository.save(account);
+    }
+
+    @Override
+    public byte[] downloadImage(long id) {
+        if (!accountRepository.existsById(id)) {
+            throw new EntityNotFoundException("Account not found");
+        }
+        Account account = accountRepository.getOne(id);
+        return fileStore.download(account.getImg());
     }
 
     @Override
@@ -134,42 +162,30 @@ public class AccountServiceImpl implements AccountService {
         return tokenRepository.save(token);
     }
 
-
-    // managing user collections
     @Override
-    public void addReleaseToCollection(long id, Release release) {
-        Account account = accountRepository.getOne(id);
-        if (!account.getCollection().contains(release)) {
-            account.addToCollection(release);
-            accountRepository.save(account);
+    public Account addReleaseToCollection(long userId, long releaseId) {
+        if (!accountRepository.existsById(userId)) {
+            throw new EntityNotFoundException("Account not found");
         }
+        if (!releaseRepository.existsById(releaseId)) {
+            throw new EntityNotFoundException("Release not found");
+        }
+        Account account = accountRepository.getOne(userId);
+        account.getCollection().add(releaseRepository.getOne(releaseId));
+        return accountRepository.save(account);
     }
 
     @Override
-    public void addReleaseToWantlist(long id, Release release) {
-        Account account = accountRepository.getOne(id);
-        if (!account.getWantlist().contains(release)) {
-            account.addToWantlist(release);
-            accountRepository.save(account);
+    public Account removeReleaseFromCollection(long userId, long releaseId) {
+        if (!accountRepository.existsById(userId)) {
+            throw new EntityNotFoundException("Account not found");
         }
-    }
-
-    @Override
-    public void removeReleaseFromCollection(long id, Release release) {
-        Account account = accountRepository.getOne(id);
-        if (account.getCollection().contains(release)) {
-            account.removeFromCollection(release);
-            accountRepository.save(account);
+        if (!releaseRepository.existsById(releaseId)) {
+            throw new EntityNotFoundException("Release not found");
         }
-    }
-
-    @Override
-    public void removeReleaseFromWantlist(long id, Release release) {
-        Account account = accountRepository.getOne(id);
-        if (account.getWantlist().contains(release)) {
-            account.removeFromWantlist(release);
-            accountRepository.save(account);
-        }
+        Account account = accountRepository.getOne(userId);
+        account.getCollection().remove(releaseRepository.getOne(releaseId));
+        return accountRepository.save(account);
     }
 
     private boolean emailExists(final String email) {
@@ -179,5 +195,9 @@ public class AccountServiceImpl implements AccountService {
     private boolean tokenExpired(VerificationToken token) {
         Calendar calendar = Calendar.getInstance();
         return token.getExpiryDate().getTime() - calendar.getTime().getTime() <= 0;
+    }
+
+    private long getPrincipalId() {
+        return ((Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
     }
 }

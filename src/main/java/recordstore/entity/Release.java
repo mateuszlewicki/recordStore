@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import recordstore.enums.Format;
 import recordstore.validation.ValidDateFormat;
-
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -56,6 +55,7 @@ public class Release {
     private Set<Genre> genres = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "label_id")
     private Label label;
 
     @Valid
@@ -70,71 +70,4 @@ public class Release {
 
     @ManyToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private Set<Account> collections = new HashSet<>();
-
-    @ManyToMany(mappedBy = "wantlist", fetch = FetchType.LAZY)
-    private Set<Account> wantlists = new HashSet<>();
-
-    public void addArtist(Artist artist){
-        if (artist != null) {
-            this.artists.add(artist);
-            artist.getReleases().add(this);
-        }
-    }
-
-    public void removeArtist(Artist artist){
-        if (artist != null) {
-            this.artists.remove(artist);
-            artist.getReleases().remove(this);
-        }
-    }
-
-    public void addGenre(Genre genre){
-        if (genre != null) {
-            this.genres.add(genre);
-            genre.getReleases().add(this);
-        }
-    }
-    public void removeGenre(Genre genre){
-        if(genre != null) {
-            this.genres.remove(genre);
-            genre.getReleases().remove(this);
-        }
-    }
-
-    public void addLabel(Label label){
-        if (label != null) {
-            this.setLabel(label);
-            label.getReleases().add(this);
-        }
-    }
-    public void removeLabel(Label label){
-        if (label != null) {
-            this.setLabel(null);
-            label.getReleases().remove(this);
-        }
-    }
-
-    public void addTrack(Track track) {
-        if (track != null) {
-            this.tracklist.add(track);
-        }
-    }
-
-    public void removeTrack(Track track) {
-        if (track != null) {
-            this.tracklist.remove(track);
-        }
-    }
-
-    public void addVideo(YouTubeVideo video) {
-        if (video != null) {
-            this.playlist.add(video);
-        }
-    }
-
-    public void removeVideo(YouTubeVideo video) {
-        if (video != null) {
-            this.playlist.remove(video);
-        }
-    }
 }

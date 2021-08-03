@@ -3,24 +3,24 @@ package recordstore.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.ArtistFormDTO;
 import recordstore.entity.Artist;
-import recordstore.projections.ArtistProjection;
 import recordstore.repository.ArtistRepository;
-import recordstore.utils.FileService;
+import recordstore.utils.FileStore;
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
-import java.util.List;
 
 @Service
 public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository repository;
-    private final FileService fileService;
+    private final FileStore fileStore;
+    private final ReleaseService releaseService;
 
-    public ArtistServiceImpl(ArtistRepository repository, FileService fileService) {
+    public ArtistServiceImpl(ArtistRepository repository, FileStore fileStore, ReleaseService releaseService) {
         this.repository = repository;
-        this.fileService = fileService;
+        this.fileStore = fileStore;
+        this.releaseService = releaseService;
     }
 
     @Override
@@ -42,19 +42,16 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Artist createArtist(ArtistFormDTO artistDTO) throws IOException {
+    public Artist createArtist(ArtistFormDTO artistDTO) {
         Artist artist = new Artist();
         artist.setName(artistDTO.getName());
         artist.setCountry(artistDTO.getCountry());
         artist.setDescription(artistDTO.getDescription());
-        if (!artistDTO.getData().isEmpty()) {
-            artist.setImg(fileService.saveFile(artistDTO.getData()));
-        }
         return repository.save(artist);
     }
 
     @Override
-    public Artist updateArtist(ArtistFormDTO artistDTO, long id) throws IOException {
+    public Artist updateArtist(ArtistFormDTO artistDTO, long id) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Artist not found");
         }
@@ -62,28 +59,42 @@ public class ArtistServiceImpl implements ArtistService {
         artist.setName(artistDTO.getName());
         artist.setCountry(artistDTO.getCountry());
         artist.setDescription(artistDTO.getDescription());
-        if (!artistDTO.getData().isEmpty()) {
-            fileService.deleteFile(artist.getImg());
-            artist.setImg(fileService.saveFile(artistDTO.getData()));
-        }
         return repository.save(artist);
     }
 
     @Override
-    public void deleteArtist(long id) throws IOException {
+    public void deleteArtist(long id) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Artist not found");
         }
         Artist artist = repository.getOne(id);
-        if (artist.getReleases().isEmpty()) {
+        if (releaseService.countReleasesByArtist(artist) == 0) {
             repository.deleteById(id);
-            fileService.deleteFile(artist.getImg());
+            fileStore.deleteFile(artist.getImg());
         }
     }
 
-    // autocomplete
     @Override
-    public List<ArtistProjection> getArtistsNames(String query) {
-        return repository.findAllBy(query);
+    public Artist uploadImage(long id, MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalStateException("Cannot upload file:(");
+        }
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Artist not found");
+        }
+        Artist artist = repository.getOne(id);
+        String fileName = fileStore.save(file);
+        fileStore.deleteFile(artist.getImg());
+        artist.setImg(fileName);
+        return repository.save(artist);
+    }
+
+    @Override
+    public byte[] downloadImage(long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Label not found");
+        }
+        Artist artist = repository.getOne(id);
+        return fileStore.download(artist.getImg());
     }
 }

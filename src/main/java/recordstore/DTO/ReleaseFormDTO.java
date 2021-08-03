@@ -3,9 +3,7 @@ package recordstore.DTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 import recordstore.enums.Format;
-import recordstore.validation.MultipartFileSize;
 import recordstore.validation.ValidDateFormat;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -28,9 +26,4 @@ public class ReleaseFormDTO {
 
     @NotNull(message = "Field is mandatory")
     private Format format;
-
-    private String img;
-
-    @MultipartFileSize
-    private MultipartFile data;
 }
