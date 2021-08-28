@@ -3,6 +3,7 @@ package recordstore.mapstruct.mappers;
 import org.mapstruct.Mapper;
 import recordstore.DTO.*;
 import recordstore.entity.*;
+import recordstore.projections.LabelProjection;
 
 @Mapper(componentModel = "spring")
 public interface MapStructMapper {
@@ -15,6 +16,7 @@ public interface MapStructMapper {
 
     LabelDTO labelToLabelDTO(Label label);
     LabelSlimDTO labelTOSlimDTO(Label label);
+    LabelSlimDTO labelProjectionToLabelSlimDTO(LabelProjection labelProjection);
 
     AccountDTO accountToAccountDTO(Account account);
 

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import recordstore.DTO.LabelDTO;
+import recordstore.DTO.LabelSlimDTO;
 import recordstore.mapstruct.mappers.MapStructMapper;
 import recordstore.service.LabelService;
 
@@ -21,19 +22,19 @@ public class LabelsController {
     }
 
     @GetMapping()
-    public Page<LabelDTO> showAllLabels(Pageable pageable) {
-        return service.getAllLabels(pageable).map(mapStructMapper::labelToLabelDTO);
+    public Page<LabelSlimDTO> getAllLabels(Pageable pageable) {
+        return service.getAllLabels(pageable).map(mapStructMapper::labelProjectionToLabelSlimDTO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LabelDTO> showLabelInfo(@PathVariable long id){
+    public ResponseEntity<LabelDTO> getLabelInfo(@PathVariable long id){
         LabelDTO labelDTO = mapStructMapper.labelToLabelDTO(service.getLabel(id));
         return ResponseEntity.ok(labelDTO);
     }
 
     @GetMapping("/search")
-    public Page<LabelDTO> showAutocomplete(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return service.search(keyword, pageable).map(mapStructMapper::labelToLabelDTO);
+    public Page<LabelSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable).map(mapStructMapper::labelProjectionToLabelSlimDTO);
     }
 
     @GetMapping("/{id}/image/download")

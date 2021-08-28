@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import recordstore.DTO.LabelDTO;
 import recordstore.DTO.LabelFormDTO;
+import recordstore.DTO.LabelSlimDTO;
 import recordstore.mapstruct.mappers.MapStructMapper;
 import recordstore.service.LabelService;
 import javax.validation.Valid;
@@ -28,13 +29,13 @@ public class AdminLabelsController {
     }
 
     @GetMapping()
-    public Page<LabelDTO> showAllLabels(Pageable pageable) {
-        return service.getAllLabels(pageable).map(mapStructMapper::labelToLabelDTO);
+    public Page<LabelSlimDTO> getAllLabels(Pageable pageable) {
+        return service.getAllLabels(pageable).map(mapStructMapper::labelProjectionToLabelSlimDTO);
     }
 
     @GetMapping("/search")
-    public Page<LabelDTO> showAutocomplete(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return service.search(keyword, pageable).map(mapStructMapper::labelToLabelDTO);
+    public Page<LabelSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable).map(mapStructMapper::labelProjectionToLabelSlimDTO);
     }
 
     @PostMapping()

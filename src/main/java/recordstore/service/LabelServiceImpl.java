@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.LabelFormDTO;
 import recordstore.entity.Label;
+import recordstore.projections.LabelProjection;
 import recordstore.repository.LabelRepository;
 import recordstore.utils.FileStore;
 import javax.persistence.EntityNotFoundException;
@@ -25,19 +26,20 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label getLabel(long id) {
-        if (!repository.existsById(id)) {
+        Label label = repository.findLabelById(id);
+        if (label == null) {
             throw new EntityNotFoundException("Label not found");
         }
-        return repository.getOne(id);
+        return label;
     }
 
     @Override
-    public Page<Label> getAllLabels(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<LabelProjection> getAllLabels(Pageable pageable) {
+        return repository.findAllLabels(pageable);
     }
 
     @Override
-    public Page<Label> search(String keyword, Pageable pageable) {
+    public Page<LabelProjection> search(String keyword, Pageable pageable) {
         return repository.search(keyword, pageable);
     }
 
@@ -52,10 +54,10 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label updateLabel(LabelFormDTO labelDTO, long id) {
-        if (!repository.existsById(id)) {
+        Label label = repository.findLabelById(id);
+        if (label == null) {
             throw new EntityNotFoundException("Label not found");
         }
-        Label label = repository.getOne(id);
         label.setTitle(labelDTO.getTitle());
         label.setCountry(labelDTO.getCountry());
         label.setDescription(labelDTO.getDescription());
@@ -64,10 +66,10 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public void deleteLabel(long id) {
-        if (!repository.existsById(id)) {
+        Label label = repository.findLabelById(id);
+        if (label == null) {
             throw new EntityNotFoundException("Label not found");
         }
-        Label label = repository.getOne(id);
         if (releaseService.countReleasesByLabel(label) == 0) {
             repository.deleteById(id);
             fileStore.deleteFile(label.getImg());
@@ -79,10 +81,10 @@ public class LabelServiceImpl implements LabelService {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload file:(");
         }
-        if (!repository.existsById(id)) {
+        Label label = repository.findLabelById(id);
+        if (label == null) {
             throw new EntityNotFoundException("Label not found");
         }
-        Label label = repository.getOne(id);
         String fileName = fileStore.save(file);
         fileStore.deleteFile(label.getImg());
         label.setImg(fileName);
@@ -91,10 +93,10 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public byte[] downloadImage(long id) {
-        if (!repository.existsById(id)) {
+        Label label = repository.findLabelById(id);
+        if (label == null) {
             throw new EntityNotFoundException("Label not found");
         }
-        Label label = repository.getOne(id);
         return fileStore.download(label.getImg());
     }
 }

@@ -6,9 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import recordstore.entity.Label;
+import recordstore.projections.LabelProjection;
 
 public interface LabelRepository extends JpaRepository<Label, Long> {
 
-    @Query(value = "SELECT * FROM labels WHERE title LIKE :keyword%", nativeQuery = true)
-    Page<Label> search(@Param("keyword") String keyword, Pageable pageable);
+    @Query("SELECT l.id AS id, l.title AS title, l.img AS img FROM Label l WHERE l.title LIKE :keyword%")
+    Page<LabelProjection> search(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query("SELECT l.id AS id, l.title AS title, l.img AS img FROM Label l")
+    Page<LabelProjection> findAllLabels(Pageable pageable);
+
+    @Query("SELECT l FROM Label l WHERE l.id = :id")
+    Label findLabelById(@Param("id") long id);
 }

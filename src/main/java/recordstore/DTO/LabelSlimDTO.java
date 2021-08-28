@@ -10,6 +10,6 @@ import lombok.Setter;
 public class LabelSlimDTO {
 
     private long id;
-
     private String title;
+    private String img;
 }
