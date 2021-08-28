@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import recordstore.DTO.ArtistDTO;
 import recordstore.DTO.ArtistFormDTO;
+import recordstore.DTO.ArtistSlimDTO;
 import recordstore.mapstruct.mappers.MapStructMapper;
 import recordstore.service.ArtistService;
 import javax.validation.Valid;
@@ -27,14 +28,14 @@ public class AdminArtistsController {
         this.mapStructMapper = mapStructMapper;
     }
 
-    @GetMapping
-    public Page<ArtistDTO> showAllArtists(Pageable pageable) {
-        return service.getAllArtists(pageable).map(mapStructMapper::artistToArtistDTO);
+    @GetMapping()
+    public Page<ArtistSlimDTO> getAllArtists(Pageable pageable) {
+        return service.getAllArtists(pageable).map(mapStructMapper::artistProjectionToArtistSlimDTO);
     }
 
     @GetMapping("/search")
-    public Page<ArtistDTO> showASearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return service.search(keyword, pageable).map(mapStructMapper::artistToArtistDTO);
+    public Page<ArtistSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable).map(mapStructMapper::artistProjectionToArtistSlimDTO);
     }
 
     @PostMapping()

@@ -10,6 +10,6 @@ import lombok.Setter;
 public class ArtistSlimDTO {
 
     private long id;
-
     private String name;
+    private String img;
 }

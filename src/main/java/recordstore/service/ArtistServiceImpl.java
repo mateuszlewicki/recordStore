@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.ArtistFormDTO;
 import recordstore.entity.Artist;
+import recordstore.projections.ArtistProjection;
 import recordstore.repository.ArtistRepository;
 import recordstore.utils.FileStore;
 import javax.persistence.EntityNotFoundException;
@@ -25,19 +26,20 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Artist getArtist(long id) {
-        if (!repository.existsById(id)) {
+        Artist artist = repository.findArtistById(id);
+        if (artist == null) {
             throw new EntityNotFoundException("Artist not found");
         }
-        return repository.getOne(id);
+        return artist;
     }
 
     @Override
-    public Page<Artist> getAllArtists(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<ArtistProjection> getAllArtists(Pageable pageable) {
+        return repository.findAllArtists(pageable);
     }
 
     @Override
-    public Page<Artist> search(String keyword, Pageable pageable) {
+    public Page<ArtistProjection> search(String keyword, Pageable pageable) {
         return repository.search(keyword, pageable);
     }
 
@@ -52,10 +54,10 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Artist updateArtist(ArtistFormDTO artistDTO, long id) {
-        if (!repository.existsById(id)) {
+        Artist artist = repository.findArtistById(id);
+        if (artist == null) {
             throw new EntityNotFoundException("Artist not found");
         }
-        Artist artist = repository.getOne(id);
         artist.setName(artistDTO.getName());
         artist.setCountry(artistDTO.getCountry());
         artist.setDescription(artistDTO.getDescription());
@@ -64,10 +66,10 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public void deleteArtist(long id) {
-        if (!repository.existsById(id)) {
+        Artist artist = repository.findArtistById(id);
+        if (artist == null) {
             throw new EntityNotFoundException("Artist not found");
         }
-        Artist artist = repository.getOne(id);
         if (releaseService.countReleasesByArtist(artist) == 0) {
             repository.deleteById(id);
             fileStore.deleteFile(artist.getImg());
@@ -79,10 +81,10 @@ public class ArtistServiceImpl implements ArtistService {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload file:(");
         }
-        if (!repository.existsById(id)) {
+        Artist artist = repository.findArtistById(id);
+        if (artist == null) {
             throw new EntityNotFoundException("Artist not found");
         }
-        Artist artist = repository.getOne(id);
         String fileName = fileStore.save(file);
         fileStore.deleteFile(artist.getImg());
         artist.setImg(fileName);
@@ -91,10 +93,10 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public byte[] downloadImage(long id) {
-        if (!repository.existsById(id)) {
-            throw new EntityNotFoundException("Label not found");
+        Artist artist = repository.findArtistById(id);
+        if (artist == null) {
+            throw new EntityNotFoundException("Artist not found");
         }
-        Artist artist = repository.getOne(id);
         return fileStore.download(artist.getImg());
     }
 }
