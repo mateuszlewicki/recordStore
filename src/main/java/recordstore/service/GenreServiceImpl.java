@@ -21,15 +21,16 @@ public class GenreServiceImpl implements GenreService{
 
     @Override
     public Page<Genre> getAllGenres(Pageable pageable) {
-        return repository.findAll(pageable);
+        return repository.findAllGenres(pageable);
     }
 
     @Override
     public Genre getGenre(long id) {
-        if (!repository.existsById(id)) {
+        Genre genre = repository.findGenreById(id);
+        if (genre == null) {
             throw new EntityNotFoundException("Genre not found");
         }
-        return repository.getOne(id);
+        return genre;
     }
 
     @Override
@@ -41,20 +42,20 @@ public class GenreServiceImpl implements GenreService{
 
     @Override
     public Genre updateGenre( long id, GenreFormDTO genreDTO) {
-        if (!repository.existsById(id)) {
+        Genre genre = repository.findGenreById(id);
+        if (genre == null) {
             throw new EntityNotFoundException("Genre not found");
         }
-        Genre genre = repository.getOne(id);
         genre.setTitle(genreDTO.getTitle());
         return repository.save(genre);
     }
 
     @Override
     public void deleteGenre(long id) {
-        if (!repository.existsById(id)) {
+        Genre genre = repository.findGenreById(id);
+        if (genre == null) {
             throw new EntityNotFoundException("Genre not found");
         }
-        Genre genre = repository.getOne(id);
         if (releaseService.countReleasesByGenre(genre) == 0) {
             repository.deleteById(id);
         }

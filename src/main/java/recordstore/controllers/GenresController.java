@@ -24,12 +24,12 @@ public class GenresController {
     }
 
     @GetMapping()
-    public Page<GenreDTO> showAllGenres(Pageable pageable){
+    public Page<GenreDTO> getAllGenres(Pageable pageable){
         return service.getAllGenres(pageable).map(mapStructMapper::genreToGenreDTO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GenreDTO> showGenreInfo(@PathVariable long id){
+    public ResponseEntity<GenreDTO> getGenreInfo(@PathVariable long id){
         GenreDTO genreDTO = mapStructMapper.genreToGenreDTO(service.getGenre(id));
         return ResponseEntity.ok(genreDTO);
     }

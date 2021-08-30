@@ -10,6 +10,5 @@ import lombok.Setter;
 public class GenreDTO {
 
     private long id;
-
     private String title;
 }

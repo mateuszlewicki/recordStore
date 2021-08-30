@@ -25,7 +25,7 @@ public class AdminGenresController {
     }
 
     @GetMapping()
-    public Page<GenreDTO> showAllGenres(Pageable pageable){
+    public Page<GenreDTO> getAllGenres(Pageable pageable){
         return service.getAllGenres(pageable).map(mapStructMapper::genreToGenreDTO);
     }
 
