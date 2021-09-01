@@ -1,5 +1,6 @@
 package recordstore.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import recordstore.DTO.ArtistFormDTO;
 import recordstore.entity.Artist;
 import recordstore.projections.ArtistProjection;
 import recordstore.repository.ArtistRepository;
+import recordstore.repository.ReleaseRepository;
 import recordstore.utils.FileStore;
 import javax.persistence.EntityNotFoundException;
 
@@ -16,12 +18,17 @@ public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository repository;
     private final FileStore fileStore;
-    private final ReleaseService releaseService;
 
-    public ArtistServiceImpl(ArtistRepository repository, FileStore fileStore, ReleaseService releaseService) {
+    private ReleaseRepository releaseRepository;
+
+    public ArtistServiceImpl(ArtistRepository repository, FileStore fileStore) {
         this.repository = repository;
         this.fileStore = fileStore;
-        this.releaseService = releaseService;
+    }
+
+    @Autowired
+    public void setReleaseRepository(ReleaseRepository releaseRepository) {
+        this.releaseRepository = releaseRepository;
     }
 
     @Override
@@ -35,7 +42,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Page<ArtistProjection> getAllArtists(Pageable pageable) {
-        return repository.findAllArtists(pageable);
+        return repository.findAllBy(pageable);
     }
 
     @Override
@@ -70,7 +77,7 @@ public class ArtistServiceImpl implements ArtistService {
         if (artist == null) {
             throw new EntityNotFoundException("Artist not found");
         }
-        if (releaseService.countReleasesByArtist(artist) == 0) {
+        if (!releaseRepository.existsReleasesByArtists_id(id)) {
             repository.deleteById(id);
             fileStore.deleteFile(artist.getImg());
         }

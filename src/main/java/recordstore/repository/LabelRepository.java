@@ -13,8 +13,7 @@ public interface LabelRepository extends JpaRepository<Label, Long> {
     @Query("SELECT l.id AS id, l.title AS title, l.img AS img FROM Label l WHERE l.title LIKE :keyword%")
     Page<LabelProjection> search(@Param("keyword") String keyword, Pageable pageable);
 
-    @Query("SELECT l.id AS id, l.title AS title, l.img AS img FROM Label l")
-    Page<LabelProjection> findAllLabels(Pageable pageable);
+    Page<LabelProjection> findAllBy(Pageable pageable);
 
     @Query("SELECT l FROM Label l WHERE l.id = :id")
     Label findLabelById(@Param("id") long id);

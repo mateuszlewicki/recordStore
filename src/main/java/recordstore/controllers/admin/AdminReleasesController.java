@@ -7,8 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import recordstore.DTO.ReleaseFormDTO;
 import recordstore.DTO.ReleaseDTO;
+import recordstore.DTO.ReleaseFormDTO;
+import recordstore.DTO.ReleaseSlimDTO;
 import recordstore.mapstruct.mappers.MapStructMapper;
 import recordstore.service.ReleaseService;
 
@@ -29,13 +30,13 @@ public class AdminReleasesController {
     }
 
     @GetMapping()
-    public Page<ReleaseDTO> showAllReleases(Pageable pageable){
-        return service.getAllReleases(pageable).map(mapStructMapper::releaseToReleaseDTO);
+    public Page<ReleaseSlimDTO> getAllReleases(Pageable pageable){
+        return service.getAllReleases(pageable).map(mapStructMapper::releaseProjectionToReleaseSlimDTO);
     }
 
     @GetMapping("/search")
-    public Page<ReleaseDTO> showSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return service.search(keyword, pageable).map(mapStructMapper::releaseToReleaseDTO);
+    public Page<ReleaseSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable).map(mapStructMapper::releaseProjectionToReleaseSlimDTO);
     }
 
     @PostMapping()

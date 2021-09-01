@@ -1,16 +1,17 @@
 package recordstore.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import recordstore.DTO.*;
-import recordstore.entity.*;
-import recordstore.repository.ArtistRepository;
-import recordstore.repository.GenreRepository;
-import recordstore.repository.LabelRepository;
+import recordstore.DTO.ReleaseFormDTO;
+import recordstore.entity.Label;
+import recordstore.entity.Release;
+import recordstore.projections.ReleaseProjection;
 import recordstore.repository.ReleaseRepository;
 import recordstore.utils.FileStore;
+
 import javax.persistence.EntityNotFoundException;
 
 @Service
@@ -20,38 +21,68 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     private final FileStore fileStore;
 
-    private final LabelRepository labelRepository;
-    private final ArtistRepository artistRepository;
-    private final GenreRepository genreRepository;
+    private LabelService labelService;
+    private ArtistService artistService;
+    private GenreService genreService;
 
     public ReleaseServiceImpl(ReleaseRepository releaseRepository,
-                              FileStore fileStore,
-                              LabelRepository labelRepository,
-                              ArtistRepository artistRepository,
-                              GenreRepository genreRepository) {
+                              FileStore fileStore) {
         this.releaseRepository = releaseRepository;
         this.fileStore = fileStore;
-        this.labelRepository = labelRepository;
-        this.artistRepository = artistRepository;
-        this.genreRepository = genreRepository;
+    }
+
+    @Autowired
+    public void setLabelService(LabelService labelService) {
+        this.labelService = labelService;
+    }
+
+    @Autowired
+    public void setArtistService(ArtistService artistService) {
+        this.artistService = artistService;
+    }
+
+    @Autowired
+    public void setGenreService(GenreService genreService) {
+        this.genreService = genreService;
     }
 
     @Override
     public Release getRelease(long id) {
-        if (!releaseRepository.existsById(id)) {
+        Release release = releaseRepository.findReleaseById(id);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        return releaseRepository.getOne(id);
+        return release;
     }
 
     @Override
-    public Page<Release> getAllReleases(Pageable pageable) {
-        return releaseRepository.findAll(pageable);
+    public Page<ReleaseProjection> getAllReleases(Pageable pageable) {
+        return releaseRepository.findAllBy(pageable);
     }
 
     @Override
-    public Page<Release> search(String keyword, Pageable pageable) {
+    public Page<ReleaseProjection> search(String keyword, Pageable pageable) {
         return releaseRepository.search(keyword, pageable);
+    }
+
+    @Override
+    public Page<ReleaseProjection> getReleasesByLabel(long id, Pageable pageable) {
+        return releaseRepository.findAllByLabel_Id(id, pageable);
+    }
+
+    @Override
+    public Page<ReleaseProjection> getReleasesByGenre(long id, Pageable pageable) {
+        return releaseRepository.findAllByGenres_id(id, pageable);
+    }
+
+    @Override
+    public Page<ReleaseProjection> getReleasesByArtist(long id, Pageable pageable) {
+        return releaseRepository.findAllByArtists_id(id, pageable);
+    }
+
+    @Override
+    public Page<ReleaseProjection> getReleasesByAccount(long id, Pageable pageable) {
+        return releaseRepository.findAllByAccounts_id(id, pageable);
     }
 
     @Override
@@ -66,7 +97,10 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     @Override
     public Release updateRelease(ReleaseFormDTO releaseDTO, long id) {
-        Release release = releaseRepository.getOne(id);
+        Release release = releaseRepository.findReleaseById(id);
+        if (release == null) {
+            throw new EntityNotFoundException("Release not found");
+        }
         release.setCode(releaseDTO.getCode());
         release.setTitle(releaseDTO.getTitle());
         release.setReleaseDate(releaseDTO.getReleaseDate());
@@ -76,13 +110,12 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     @Override
     public void deleteRelease(long id) {
-        if (!releaseRepository.existsById(id)) {
+        Release release = releaseRepository.findReleaseById(id);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        Release release = releaseRepository.getOne(id);
-        if (release.getCollections().isEmpty()) {
+        if (release.getAccounts().isEmpty()) {
             release.setLabel(null);
-            //release.removeLabel(release.getLabel());
             releaseRepository.delete(release);
             fileStore.deleteFile(release.getImg());
         }
@@ -93,10 +126,10 @@ public class ReleaseServiceImpl implements ReleaseService {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload file:(");
         }
-        if (!releaseRepository.existsById(id)) {
+        Release release = releaseRepository.findReleaseById(id);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        Release release = releaseRepository.getOne(id);
         String fileName = fileStore.save(file);
         fileStore.deleteFile(release.getImg());
         release.setImg(fileName);
@@ -105,77 +138,50 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     @Override
     public byte[] downloadImage(long id) {
-        if (!releaseRepository.existsById(id)) {
+        Release release = releaseRepository.findReleaseById(id);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        Release release = releaseRepository.getOne(id);
         return fileStore.download(release.getImg());
     }
 
     @Override
-    public Page<Release> getReleasesByGenre(long id, Pageable pageable) {
-        return releaseRepository.findReleasesByGenres_id(id, pageable);
-    }
-
-    @Override
-    public Page<Release> getReleasesByArtist(long id, Pageable pageable) {
-        return releaseRepository.findReleasesByArtists_id(id, pageable);
-    }
-
-    @Override
-    public Page<Release> getReleasesByLabel(long id, Pageable pageable) {
-        return releaseRepository.findReleasesByLabel_Id(id, pageable);
-    }
-
-    @Override
     public Release addLabelToRelease(long releaseId, long labelId) {
-        if (!releaseRepository.existsById(releaseId)) {
+        Release release = releaseRepository.findReleaseById(releaseId);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        if (!labelRepository.existsById(labelId)){
-            throw new EntityNotFoundException("Label not found");
-        }
-        Release release = releaseRepository.getOne(releaseId);
-        release.setLabel(labelRepository.getOne(labelId));
+        release.setLabel(labelService.getLabel(labelId));
         return releaseRepository.save(release);
     }
 
     @Override
     public Release addArtistToRelease(long releaseId, long artistId) {
-        if (!releaseRepository.existsById(releaseId)) {
+        Release release = releaseRepository.findReleaseById(releaseId);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        if (!artistRepository.existsById(artistId)) {
-            throw new EntityNotFoundException("Artist not found");
-        }
-        Release release = releaseRepository.getOne(releaseId);
-        release.getArtists().add(artistRepository.getOne(artistId));
+        release.getArtists().add(artistService.getArtist(artistId));
         return releaseRepository.save(release);
     }
 
     @Override
     public Release addGenreToRelease(long releaseId, long genreId) {
-        if (!releaseRepository.existsById(releaseId)) {
+        Release release = releaseRepository.findReleaseById(releaseId);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        if (!genreRepository.existsById(genreId)) {
-            throw new EntityNotFoundException("Genre not found");
-        }
-        Release release = releaseRepository.getOne(releaseId);
-        release.getGenres().add(genreRepository.getOne(genreId));
+        release.getGenres().add(genreService.getGenre(genreId));
         return releaseRepository.save(release);
     }
 
     @Override
     public Release removeLabelFromRelease(long releaseId, long labelId) {
-        if (!releaseRepository.existsById(releaseId)) {
+        Release release = releaseRepository.findReleaseById(releaseId);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        if (!labelRepository.existsById(labelId)){
-            throw new EntityNotFoundException("Label not found");
-        }
-        Release release = releaseRepository.getOne(releaseId);
-        Label label = labelRepository.getOne(labelId);
+        Label label = labelService.getLabel(labelId);
         if (release.getLabel().equals(label)) {
             release.setLabel(null);
         }
@@ -184,49 +190,21 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     @Override
     public Release removeArtistFromRelease(long releaseId, long artistId) {
-        if (!releaseRepository.existsById(releaseId)) {
+        Release release = releaseRepository.findReleaseById(releaseId);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        if (!artistRepository.existsById(artistId)) {
-            throw new EntityNotFoundException("Artist not found");
-        }
-        Release release = releaseRepository.getOne(releaseId);
-        Artist artist = artistRepository.getOne(artistId);
-        release.getArtists().remove(artistRepository.getOne(artistId));
+        release.getArtists().remove(artistService.getArtist(artistId));
         return releaseRepository.save(release);
     }
 
     @Override
     public Release removeGenreFromRelease(long releaseId, long genreId) {
-        if (!releaseRepository.existsById(releaseId)) {
+        Release release = releaseRepository.findReleaseById(releaseId);
+        if (release == null) {
             throw new EntityNotFoundException("Release not found");
         }
-        if (!genreRepository.existsById(genreId)) {
-            throw new EntityNotFoundException("Genre not found");
-        }
-        Release release = releaseRepository.getOne(releaseId);
-        release.getGenres().remove(genreRepository.getOne(genreId));
+        release.getGenres().remove(genreService.getGenre(genreId));
         return releaseRepository.save(release);
     }
-
-    @Override
-    public int countReleasesByArtist(Artist artist) {
-        return releaseRepository.countAllByArtists(artist);
-    }
-
-    @Override
-    public int countReleasesByLabel(Label label) {
-        return releaseRepository.countAllByLabel(label);
-    }
-
-    @Override
-    public int countReleasesByGenre(Genre genre) {
-        return releaseRepository.countAllByGenres(genre);
-    }
-
-    @Override
-    public Page<Release> getCollectionByAccount(long id, Pageable pageable) {
-        return releaseRepository.findReleasesByCollections_id(id, pageable);
-    }
-
 }

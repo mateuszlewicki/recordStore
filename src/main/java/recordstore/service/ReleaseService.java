@@ -4,17 +4,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.ReleaseFormDTO;
-import recordstore.entity.Artist;
-import recordstore.entity.Genre;
-import recordstore.entity.Label;
 import recordstore.entity.Release;
+import recordstore.projections.ReleaseProjection;
+
 import java.io.IOException;
 
 public interface ReleaseService {
 
     Release getRelease(long id);
-    Page<Release> getAllReleases(Pageable pageable);
-    Page<Release> search(String keyword, Pageable pageable);
+
+    Page<ReleaseProjection> getAllReleases(Pageable pageable);
+    Page<ReleaseProjection> search(String keyword, Pageable pageable);
+    Page<ReleaseProjection> getReleasesByLabel(long id, Pageable pageable);
+    Page<ReleaseProjection> getReleasesByGenre(long id, Pageable pageable);
+    Page<ReleaseProjection> getReleasesByArtist(long id, Pageable pageable);
+    Page<ReleaseProjection> getReleasesByAccount(long id, Pageable pageable);
 
     Release createRelease(ReleaseFormDTO releaseDTO) throws IOException;
     Release updateRelease(ReleaseFormDTO releaseDTO, long id) throws IOException;
@@ -23,10 +27,7 @@ public interface ReleaseService {
     Release uploadImage(long id, MultipartFile file);
     byte[] downloadImage(long id);
 
-    Page<Release> getReleasesByGenre(long id, Pageable pageable);
-    Page<Release> getReleasesByArtist(long id, Pageable pageable);
-    Page<Release> getReleasesByLabel(long id, Pageable pageable);
-
+    // The handling of associations
     Release addLabelToRelease(long releaseId, long labelId);
     Release addArtistToRelease(long releaseId, long artistId);
     Release addGenreToRelease(long releaseId, long genreId);
@@ -34,10 +35,4 @@ public interface ReleaseService {
     Release removeLabelFromRelease(long releaseId, long labelId);
     Release removeArtistFromRelease(long releaseId, long artistId);
     Release removeGenreFromRelease(long releaseId, long genreId);
-
-    int countReleasesByArtist(Artist artist);
-    int countReleasesByLabel(Label label);
-    int countReleasesByGenre(Genre genre);
-
-    Page<Release> getCollectionByAccount(long id, Pageable pageable);
 }

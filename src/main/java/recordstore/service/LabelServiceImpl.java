@@ -1,5 +1,6 @@
 package recordstore.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import recordstore.DTO.LabelFormDTO;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 import recordstore.repository.LabelRepository;
+import recordstore.repository.ReleaseRepository;
 import recordstore.utils.FileStore;
 import javax.persistence.EntityNotFoundException;
 
@@ -16,12 +18,17 @@ public class LabelServiceImpl implements LabelService {
 
     private final LabelRepository repository;
     private final FileStore fileStore;
-    private final ReleaseService releaseService;
 
-    public LabelServiceImpl(LabelRepository repository, FileStore fileStore, ReleaseService releaseService) {
+    private ReleaseRepository releaseRepository;
+
+    public LabelServiceImpl(LabelRepository repository, FileStore fileStore) {
         this.repository = repository;
         this.fileStore = fileStore;
-        this.releaseService = releaseService;
+    }
+
+    @Autowired
+    public void setReleaseRepository(ReleaseRepository releaseRepository) {
+        this.releaseRepository = releaseRepository;
     }
 
     @Override
@@ -35,7 +42,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Page<LabelProjection> getAllLabels(Pageable pageable) {
-        return repository.findAllLabels(pageable);
+        return repository.findAllBy(pageable);
     }
 
     @Override
@@ -70,7 +77,7 @@ public class LabelServiceImpl implements LabelService {
         if (label == null) {
             throw new EntityNotFoundException("Label not found");
         }
-        if (releaseService.countReleasesByLabel(label) == 0) {
+        if (!releaseRepository.existsReleasesByLabel_Id(id)) {
             repository.deleteById(id);
             fileStore.deleteFile(label.getImg());
         }

@@ -1,22 +1,30 @@
 package recordstore.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import recordstore.DTO.GenreFormDTO;
 import recordstore.entity.Genre;
 import recordstore.repository.GenreRepository;
+import recordstore.repository.ReleaseRepository;
+
 import javax.persistence.EntityNotFoundException;
 
 @Service
 public class GenreServiceImpl implements GenreService{
 
     private final GenreRepository repository;
-    private final ReleaseService releaseService;
 
-    public GenreServiceImpl(GenreRepository repository, ReleaseService releaseService) {
+    private ReleaseRepository releaseRepository;
+
+    public GenreServiceImpl(GenreRepository repository) {
         this.repository = repository;
-        this.releaseService = releaseService;
+    }
+
+    @Autowired
+    public void setReleaseRepository(ReleaseRepository releaseRepository) {
+        this.releaseRepository = releaseRepository;
     }
 
     @Override
@@ -56,7 +64,7 @@ public class GenreServiceImpl implements GenreService{
         if (genre == null) {
             throw new EntityNotFoundException("Genre not found");
         }
-        if (releaseService.countReleasesByGenre(genre) == 0) {
+        if (!releaseRepository.existsReleasesByGenres_id(id)) {
             repository.deleteById(id);
         }
     }

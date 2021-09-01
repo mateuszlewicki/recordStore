@@ -8,9 +8,7 @@ import recordstore.validation.ValidDateFormat;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -61,13 +59,13 @@ public class Release {
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "release_id")
-    private List<Track> tracklist = new ArrayList<>();
+    private Set<Track> tracks = new HashSet<>();
 
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "release_id")
-    private List<YouTubeVideo> playlist = new ArrayList<>();
+    private Set<YouTubeVideo> videos = new HashSet<>();
 
     @ManyToMany(mappedBy = "collection", fetch = FetchType.LAZY)
-    private Set<Account> collections = new HashSet<>();
+    private Set<Account> accounts = new HashSet<>();
 }

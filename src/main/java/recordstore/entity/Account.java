@@ -100,11 +100,11 @@ public class Account implements UserDetails {
 
     public void addToCollection(Release release) {
         this.collection.add(release);
-        release.getCollections().add(this);
+        release.getAccounts().add(this);
     }
 
     public void removeFromCollection(Release release) {
         this.collection.remove(release);
-        release.getCollections().remove(this);
+        release.getAccounts().remove(this);
     }
 }
