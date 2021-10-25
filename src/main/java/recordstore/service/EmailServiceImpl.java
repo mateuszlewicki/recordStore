@@ -1,13 +1,13 @@
-package recordstore.utils;
+package recordstore.service;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-@Component
+@Service
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
