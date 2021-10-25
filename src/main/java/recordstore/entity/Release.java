@@ -68,4 +68,32 @@ public class Release {
 
     @ManyToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private Set<Account> accounts = new HashSet<>();
+
+    // The handling of associations
+    public void addArtist(Artist artist){
+        this.artists.add(artist);
+        artist.getReleases().add(this);
+    }
+    public void removeArtist(Artist artist){
+        this.artists.remove(artist);
+        artist.getReleases().remove(this);
+    }
+
+    public void addGenre(Genre genre){
+        this.genres.add(genre);
+        genre.getReleases().add(this);
+    }
+    public void removeGenre(Genre genre){
+        this.genres.remove(genre);
+        genre.getReleases().remove(this);
+    }
+
+    public void addLabel(Label label){
+        this.setLabel(label);
+        label.getReleases().add(this);
+    }
+    public void removeLabel(Label label){
+        this.setLabel(null);
+        label.getReleases().remove(this);
+    }
 }
