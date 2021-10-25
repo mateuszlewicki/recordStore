@@ -31,12 +31,12 @@ public class AdminReleasesController {
 
     @GetMapping()
     public Page<ReleaseSlimDTO> getAllReleases(Pageable pageable){
-        return service.getAllReleases(pageable).map(mapStructMapper::releaseProjectionToReleaseSlimDTO);
+        return service.getAllReleases(pageable).map(mapStructMapper::releaseToReleaseSlimDTO);
     }
 
     @GetMapping("/search")
     public Page<ReleaseSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return service.search(keyword, pageable).map(mapStructMapper::releaseProjectionToReleaseSlimDTO);
+        return service.search(keyword, pageable).map(mapStructMapper::releaseToReleaseSlimDTO);
     }
 
     @PostMapping()
@@ -75,46 +75,45 @@ public class AdminReleasesController {
     }
 
     // The handling of associations
-
-    @PatchMapping("/{releaseId}/labels/{labelId}")
-    public ResponseEntity<ReleaseDTO> addLabelToRelease(@PathVariable("releaseId") long releaseId,
-                                                        @PathVariable("labelId") long labelId){
-        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.addLabelToRelease(releaseId, labelId));
-        return ResponseEntity.ok(releaseDTO);
-    }
-
-    @PatchMapping("/{releaseId}/artists/{artistId}")
-    public ResponseEntity<ReleaseDTO> addArtistToRelease(@PathVariable("releaseId") long releaseId,
-                                                        @PathVariable("artistId") long artistId){
-        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.addArtistToRelease(releaseId, artistId));
-        return ResponseEntity.ok(releaseDTO);
-    }
-
-    @PatchMapping("/{releaseId}/genres/{genreId}")
-    public ResponseEntity<ReleaseDTO> addGenreToRelease(@PathVariable("releaseId") long releaseId,
-                                                         @PathVariable("genreId") long genreId){
-        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.addGenreToRelease(releaseId, genreId));
-        return ResponseEntity.ok(releaseDTO);
-    }
-
-    @DeleteMapping("/{releaseId}/labels/{labelId}")
-    public ResponseEntity<ReleaseDTO> removeLabelFromRelease(@PathVariable("releaseId") long releaseId,
-                                                        @PathVariable("labelId") long labelId){
-        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.removeLabelFromRelease(releaseId, labelId));
-        return ResponseEntity.ok(releaseDTO);
-    }
-
-    @DeleteMapping("/{releaseId}/artists/{artistId}")
-    public ResponseEntity<ReleaseDTO> removeArtistFromRelease(@PathVariable("releaseId") long releaseId,
-                                                             @PathVariable("artistId") long artistId){
-        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.removeArtistFromRelease(releaseId, artistId));
-        return ResponseEntity.ok(releaseDTO);
-    }
-
-    @DeleteMapping("/{releaseId}/genres/{genreId}")
-    public ResponseEntity<ReleaseDTO> removeLabelGenreRelease(@PathVariable("releaseId") long releaseId,
-                                                             @PathVariable("genreId") long genreId){
-        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.removeGenreFromRelease(releaseId, genreId));
-        return ResponseEntity.ok(releaseDTO);
-    }
+//    @PatchMapping("/{releaseId}/labels/{labelId}")
+//    public ResponseEntity<ReleaseDTO> addLabelToRelease(@PathVariable("releaseId") long releaseId,
+//                                                        @PathVariable("labelId") long labelId){
+//        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.addLabelToRelease(releaseId, labelId));
+//        return ResponseEntity.ok(releaseDTO);
+//    }
+//
+//    @PatchMapping("/{releaseId}/artists/{artistId}")
+//    public ResponseEntity<ReleaseDTO> addArtistToRelease(@PathVariable("releaseId") long releaseId,
+//                                                        @PathVariable("artistId") long artistId){
+//        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.addArtistToRelease(releaseId, artistId));
+//        return ResponseEntity.ok(releaseDTO);
+//    }
+//
+//    @PatchMapping("/{releaseId}/genres/{genreId}")
+//    public ResponseEntity<ReleaseDTO> addGenreToRelease(@PathVariable("releaseId") long releaseId,
+//                                                         @PathVariable("genreId") long genreId){
+//        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.addGenreToRelease(releaseId, genreId));
+//        return ResponseEntity.ok(releaseDTO);
+//    }
+//
+//    @DeleteMapping("/{releaseId}/labels/{labelId}")
+//    public ResponseEntity<ReleaseDTO> removeLabelFromRelease(@PathVariable("releaseId") long releaseId,
+//                                                        @PathVariable("labelId") long labelId){
+//        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.removeLabelFromRelease(releaseId, labelId));
+//        return ResponseEntity.ok(releaseDTO);
+//    }
+//
+//    @DeleteMapping("/{releaseId}/artists/{artistId}")
+//    public ResponseEntity<ReleaseDTO> removeArtistFromRelease(@PathVariable("releaseId") long releaseId,
+//                                                             @PathVariable("artistId") long artistId){
+//        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.removeArtistFromRelease(releaseId, artistId));
+//        return ResponseEntity.ok(releaseDTO);
+//    }
+//
+//    @DeleteMapping("/{releaseId}/genres/{genreId}")
+//    public ResponseEntity<ReleaseDTO> removeLabelFromRelease(@PathVariable("releaseId") long releaseId,
+//                                                             @PathVariable("genreId") long genreId){
+//        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.removeGenreFromRelease(releaseId, genreId));
+//        return ResponseEntity.ok(releaseDTO);
+//    }
 }

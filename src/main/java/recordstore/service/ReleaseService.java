@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.ReleaseFormDTO;
 import recordstore.entity.Release;
-import recordstore.projections.ReleaseProjection;
 
 import java.io.IOException;
 
@@ -13,12 +12,8 @@ public interface ReleaseService {
 
     Release getRelease(long id);
 
-    Page<ReleaseProjection> getAllReleases(Pageable pageable);
-    Page<ReleaseProjection> search(String keyword, Pageable pageable);
-    Page<ReleaseProjection> getReleasesByLabel(long id, Pageable pageable);
-    Page<ReleaseProjection> getReleasesByGenre(long id, Pageable pageable);
-    Page<ReleaseProjection> getReleasesByArtist(long id, Pageable pageable);
-    Page<ReleaseProjection> getReleasesByAccount(long id, Pageable pageable);
+    Page<Release> getAllReleases(Pageable pageable);
+    Page<Release> search(String keyword, Pageable pageable);
 
     Release createRelease(ReleaseFormDTO releaseDTO) throws IOException;
     Release updateRelease(ReleaseFormDTO releaseDTO, long id) throws IOException;
@@ -28,11 +23,11 @@ public interface ReleaseService {
     byte[] downloadImage(long id);
 
     // The handling of associations
-    Release addLabelToRelease(long releaseId, long labelId);
-    Release addArtistToRelease(long releaseId, long artistId);
-    Release addGenreToRelease(long releaseId, long genreId);
-
-    Release removeLabelFromRelease(long releaseId, long labelId);
-    Release removeArtistFromRelease(long releaseId, long artistId);
-    Release removeGenreFromRelease(long releaseId, long genreId);
+//    Release addLabelToRelease(long releaseId, long labelId);
+//    Release addArtistToRelease(long releaseId, long artistId);
+//    Release addGenreToRelease(long releaseId, long genreId);
+//
+//    Release removeLabelFromRelease(long releaseId, long labelId);
+//    Release removeArtistFromRelease(long releaseId, long artistId);
+//    Release removeGenreFromRelease(long releaseId, long genreId);
 }

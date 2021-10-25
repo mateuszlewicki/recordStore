@@ -5,7 +5,6 @@ import recordstore.DTO.*;
 import recordstore.entity.*;
 import recordstore.projections.ArtistProjection;
 import recordstore.projections.LabelProjection;
-import recordstore.projections.ReleaseProjection;
 
 @Mapper(componentModel = "spring")
 public interface MapStructMapper {
@@ -22,5 +21,5 @@ public interface MapStructMapper {
     AccountDTO accountToAccountDTO(Account account);
 
     ReleaseDTO releaseToReleaseDTO(Release release);
-    ReleaseSlimDTO releaseProjectionToReleaseSlimDTO(ReleaseProjection releaseProjection);
+    ReleaseSlimDTO releaseToReleaseSlimDTO(Release release);
 }
