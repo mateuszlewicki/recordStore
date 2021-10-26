@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.ReleaseFormDTO;
 import recordstore.entity.Release;
+import recordstore.projections.ReleaseProjection;
 import recordstore.repository.ReleaseRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -34,17 +35,17 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public Page<Release> getAllReleases(Pageable pageable) {
-        List<Long> ids = releaseRepository.findIds(pageable);
-        List<Release> result = releaseRepository.findAllByIdIn(ids);
-        return PageableExecutionUtils.getPage(result, pageable, ids::size);
+    public Page<ReleaseProjection> getAllReleases(Pageable pageable) {
+        Page<Long> ids = releaseRepository.findIds(pageable);
+        List<ReleaseProjection> result = releaseRepository.findAllByIdIn(ids.getContent());
+        return PageableExecutionUtils.getPage(result, pageable, ids::getTotalElements);
     }
 
     @Override
-    public Page<Release> search(String keyword, Pageable pageable) {
-        List<Long> ids = releaseRepository.search(keyword, pageable);
-        List<Release> result = releaseRepository.findAllByIdIn(ids);
-        return PageableExecutionUtils.getPage(result, pageable, ids::size);
+    public Page<ReleaseProjection> search(String keyword, Pageable pageable) {
+        Page<Long> ids = releaseRepository.search(keyword, pageable);
+        List<ReleaseProjection> result = releaseRepository.findAllByIdIn(ids.getContent());
+        return PageableExecutionUtils.getPage(result, pageable, ids::getTotalElements);
     }
 
     @Override

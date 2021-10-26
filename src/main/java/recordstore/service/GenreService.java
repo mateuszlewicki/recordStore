@@ -11,6 +11,6 @@ public interface GenreService {
     Genre getGenre(long id);
 
     Genre createGenre(GenreFormDTO genreDTO);
-    Genre updateGenre(long id, GenreFormDTO genreDTO);
+    Genre updateGenre(GenreFormDTO genreDTO, long id);
     void deleteGenre(long id);
 }

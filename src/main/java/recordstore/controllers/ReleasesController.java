@@ -4,9 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import recordstore.DTO.ReleaseDTO;
-import recordstore.DTO.ReleaseSlimDTO;
-import recordstore.mapstruct.mappers.MapStructMapper;
+import recordstore.entity.Release;
+import recordstore.projections.ReleaseProjection;
 import recordstore.service.ReleaseService;
 
 @RestController
@@ -14,27 +13,25 @@ import recordstore.service.ReleaseService;
 public class ReleasesController {
 
     private final ReleaseService service;
-    private final MapStructMapper mapStructMapper;
 
-    public ReleasesController(ReleaseService service, MapStructMapper mapStructMapper) {
+    public ReleasesController(ReleaseService service) {
         this.service = service;
-        this.mapStructMapper = mapStructMapper;
     }
 
     @GetMapping()
-    public Page<ReleaseSlimDTO> getAllReleases(Pageable pageable){
-        return service.getAllReleases(pageable).map(mapStructMapper::releaseToReleaseSlimDTO);
+    public Page<ReleaseProjection> getAllReleases(Pageable pageable){
+        return service.getAllReleases(pageable);
     }
 
         @GetMapping("/search")
-    public Page<ReleaseSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
-            return service.search(keyword, pageable).map(mapStructMapper::releaseToReleaseSlimDTO);
+    public Page<ReleaseProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+            return service.search(keyword, pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReleaseDTO> getReleaseInfo(@PathVariable long id){
-        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.getRelease(id));
-        return ResponseEntity.ok(releaseDTO);
+    public ResponseEntity<Release> getReleaseInfo(@PathVariable long id){
+        Release release = service.getRelease(id);
+        return ResponseEntity.ok(release);
     }
 
     @GetMapping("/{id}/image/download")

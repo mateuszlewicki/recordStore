@@ -1,5 +1,6 @@
 package recordstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -30,6 +31,7 @@ public class Artist {
     @Column(name = "img")
     private String img = "noImageAvailable.png";
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     private Set<Release> releases = new HashSet<>();
 }

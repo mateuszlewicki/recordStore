@@ -1,5 +1,6 @@
 package recordstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,6 +22,7 @@ public class Genre {
     @NotBlank(message = "Field is mandatory")
     private String title;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Set<Release> releases = new HashSet<>();
 }

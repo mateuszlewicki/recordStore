@@ -7,53 +7,50 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import recordstore.DTO.ArtistDTO;
 import recordstore.DTO.ArtistFormDTO;
-import recordstore.DTO.ArtistSlimDTO;
-import recordstore.mapstruct.mappers.MapStructMapper;
+import recordstore.entity.Artist;
+import recordstore.projections.ArtistProjection;
 import recordstore.service.ArtistService;
+
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
 
 @RestController
 @RequestMapping("/admin/artists")
 public class AdminArtistsController {
 
-    private final ArtistService service;
-    private final MapStructMapper mapStructMapper;
+  private final ArtistService service;
 
-    public AdminArtistsController(ArtistService service, MapStructMapper mapStructMapper) {
+    public AdminArtistsController(ArtistService service) {
         this.service = service;
-        this.mapStructMapper = mapStructMapper;
     }
 
     @GetMapping()
-    public Page<ArtistSlimDTO> getAllArtists(Pageable pageable) {
-        return service.getAllArtists(pageable).map(mapStructMapper::artistProjectionToArtistSlimDTO);
+    public Page<ArtistProjection> getAllArtists(Pageable pageable) {
+        return service.getAllArtists(pageable);
     }
 
     @GetMapping("/search")
-    public Page<ArtistSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return service.search(keyword, pageable).map(mapStructMapper::artistProjectionToArtistSlimDTO);
+    public Page<ArtistProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable);
     }
 
     @PostMapping()
-    public ResponseEntity<ArtistDTO> addArtist(@Valid @RequestBody ArtistFormDTO artistDTO) throws IOException {
-        ArtistDTO createdArtistDTO = mapStructMapper.artistToArtistDTO(service.createArtist(artistDTO));
+    public ResponseEntity<Artist> addArtist(@Valid @RequestBody ArtistFormDTO artistDTO) {
+        Artist created = service.createArtist(artistDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(createdArtistDTO.getId()).toUri();
-        return ResponseEntity.ok(createdArtistDTO);
+                .path("/{id}").buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ArtistDTO> updateArtist(@Valid @RequestBody ArtistFormDTO artistDTO, @PathVariable long id) throws IOException {
-        ArtistDTO updatedArtistDTO = mapStructMapper.artistToArtistDTO(service.updateArtist(artistDTO, id));
-        return ResponseEntity.ok(updatedArtistDTO);
+    public ResponseEntity<Artist> updateArtist(@Valid @RequestBody ArtistFormDTO artistDTO, @PathVariable long id) {
+        Artist updated = service.updateArtist(artistDTO, id);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteArtist(@PathVariable long id) throws IOException {
+    public ResponseEntity<Object> deleteArtist(@PathVariable long id) {
         service.deleteArtist(id);
         return ResponseEntity.noContent().build();
     }
@@ -61,10 +58,10 @@ public class AdminArtistsController {
     @PostMapping(path = "/{id}/image/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArtistDTO> uploadImage(@PathVariable("id") long id,
+    public ResponseEntity<Artist> uploadImage(@PathVariable("id") long id,
                             @RequestParam("file") MultipartFile file) {
-        ArtistDTO artistDTO = mapStructMapper.artistToArtistDTO(service.uploadImage(id, file));
-        return ResponseEntity.ok(artistDTO);
+        Artist artist = service.uploadImage(id, file);
+        return ResponseEntity.ok(artist);
     }
 
     @GetMapping("/{id}/image/download")

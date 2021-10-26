@@ -9,7 +9,7 @@ import recordstore.repository.GenreRepository;
 import javax.persistence.EntityNotFoundException;
 
 @Service
-public class GenreServiceImpl implements GenreService{
+public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository repository;
 
@@ -39,7 +39,7 @@ public class GenreServiceImpl implements GenreService{
     }
 
     @Override
-    public Genre updateGenre( long id, GenreFormDTO genreDTO) {
+    public Genre updateGenre(GenreFormDTO genreDTO, long id) {
         Genre genre = getGenre(id);
         genre.setTitle(genreDTO.getTitle());
         return repository.save(genre);

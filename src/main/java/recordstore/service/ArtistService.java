@@ -15,9 +15,9 @@ public interface ArtistService {
     Page<ArtistProjection> getAllArtists(Pageable pageable);
     Page<ArtistProjection> search(String keyword, Pageable pageable);
 
-    Artist createArtist(ArtistFormDTO artistDTO) throws IOException;
-    Artist updateArtist(ArtistFormDTO artistDTO, long id) throws IOException;
-    void deleteArtist(long id) throws IOException;
+    Artist createArtist(ArtistFormDTO artistDTO);
+    Artist updateArtist(ArtistFormDTO artistDTO, long id);
+    void deleteArtist(long id);
 
     Artist uploadImage(long id, MultipartFile file);
     byte[] downloadImage(long id);

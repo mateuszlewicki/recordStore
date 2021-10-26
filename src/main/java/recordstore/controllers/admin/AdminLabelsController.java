@@ -7,53 +7,50 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import recordstore.DTO.LabelDTO;
 import recordstore.DTO.LabelFormDTO;
-import recordstore.DTO.LabelSlimDTO;
-import recordstore.mapstruct.mappers.MapStructMapper;
+import recordstore.entity.Label;
+import recordstore.projections.LabelProjection;
 import recordstore.service.LabelService;
+
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
 
 @RestController
 @RequestMapping("/admin/labels")
 public class AdminLabelsController {
 
-    private final LabelService service;
-    private final MapStructMapper mapStructMapper;
+   private final LabelService service;
 
-    public AdminLabelsController(LabelService service, MapStructMapper mapStructMapper) {
+    public AdminLabelsController(LabelService service) {
         this.service = service;
-        this.mapStructMapper = mapStructMapper;
     }
 
     @GetMapping()
-    public Page<LabelSlimDTO> getAllLabels(Pageable pageable) {
-        return service.getAllLabels(pageable).map(mapStructMapper::labelProjectionToLabelSlimDTO);
+    public Page<LabelProjection> getAllLabels(Pageable pageable) {
+        return service.getAllLabels(pageable);
     }
 
     @GetMapping("/search")
-    public Page<LabelSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return service.search(keyword, pageable).map(mapStructMapper::labelProjectionToLabelSlimDTO);
+    public Page<LabelProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable);
     }
 
     @PostMapping()
-    public ResponseEntity<LabelDTO> addLabel(@Valid @RequestBody LabelFormDTO labelDTO) throws IOException {
-        LabelDTO createdLabelDTO = mapStructMapper.labelToLabelDTO(service.createLabel(labelDTO));
+    public ResponseEntity<Label> addLabel(@Valid @RequestBody LabelFormDTO labelDTO) {
+        Label created = service.createLabel(labelDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(createdLabelDTO.getId()).toUri();
-        return ResponseEntity.ok(createdLabelDTO);
+                .path("/{id}").buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LabelDTO> updateLabel(@Valid @RequestBody LabelFormDTO labelDTO, @PathVariable long id) throws IOException {
-        LabelDTO updatedLabelDTO = mapStructMapper.labelToLabelDTO(service.updateLabel(labelDTO, id));
-        return ResponseEntity.ok(updatedLabelDTO);
+    public ResponseEntity<Label> updateLabel(@Valid @RequestBody LabelFormDTO labelDTO, @PathVariable long id) {
+        Label updated = service.updateLabel(labelDTO, id);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteLabel(@PathVariable long id) throws IOException {
+    public ResponseEntity<Object> deleteLabel(@PathVariable long id) {
         service.deleteLabel(id);
         return ResponseEntity.noContent().build();
     }
@@ -61,10 +58,10 @@ public class AdminLabelsController {
     @PostMapping(path = "/{id}/image/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LabelDTO> uploadImage(@PathVariable("id") long id,
+    public ResponseEntity<Label> uploadImage(@PathVariable("id") long id,
                             @RequestParam("file") MultipartFile file) {
-        LabelDTO labelDTO = mapStructMapper.labelToLabelDTO(service.uploadImage(id, file));
-        return ResponseEntity.ok(labelDTO);
+        Label label = service.uploadImage(id, file);
+        return ResponseEntity.ok(label);
     }
 
     @GetMapping("/{id}/image/download")

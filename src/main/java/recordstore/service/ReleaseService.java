@@ -5,19 +5,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import recordstore.DTO.ReleaseFormDTO;
 import recordstore.entity.Release;
-
-import java.io.IOException;
+import recordstore.projections.ReleaseProjection;
 
 public interface ReleaseService {
 
     Release getRelease(long id);
 
-    Page<Release> getAllReleases(Pageable pageable);
-    Page<Release> search(String keyword, Pageable pageable);
+    Page<ReleaseProjection> getAllReleases(Pageable pageable);
+    Page<ReleaseProjection> search(String keyword, Pageable pageable);
 
-    Release createRelease(ReleaseFormDTO releaseDTO) throws IOException;
-    Release updateRelease(ReleaseFormDTO releaseDTO, long id) throws IOException;
-    void deleteRelease(long id) throws IOException;
+//    Page<ReleaseProjection> getReleasesByLabel(long id, Pageable pageable);
+//    Page<ReleaseProjection> getReleasesByGenre(long id, Pageable pageable);
+//    Page<ReleaseProjection> getReleasesByArtist(long id, Pageable pageable);
+//    Page<ReleaseProjection> getReleasesByAccount(long id, Pageable pageable);
+
+    Release createRelease(ReleaseFormDTO releaseDTO);
+    Release updateRelease(ReleaseFormDTO releaseDTO, long id);
+    void deleteRelease(long id);
 
     Release uploadImage(long id, MultipartFile file);
     byte[] downloadImage(long id);

@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import recordstore.DTO.GenreDTO;
-import recordstore.mapstruct.mappers.MapStructMapper;
+import recordstore.entity.Genre;
 import recordstore.service.GenreService;
 
 @RestController
@@ -16,21 +15,24 @@ import recordstore.service.GenreService;
 public class GenresController {
 
     private final GenreService service;
-    private final MapStructMapper mapStructMapper;
 
-    public GenresController(GenreService service, MapStructMapper mapStructMapper) {
+    public GenresController(GenreService service) {
         this.service = service;
-        this.mapStructMapper = mapStructMapper;
     }
 
     @GetMapping()
-    public Page<GenreDTO> getAllGenres(Pageable pageable){
-        return service.getAllGenres(pageable).map(mapStructMapper::genreToGenreDTO);
+    public Page<Genre> getAllGenres(Pageable pageable){
+        return service.getAllGenres(pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GenreDTO> getGenreInfo(@PathVariable long id){
-        GenreDTO genreDTO = mapStructMapper.genreToGenreDTO(service.getGenre(id));
-        return ResponseEntity.ok(genreDTO);
+    public ResponseEntity<Genre> getGenreInfo(@PathVariable long id){
+        Genre genre = service.getGenre(id);
+        return ResponseEntity.ok(genre);
     }
+
+//    @GetMapping("/{id}/releases")
+//    public Page<ReleaseProjection> getAllReleasesByGenre(@PathVariable long id, Pageable pageable){
+//        return releaseService.getReleasesByGenre(id, pageable);
+//    }
 }

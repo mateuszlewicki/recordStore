@@ -7,14 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import recordstore.DTO.ReleaseDTO;
 import recordstore.DTO.ReleaseFormDTO;
-import recordstore.DTO.ReleaseSlimDTO;
-import recordstore.mapstruct.mappers.MapStructMapper;
+import recordstore.entity.Release;
+import recordstore.projections.ReleaseProjection;
 import recordstore.service.ReleaseService;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -22,40 +20,38 @@ import java.net.URI;
 public class AdminReleasesController {
 
     private final ReleaseService service;
-    private final MapStructMapper mapStructMapper;
 
-    public AdminReleasesController(ReleaseService service, MapStructMapper mapStructMapper) {
+    public AdminReleasesController(ReleaseService service) {
         this.service = service;
-        this.mapStructMapper = mapStructMapper;
     }
 
     @GetMapping()
-    public Page<ReleaseSlimDTO> getAllReleases(Pageable pageable){
-        return service.getAllReleases(pageable).map(mapStructMapper::releaseToReleaseSlimDTO);
+    public Page<ReleaseProjection> getAllReleases(Pageable pageable){
+        return service.getAllReleases(pageable);
     }
 
     @GetMapping("/search")
-    public Page<ReleaseSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return service.search(keyword, pageable).map(mapStructMapper::releaseToReleaseSlimDTO);
+    public Page<ReleaseProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable);
     }
 
     @PostMapping()
-    public ResponseEntity<ReleaseDTO> addRelease(@Valid @RequestBody ReleaseFormDTO releaseDTO) throws IOException {
-        ReleaseDTO createdReleaseDTO = mapStructMapper.releaseToReleaseDTO(service.createRelease(releaseDTO));
+    public ResponseEntity<Release> addRelease(@Valid @RequestBody ReleaseFormDTO releaseDTO) {
+        Release created = service.createRelease(releaseDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(createdReleaseDTO.getId()).toUri();
-        return ResponseEntity.ok(createdReleaseDTO);
+                .path("/{id}").buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReleaseDTO> updateRelease(@Valid @RequestBody ReleaseFormDTO releaseDTO,
-                                                @PathVariable long id) throws IOException {
-        ReleaseDTO updatedReleaseDTO = mapStructMapper.releaseToReleaseDTO(service.updateRelease(releaseDTO, id));
-        return ResponseEntity.ok(updatedReleaseDTO);
+    public ResponseEntity<Release> updateRelease(@Valid @RequestBody ReleaseFormDTO releaseDTO,
+                                                @PathVariable long id) {
+        Release updated = service.updateRelease(releaseDTO, id);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteRelease(@PathVariable long id) throws IOException {
+    public ResponseEntity<Object> deleteRelease(@PathVariable long id) {
         service.deleteRelease(id);
         return ResponseEntity.noContent().build();
     }
@@ -63,10 +59,10 @@ public class AdminReleasesController {
     @PostMapping(path = "/{id}/image/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReleaseDTO> uploadImage(@PathVariable("id") long id,
+    public ResponseEntity<Release> uploadImage(@PathVariable("id") long id,
                             @RequestParam("file")MultipartFile file) {
-        ReleaseDTO releaseDTO = mapStructMapper.releaseToReleaseDTO(service.uploadImage(id, file));
-        return ResponseEntity.ok(releaseDTO);
+        Release release = service.uploadImage(id, file);
+        return ResponseEntity.ok(release);
     }
 
     @GetMapping("/{id}/image/download")

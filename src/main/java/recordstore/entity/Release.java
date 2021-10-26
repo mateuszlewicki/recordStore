@@ -1,5 +1,6 @@
 package recordstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -66,6 +67,7 @@ public class Release {
     @JoinColumn(name = "release_id")
     private Set<YouTubeVideo> videos = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "collection", fetch = FetchType.LAZY)
     private Set<Account> accounts = new HashSet<>();
 

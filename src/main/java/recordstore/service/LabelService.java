@@ -7,17 +7,15 @@ import recordstore.DTO.LabelFormDTO;
 import recordstore.entity.Label;
 import recordstore.projections.LabelProjection;
 
-import java.io.IOException;
-
 public interface LabelService {
 
     Label getLabel(long id);
     Page<LabelProjection> getAllLabels(Pageable pageable);
     Page<LabelProjection> search(String keyword, Pageable pageable);
 
-    Label createLabel(LabelFormDTO labelDTO) throws IOException;
-    Label updateLabel(LabelFormDTO labelDTO, long id) throws IOException;
-    void deleteLabel(long id) throws IOException;
+    Label createLabel(LabelFormDTO labelDTO);
+    Label updateLabel(LabelFormDTO labelDTO, long id);
+    void deleteLabel(long id);
 
     Label uploadImage(long id, MultipartFile file);
     byte[] downloadImage(long id);

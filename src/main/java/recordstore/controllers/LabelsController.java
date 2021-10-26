@@ -4,9 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import recordstore.DTO.LabelDTO;
-import recordstore.DTO.LabelSlimDTO;
-import recordstore.mapstruct.mappers.MapStructMapper;
+import recordstore.entity.Label;
+import recordstore.projections.LabelProjection;
 import recordstore.service.LabelService;
 
 @RestController
@@ -14,28 +13,30 @@ import recordstore.service.LabelService;
 public class LabelsController {
 
     private final LabelService service;
-    private final MapStructMapper mapStructMapper;
 
-    public LabelsController(LabelService service, MapStructMapper mapStructMapper) {
+    public LabelsController(LabelService service) {
         this.service = service;
-        this.mapStructMapper = mapStructMapper;
     }
 
     @GetMapping()
-    public Page<LabelSlimDTO> getAllLabels(Pageable pageable) {
-        return service.getAllLabels(pageable).map(mapStructMapper::labelProjectionToLabelSlimDTO);
+    public Page<LabelProjection> getAllLabels(Pageable pageable) {
+        return service.getAllLabels(pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LabelDTO> getLabelInfo(@PathVariable long id){
-        LabelDTO labelDTO = mapStructMapper.labelToLabelDTO(service.getLabel(id));
-        return ResponseEntity.ok(labelDTO);
+    public ResponseEntity<Label> getLabelInfo(@PathVariable long id){
+        return ResponseEntity.ok(service.getLabel(id));
     }
 
     @GetMapping("/search")
-    public Page<LabelSlimDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return service.search(keyword, pageable).map(mapStructMapper::labelProjectionToLabelSlimDTO);
+    public Page<LabelProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return service.search(keyword, pageable);
     }
+
+//    @GetMapping("/{id}/releases")
+//    public Page<ReleaseProjection> getAllReleasesByLabel(@PathVariable long id, Pageable pageable){
+//        return releaseService.getReleasesByLabel(id, pageable);
+//    }
 
     @GetMapping("/{id}/image/download")
     public byte[] downloadImage(@PathVariable("id") long id) {
