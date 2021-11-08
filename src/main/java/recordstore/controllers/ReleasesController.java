@@ -4,8 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import recordstore.DTO.ReleaseDTO;
 import recordstore.entity.Release;
-import recordstore.projections.ReleaseProjection;
 import recordstore.service.ReleaseService;
 
 @RestController
@@ -19,12 +19,12 @@ public class ReleasesController {
     }
 
     @GetMapping()
-    public Page<ReleaseProjection> getAllReleases(Pageable pageable){
+    public Page<ReleaseDTO> getAllReleases(Pageable pageable){
         return service.getAllReleases(pageable);
     }
 
         @GetMapping("/search")
-    public Page<ReleaseProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+    public Page<ReleaseDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
             return service.search(keyword, pageable);
     }
 

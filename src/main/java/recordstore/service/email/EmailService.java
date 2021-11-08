@@ -1,4 +1,4 @@
-package recordstore.service;
+package recordstore.service.email;
 
 import javax.mail.MessagingException;
 

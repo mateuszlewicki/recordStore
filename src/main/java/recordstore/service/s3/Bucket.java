@@ -1,4 +1,4 @@
-package recordstore.enums;
+package recordstore.service.s3;
 
 public enum Bucket {
 

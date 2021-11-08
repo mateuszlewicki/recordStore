@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import recordstore.DTO.ArtistDTO;
 import recordstore.DTO.ArtistFormDTO;
 import recordstore.entity.Artist;
-import recordstore.projections.ArtistProjection;
 import recordstore.service.ArtistService;
 
 import javax.validation.Valid;
@@ -26,12 +26,12 @@ public class AdminArtistsController {
     }
 
     @GetMapping()
-    public Page<ArtistProjection> getAllArtists(Pageable pageable) {
+    public Page<ArtistDTO> getAllArtists(Pageable pageable) {
         return service.getAllArtists(pageable);
     }
 
     @GetMapping("/search")
-    public Page<ArtistProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+    public Page<ArtistDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
         return service.search(keyword, pageable);
     }
 

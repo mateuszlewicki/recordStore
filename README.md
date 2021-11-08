@@ -5,13 +5,12 @@
 ##### Technologies:
 
 ---
-- Java 8
+- Java 17
 - Spring Boot
 - Spring Data JPA
 - Spring Security
 - Hibernate
 - Lombok
-- MapStruct
 - Maven
 - MySQL
 - Amazon S3

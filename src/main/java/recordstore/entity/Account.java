@@ -1,5 +1,6 @@
 package recordstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,6 +45,7 @@ public class Account implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = Collections.singleton(new Role(1L, "ROLE_USER"));
 
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "collections",
             joinColumns = @JoinColumn(name = "account_id"),

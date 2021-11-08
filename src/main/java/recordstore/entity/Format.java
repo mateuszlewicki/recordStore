@@ -1,4 +1,4 @@
-package recordstore.enums;
+package recordstore.entity;
 
 import lombok.Getter;
 

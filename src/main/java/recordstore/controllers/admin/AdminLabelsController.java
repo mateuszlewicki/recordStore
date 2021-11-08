@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import recordstore.DTO.LabelDTO;
 import recordstore.DTO.LabelFormDTO;
 import recordstore.entity.Label;
-import recordstore.projections.LabelProjection;
 import recordstore.service.LabelService;
 
 import javax.validation.Valid;
@@ -26,12 +26,12 @@ public class AdminLabelsController {
     }
 
     @GetMapping()
-    public Page<LabelProjection> getAllLabels(Pageable pageable) {
+    public Page<LabelDTO> getAllLabels(Pageable pageable) {
         return service.getAllLabels(pageable);
     }
 
     @GetMapping("/search")
-    public Page<LabelProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+    public Page<LabelDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
         return service.search(keyword, pageable);
     }
 

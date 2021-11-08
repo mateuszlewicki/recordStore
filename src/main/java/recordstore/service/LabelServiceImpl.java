@@ -4,10 +4,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import recordstore.DTO.LabelDTO;
 import recordstore.DTO.LabelFormDTO;
 import recordstore.entity.Label;
-import recordstore.projections.LabelProjection;
 import recordstore.repository.LabelRepository;
+import recordstore.service.s3.FileStorage;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -15,9 +16,9 @@ import javax.persistence.EntityNotFoundException;
 public class LabelServiceImpl implements LabelService {
 
     private final LabelRepository repository;
-    private final FileStore fileStore;
+    private final FileStorage fileStore;
 
-    public LabelServiceImpl(LabelRepository repository, FileStore fileStore) {
+    public LabelServiceImpl(LabelRepository repository, FileStorage fileStore) {
         this.repository = repository;
         this.fileStore = fileStore;
     }
@@ -32,12 +33,12 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public Page<LabelProjection> getAllLabels(Pageable pageable) {
+    public Page<LabelDTO> getAllLabels(Pageable pageable) {
         return repository.findAllBy(pageable);
     }
 
     @Override
-    public Page<LabelProjection> search(String keyword, Pageable pageable) {
+    public Page<LabelDTO> search(String keyword, Pageable pageable) {
         return repository.search(keyword, pageable);
     }
 

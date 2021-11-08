@@ -3,7 +3,7 @@ package recordstore.DTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import recordstore.enums.Format;
+import recordstore.entity.Format;
 import recordstore.validation.ValidDateFormat;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

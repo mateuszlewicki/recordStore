@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import recordstore.enums.Format;
 import recordstore.validation.ValidDateFormat;
 import javax.persistence.*;
 import javax.validation.Valid;

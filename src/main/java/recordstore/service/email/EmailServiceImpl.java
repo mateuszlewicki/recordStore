@@ -1,4 +1,4 @@
-package recordstore.service;
+package recordstore.service.email;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

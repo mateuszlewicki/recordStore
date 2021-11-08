@@ -1,4 +1,4 @@
-package recordstore.service;
+package recordstore.service.facebook;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,8 +7,7 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.NativeWebRequest;
-
-import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class FacebookSignInAdapter implements SignInAdapter {
@@ -21,7 +20,7 @@ public class FacebookSignInAdapter implements SignInAdapter {
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(
                         connection.getDisplayName(), null,
-                        Arrays.asList(new SimpleGrantedAuthority("FACEBOOK_USER"))));
+                        List.of(new SimpleGrantedAuthority("FACEBOOK_USER"))));
         return null;
     }
 }

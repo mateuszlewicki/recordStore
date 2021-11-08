@@ -6,22 +6,16 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import recordstore.DTO.ReleaseDTO;
 import recordstore.entity.Release;
-import recordstore.projections.ReleaseProjection;
-
-import java.util.List;
 
 public interface ReleaseRepository extends JpaRepository<Release, Long> {
 
     @EntityGraph(attributePaths = {"genres", "label", "artists", "tracks", "videos"}, type= EntityGraph.EntityGraphType.FETCH)
     Release findReleaseById(long id);
 
-    @Query("SELECT r.id FROM Release r")
-    Page<Long> findIds(Pageable pageable);
+    Page<ReleaseDTO> findAllBy(Pageable pageable);
 
-    @Query("SELECT r.id FROM Release r WHERE r.title LIKE %:keyword%")
-    Page<Long> search(@Param("keyword") String keyword, Pageable pageable);
-
-    @EntityGraph(attributePaths = {"genres", "label", "artists"}, type= EntityGraph.EntityGraphType.FETCH)
-    List<ReleaseProjection> findAllByIdIn(List<Long> ids);
+    @Query("SELECT new recordstore.DTO.ReleaseDTO(r.id, r.title, r.releaseDate) FROM Release r WHERE r.title LIKE %:keyword%")
+    Page<ReleaseDTO> search(@Param("keyword") String keyword, Pageable pageable);
 }

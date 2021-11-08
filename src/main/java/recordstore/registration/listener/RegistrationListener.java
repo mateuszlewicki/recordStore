@@ -2,12 +2,9 @@ package recordstore.registration.listener;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import recordstore.entity.Account;
-import recordstore.entity.VerificationToken;
 import recordstore.registration.OnRegistrationCompleteEvent;
 import recordstore.service.AccountService;
-import recordstore.utils.EmailService;
-
+import recordstore.service.email.EmailService;
 import javax.mail.MessagingException;
 
 @Component
@@ -31,8 +28,8 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     }
 
     private void confirmRegistration(OnRegistrationCompleteEvent event) throws MessagingException {
-        Account account = event.getAccount();
-        VerificationToken token = accountService.createVerificationToken(account);
+        var account = event.getAccount();
+        var token = accountService.createVerificationToken(account);
         emailService.sendEmailWithVerificationToken(event.getAppUrl(), account.getEmail(), token.getToken());
     }
 }

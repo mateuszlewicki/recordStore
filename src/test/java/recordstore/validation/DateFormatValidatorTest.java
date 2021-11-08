@@ -6,8 +6,8 @@ import javax.validation.ConstraintValidatorContext;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DateFormatValidatorTest {
 

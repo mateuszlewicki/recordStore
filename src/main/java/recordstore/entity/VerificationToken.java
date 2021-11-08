@@ -32,8 +32,13 @@ public class VerificationToken {
         this.expiryDate = calculateExpiryDate();
     }
 
+    public boolean isExpired() {
+        var calendar = Calendar.getInstance();
+        return this.getExpiryDate().getTime() - calendar.getTime().getTime() <= 0;
+    }
+
     private Date calculateExpiryDate() {
-        final Calendar cal = Calendar.getInstance();
+        final var cal = Calendar.getInstance();
         cal.setTimeInMillis(new Date().getTime());
         cal.add(Calendar.MINUTE, VerificationToken.EXPIRATION);
         return new Date(cal.getTime().getTime());

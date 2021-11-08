@@ -4,8 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import recordstore.DTO.ArtistDTO;
 import recordstore.entity.Artist;
-import recordstore.projections.ArtistProjection;
 import recordstore.service.ArtistService;
 
 @RestController
@@ -19,7 +19,7 @@ public class ArtistsController {
     }
 
     @GetMapping()
-    public Page<ArtistProjection> getAllArtists(Pageable pageable) {
+    public Page<ArtistDTO> getAllArtists(Pageable pageable) {
         return service.getAllArtists(pageable);
     }
 
@@ -30,7 +30,7 @@ public class ArtistsController {
     }
 
     @GetMapping("/search")
-    public Page<ArtistProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+    public Page<ArtistDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
         return service.search(keyword, pageable);
     }
 

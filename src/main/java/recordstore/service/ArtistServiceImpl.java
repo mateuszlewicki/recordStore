@@ -4,19 +4,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import recordstore.DTO.ArtistDTO;
 import recordstore.DTO.ArtistFormDTO;
 import recordstore.entity.Artist;
-import recordstore.projections.ArtistProjection;
 import recordstore.repository.ArtistRepository;
+import recordstore.service.s3.FileStorage;
+
 import javax.persistence.EntityNotFoundException;
 
 @Service
 public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository repository;
-    private final FileStore fileStore;
+    private final FileStorage fileStore;
 
-    public ArtistServiceImpl(ArtistRepository repository, FileStore fileStore) {
+    public ArtistServiceImpl(ArtistRepository repository, FileStorage fileStore) {
         this.repository = repository;
         this.fileStore = fileStore;
     }
@@ -31,12 +33,12 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Page<ArtistProjection> getAllArtists(Pageable pageable) {
+    public Page<ArtistDTO> getAllArtists(Pageable pageable) {
         return repository.findAllBy(pageable);
     }
 
     @Override
-    public Page<ArtistProjection> search(String keyword, Pageable pageable) {
+    public Page<ArtistDTO> search(String keyword, Pageable pageable) {
         return repository.search(keyword, pageable);
     }
 

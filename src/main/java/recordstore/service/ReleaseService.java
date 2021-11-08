@@ -3,21 +3,16 @@ package recordstore.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import recordstore.DTO.ReleaseDTO;
 import recordstore.DTO.ReleaseFormDTO;
 import recordstore.entity.Release;
-import recordstore.projections.ReleaseProjection;
 
 public interface ReleaseService {
 
     Release getRelease(long id);
 
-    Page<ReleaseProjection> getAllReleases(Pageable pageable);
-    Page<ReleaseProjection> search(String keyword, Pageable pageable);
-
-//    Page<ReleaseProjection> getReleasesByLabel(long id, Pageable pageable);
-//    Page<ReleaseProjection> getReleasesByGenre(long id, Pageable pageable);
-//    Page<ReleaseProjection> getReleasesByArtist(long id, Pageable pageable);
-//    Page<ReleaseProjection> getReleasesByAccount(long id, Pageable pageable);
+    Page<ReleaseDTO> getAllReleases(Pageable pageable);
+    Page<ReleaseDTO> search(String keyword, Pageable pageable);
 
     Release createRelease(ReleaseFormDTO releaseDTO);
     Release updateRelease(ReleaseFormDTO releaseDTO, long id);

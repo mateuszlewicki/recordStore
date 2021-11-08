@@ -1,12 +1,13 @@
-package recordstore.service;
+package recordstore.service.facebook;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.User;
 import org.springframework.stereotype.Service;
 import recordstore.entity.Account;
+import recordstore.service.AccountService;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 @Service
 public class FacebookConnectionSignup implements ConnectionSignUp {
@@ -19,12 +20,18 @@ public class FacebookConnectionSignup implements ConnectionSignUp {
 
     @Override
     public String execute(Connection<?> connection) {
-        Account account = new Account();
+        String email = getUserEmail(connection);
+        var existedAccount = service.getAccountByEmail(email);
+        if (existedAccount != null) {
+            return existedAccount.getUsername();
+        }
+        var account = new Account();
         account.setUsername(connection.getDisplayName());
-        account.setPassword(RandomStringUtils.randomAlphabetic(8));
+        account.setPassword(randomAlphabetic(8));
         account.setEmail(getUserEmail(connection));
-        //service.saveFacebookUser(account);
-        return account.getUsername();
+        account.setEnabled(true);
+        var savedAccount = service.createAccountWithFacebook(account);
+        return savedAccount.getUsername();
     }
 
     private String getUserEmail(Connection<?> connection){

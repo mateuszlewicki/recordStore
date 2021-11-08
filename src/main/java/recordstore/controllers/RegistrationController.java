@@ -1,15 +1,12 @@
 package recordstore.controllers;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import recordstore.DTO.CreateAccountDTO;
-import recordstore.entity.Account;
-import recordstore.entity.VerificationToken;
 import recordstore.registration.OnRegistrationCompleteEvent;
 import recordstore.service.AccountService;
-import recordstore.utils.EmailService;
-import recordstore.utils.GenericResponse;
-
+import recordstore.service.email.EmailService;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -31,26 +28,25 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public GenericResponse registerNewAccount(@Valid CreateAccountDTO accountDTO, HttpServletRequest request) {
-        Account account = service.createNewAccount(accountDTO);
+    public ResponseEntity<Object> registerNewAccount(@Valid CreateAccountDTO accountDTO, HttpServletRequest request) {
+        var account = service.createAccount(accountDTO);
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(account, getAppUrl(request)));
-        return new GenericResponse("success");
+        return ResponseEntity.status(201).build();
     }
 
     @GetMapping("/registrationConfirm")
-    public GenericResponse confirmRegistration(@RequestParam("token") String token) {
-        VerificationToken verificationToken = service.getVerificationToken(token);
-        service.saveRegisterUser(verificationToken.getAccount());
-        return new GenericResponse("success");
+    public ResponseEntity<Object> confirmRegistration(@RequestParam("token") String token) {
+        service.enableAccount(token);
+        return ResponseEntity.status(200).build();
     }
 
     @PostMapping("/resendRegistrationToken")
-    public GenericResponse resendRegistrationToken(HttpServletRequest request,
+    public ResponseEntity<Object> resendRegistrationToken(HttpServletRequest request,
                                                    @RequestBody Map<String, String> requestParams) throws MessagingException {
-        VerificationToken token = service.generateNewVerificationToken(requestParams.get("token"));
-        Account account = token.getAccount();
+        var token = service.regenerateToken(requestParams.get("token"));
+        var account = token.getAccount();
         emailService.sendEmailWithVerificationToken(getAppUrl(request), account.getEmail(), token.getToken());
-        return new GenericResponse("success");
+        return ResponseEntity.status(200).build();
     }
 
     private String getAppUrl(HttpServletRequest request) {

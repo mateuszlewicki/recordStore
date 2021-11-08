@@ -4,8 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import recordstore.DTO.LabelDTO;
 import recordstore.entity.Label;
-import recordstore.projections.LabelProjection;
 import recordstore.service.LabelService;
 
 @RestController
@@ -19,7 +19,7 @@ public class LabelsController {
     }
 
     @GetMapping()
-    public Page<LabelProjection> getAllLabels(Pageable pageable) {
+    public Page<LabelDTO> getAllLabels(Pageable pageable) {
         return service.getAllLabels(pageable);
     }
 
@@ -29,7 +29,7 @@ public class LabelsController {
     }
 
     @GetMapping("/search")
-    public Page<LabelProjection> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
+    public Page<LabelDTO> getSearchResults(@RequestParam("keyword") String keyword, Pageable pageable) {
         return service.search(keyword, pageable);
     }
 

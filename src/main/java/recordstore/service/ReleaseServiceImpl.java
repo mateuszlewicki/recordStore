@@ -2,25 +2,23 @@ package recordstore.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import recordstore.DTO.ReleaseDTO;
 import recordstore.DTO.ReleaseFormDTO;
 import recordstore.entity.Release;
-import recordstore.projections.ReleaseProjection;
 import recordstore.repository.ReleaseRepository;
+import recordstore.service.s3.FileStorage;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
 
     private final ReleaseRepository releaseRepository;
+    private final FileStorage fileStore;
 
-    private final FileStore fileStore;
-
-    public ReleaseServiceImpl(ReleaseRepository releaseRepository, FileStore fileStore) {
+    public ReleaseServiceImpl(ReleaseRepository releaseRepository, FileStorage fileStore) {
         this.releaseRepository = releaseRepository;
         this.fileStore = fileStore;
     }
@@ -35,17 +33,13 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
-    public Page<ReleaseProjection> getAllReleases(Pageable pageable) {
-        Page<Long> ids = releaseRepository.findIds(pageable);
-        List<ReleaseProjection> result = releaseRepository.findAllByIdIn(ids.getContent());
-        return PageableExecutionUtils.getPage(result, pageable, ids::getTotalElements);
+    public Page<ReleaseDTO> getAllReleases(Pageable pageable) {
+        return releaseRepository.findAllBy(pageable);
     }
 
     @Override
-    public Page<ReleaseProjection> search(String keyword, Pageable pageable) {
-        Page<Long> ids = releaseRepository.search(keyword, pageable);
-        List<ReleaseProjection> result = releaseRepository.findAllByIdIn(ids.getContent());
-        return PageableExecutionUtils.getPage(result, pageable, ids::getTotalElements);
+    public Page<ReleaseDTO> search(String keyword, Pageable pageable) {
+        return releaseRepository.search(keyword, pageable);
     }
 
     @Override
@@ -73,7 +67,6 @@ public class ReleaseServiceImpl implements ReleaseService {
         Release release = getRelease(id);
         if (release.getAccounts().isEmpty()) {
             release.removeLabel(release.getLabel());
-            //release.setLabel(null);
             releaseRepository.delete(release);
             fileStore.deleteFile(release.getImg());
         }

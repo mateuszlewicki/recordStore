@@ -1,19 +1,21 @@
 package recordstore.DTO;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class AccountDTO {
 
     private long id;
-
     private String username;
+    private String email;
 
-    private String img;
-
-    private Set<ReleaseDTO> collection = new HashSet<>();
+    public AccountDTO(long id, String username, String email) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+    }
 }
