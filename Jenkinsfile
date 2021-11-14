@@ -6,7 +6,7 @@ pipeline {
             
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/DenysMoiseienko/recordStore.git'
+                //git 'https://github.com/mateuszlewicki/recordStore.git'
 
                 // Run Maven on a Unix agent.
                 sh "${mvnHome}/bin/mvn  -Dmaven.test.failure.ignore=true clean package"
