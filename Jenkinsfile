@@ -1,4 +1,5 @@
 pipeline {
+    def mvnHome = tool 'M3'
     agent any
     
     stages {
@@ -26,4 +27,4 @@ pipeline {
         }
     }
 }
-def mvnHome = tool 'M3'
+
