@@ -7,6 +7,15 @@ pipeline {
     }
     
     stages {
+         stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                    echo "JAVA_HOME = ${JAVA_HOME}"
+                '''
+            }
+        }
         stage('Build') {
             
             steps {
@@ -14,7 +23,8 @@ pipeline {
                 //git 'https://github.com/mateuszlewicki/recordStore.git'
 
                 // Run Maven on a Unix agent.
-                sh "mvn  -Dmaven.test.failure.ignore=true clean package"
+                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+                //sh "mvn  -Dmaven.test.failure.ignore=true clean package"
 
                 // To run Maven on a Windows agent, use
                 // bat "mvn -Dmaven.test.failure.ignore=true clean package"
